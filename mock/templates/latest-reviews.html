@@ -23,7 +23,8 @@
                   <span class="float-right">{{ review.publish_time }}</span>
                 </div>
                 {% include 'review-hidden.html' %}
-                <p class="text-muted">{{ review.content}} <a href="https://www.baidu.com">&gt;&gt;更多</a></p>
+                <p class="text-muted">{{ review.content}} <a href={% url 'mock:view_course' %}>&gt;&gt;更多</a></p>
+              <!-- href="{ url_for('course.view_course', course_id=review.course.id) }}#review-{ review.id }}" -->
               </div>
             </div>
           </div>
@@ -34,7 +35,8 @@
       <ul class="pagination">
         {% if reviews.has_prev %}
         <li>
-            <a href="https://www.baidu.com">
+            <a href={% url 'mock:latest_reviews' %}>
+                <!-- aria-label="Next"-->
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -46,7 +48,7 @@
             {% if page == reviews.page %}
             <li class="active"><a href="#">{{ page }}<span class="sr-only">(current)</span></a></li>
             {% elif page %}
-            <li><a href="https://www.baidu.com">{{ page }}</a></li>
+            <li><a href={% url 'mock:latest_reviews' %}>{{ page }}</a></li>
             <!-- <li><a href="{ url_for(this_module, page=page) }}">{ page }}</a></li>  -->
             {% else %}
             <li><a>...</a></li>
@@ -55,10 +57,13 @@
 
         {% if reviews.has_next %}
         <li>
-          <a href="https://www.baidu.com">
+          <a href={% url 'mock:latest_reviews' %}>
+              <!-- aria-label="Next"-->
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
+        {% else %}
+        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
         {% endif %}
       </ul>
     </nav>

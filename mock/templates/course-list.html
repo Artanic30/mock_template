@@ -1,0 +1,72 @@
+{% for course in courses.items %}
+<div class="ud-pd-md dashed">
+  <div class="row">
+    <div class="col-md-12 col-xs-12">
+      <a class="px16" href="{% url 'mock:view_course' %}">{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a>
+
+      {% if course.introduction %}
+      <span class="label label-danger">课程简介</span>
+      {% endif %}
+      {% if current_user.is_authenticated and course in current_user.courses_joined %}
+      <span class="label label-info">已学过</span>
+      {% endif %}
+      {% if course.reviewed %}
+      <span class="label label-success">已点评</span>
+      {% endif %}
+
+      <span class="small text-muted">{{ course.term_ids }}</span>
+    <!-- filter:term_display_one -->
+
+      {% if course.review_count %}
+      <div class="ud-pd-sm blue">
+        {% for star in range_list %}
+          {% widthratio star 1 2|add:1.5 as result_rate1 %}
+          {% widthratio star 1 2|add:1.5 as result_rate2 %}
+          {% if course.rate.average_rate >= result_rate1 %}
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+          {% elif course.rate.average_rate >= result_rate2 %}
+          <span class="glyphicon glyphicon-star-half" aria-hidden="true"></span>
+          {% else %}
+          <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+          {% endif %}
+        {% endfor %}
+        <span class="rl-pd-sm h4">{{ course.rate.average_rate }}</span><span class="text-muted px12">({{ course.review_count }} 人评价)</span>
+      </div>
+      {% else %}
+      <div class="ud-pd-sm blue">
+        {% for star in range_list %}
+          <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+        {% endfor %}
+          <span class="rl-pd-sm h4"><span class="text-muted px12">暂无评价</span></span>
+      </div>
+      {% endif %}
+      <ul class="text-muted list-inline list-unstyled">
+      {% if course.rate.difficulty != '' %}
+          <li class="right-mg-md">课程难度 {{ course.rate.difficulty }}</li>
+      {% else %}
+          <li class="right-mg-md">课程难度 {{ '你猜' }}</li>
+      {% endif %}
+      {% if course.rate.homework != '' %}
+          <li class="right-mg-md">课程难度 {{ course.rate.homework }}</li>
+      {% else %}
+          <li class="right-mg-md">课程难度 {{ '你猜' }}</li>
+      {% endif %}
+      {% if course.rate.grading != '' %}
+          <li class="right-mg-md">课程难度 {{ course.rate.grading }}</li>
+      {% else %}
+          <li class="right-mg-md">课程难度 {{ '你猜' }}</li>
+      {% endif %}
+      {% if course.rate.gain != '' %}
+          <li class="right-mg-md">课程难度 {{ course.rate.gain }}</li>
+      {% else %}
+          <li class="right-mg-md">课程难度 {{ '你猜' }}</li>
+      {% endif %}
+      <!-- 原始flask template 转成 django template-->
+      <!-- <li class="right-mg-md">给分好坏：{ course.rate.grading or '你猜' }}</li> -->
+      </ul>
+      <p>
+    </div>
+  </div>
+</div>
+{% endfor %}
+

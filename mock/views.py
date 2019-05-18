@@ -48,7 +48,23 @@ def latest_reviews(request):
             'publish_time': 20181012,
             'content': 'test_content',
             'id': 23333
-        }],
+            },
+            {
+                'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
+                'publish_time': 20181012,
+                'content': 'test_content',
+                'id': 23333
+            },
+            {
+                'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
+                'publish_time': 20181012,
+                'content': 'test_content',
+                'id': 23333
+            }
+        ],
+        'iter_pages': 0,
         'has_prev': True,
         'is_hidden': False,
         'prev_num': 23123,

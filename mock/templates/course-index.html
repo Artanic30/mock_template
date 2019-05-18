@@ -7,6 +7,22 @@
             'total': 213
             'page':  23123
             'has_next': True
+            'item': {
+                'teachers': test_name
+                'teacher_names_display': test_name
+                'name': course_name
+                'introduction': introduction
+                'term_ids': 14
+                'review_count': 3
+                'rate': {
+                    'average_rate': 4.5
+                    'difficulty': hell
+                    'homework': EE101
+                    'grading': well
+                    'gain': many
+                }
+            }
+         range_list = [0, 1, 2, 3, 4, 5]
         }
      }-->
 <div class="container">
@@ -38,7 +54,8 @@
             {% if page == courses.page %}
             <li class="active"><a href="#">{{ page }}<span class="sr-only">(current)</span></a></li>
             {% elif page %}
-            <li><a href="{{ url_for(this_module, page=page, dept=dept) }}">{{ page }}</a></li>
+            <li><a href="https://www.baidu.cpm">{{ page }}</a></li>
+                <!-- { url_for(this_module, page=page, dept=dept) }} -->
             {% else %}
             <li><a>...</a></li>
             {% endif %}
@@ -46,7 +63,8 @@
 
         {% if courses.has_next %}
         <li>
-          <a href="{{ url_for(this_module, page=courses.next_num, dept=dept) }}" aria-label="Next">
+          <a href="https://www.baidu.com" aria-label="Next">
+              <!-- { url_for(this_module, page=courses.next_num, dept=dept) }} -->
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
