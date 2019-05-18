@@ -12,6 +12,7 @@
             'term_ids': 'CS110'
             'review_count': 12
             'course_rate': rate
+            'rate': rate
             'join_type': "unknown"
             'teaching_type': "unknown"
             'course_type': "unknown"
@@ -25,6 +26,17 @@
             'reviews': "unknown"
             'related_courses': course
             same_teacher_courses(teacher): "unknown"
+            'following': True
+            'follow_count': 233
+            'downvote_count': 233
+            'upvote_count': 233
+            'follow': "unknown"
+            'unfollow': "unknown"
+            'downvote': "unknown"
+            'undo_downvote': "unknown"
+            'joined': True
+            'join': "unknown"
+            'quit': "unknown"
         }
         review: {
             'is_hidden'
@@ -342,27 +354,35 @@
    'follow': {
      'enabled': {{ 'true' if course.following else 'false' }},
      'count': {{ course.follow_count or 0 }},
-     'do_url': "{{ url_for('course.follow', course_id=course.id) }}",
-     'undo_url': "{{ url_for('course.unfollow', course_id=course.id) }}",
+     'do_url': "https://www.baidu.com",
+       <!-- url_for('course.follow', course_id=course.id) -->
+     'undo_url': "https://www.baidu.com",
+       <!-- url_for('course.unfollow', course_id=course.id) -->
    },
    'downvote': {
      'enabled': {{ 'true' if course.downvoted else 'false' }},
      'count': {{ course.downvote_count or 0 }},
-     'do_url': "{{ url_for('course.downvote', course_id=course.id) }}",
-     'undo_url': "{{ url_for('course.undo_downvote', course_id=course.id) }}",
+     'do_url': "https://www.baidu.com",
+       <!-- url_for('course.downvote', course_id=course.id) -->
+     'undo_url': "https://www.baidu.com",
+       <!-- url_for('course.undo_downvote', course_id=course.id) -->
      'conflict': 'upvote',
    },
    'upvote': {
      'enabled': {{ 'true' if course.upvoted else 'false' }},
      'count': {{ course.upvote_count or 0 }},
-     'do_url': "{{ url_for('course.upvote', course_id=course.id) }}",
-     'undo_url': "{{ url_for('course.undo_upvote', course_id=course.id) }}",
+     'do_url': "https://www.baidu.com",
+       <!-- url_for('course.upvote', course_id=course.id) -->
+     'undo_url': "https://www.baidu.com",
+       <!-- url_for('course.undo_upvote', course_id=course.id) -->
      'conflict': 'downvote',
    },
    'join': {
      'enabled': {{ 'true' if course.joined else 'false' }},
-     'do_url': "{{ url_for('course.join', course_id=course.id) }}",
-     'undo_url': "{{ url_for('course.quit', course_id=course.id) }}",
+     'do_url': "https://www.baidu.com",
+       <!-- url_for('course.join', course_id=course.id) -->
+     'undo_url': "https://www.baidu.com",
+       <!-- url_for('course.quit', course_id=course.id) -->
    },
  }
 
@@ -454,7 +474,8 @@
  {
      elem = $('#review-upvote-count-' + review_id);
      //elem.text(parseInt(elem.text()) + 1);
-     $.post("{{ url_for('api.review_upvote') }}", { review_id: review_id }, function(o) {
+     $.post("https://www.baidu.com", { review_id: review_id }, function(o) {
+         <!-- url_for('api.review_upvote') -->
        if (typeof o.count != "undefined") {
          elem.text(o.count);
          elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
@@ -468,7 +489,8 @@
  {
      elem = $('#review-upvote-count-' + review_id);
      //elem.text(parseInt(elem.text()) - 1);
-     $.post("{{ url_for('api.review_cancel_upvote') }}", { review_id: review_id }, function(o) {
+     $.post("https://www.baidu.com", { review_id: review_id }, function(o) {
+         <!-- url_for('api.review_cancel_upvote') -->
        if (typeof o.count != "undefined") {
          elem.text(o.count);
          elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
@@ -483,9 +505,11 @@
      if (!confirm('你真的要删除此点评吗？')) {
          return;
      }
-     $.post("{{ url_for('review.delete_review') }}", { id: review_id }, function(o) {
+     $.post("https://www.baidu.com", { id: review_id }, function(o) {
+         <!-- url_for('review.delete_review') -->
          if (o.ok)
-            window.location.href = "{{ url_for('course.view_course', course_id=course.id) }}";
+            window.location.href = "https://www.baidu.com";
+            <!-- url_for('course.view_course', course_id=course.id) -->
          else
             alert(o.message);
      }, 'json');
@@ -493,7 +517,8 @@
 
  function reload_comments(review_id)
  {
-             $.get("{{ url_for('review.show_comments') }}",
+             $.get("https://www.baidu.com",
+                 <!-- url_for('review.show_comments') -->
                 { review_id: review_id},
                 function(html) {
                     $('#review-' + review_id + '-comments').replaceWith(html);
@@ -508,7 +533,8 @@
          alert('请输入评论内容');
          return;
      }
-     $.post("{{ url_for('api.review_new_comment') }}", {
+     $.post("https://www.baidu.com", {
+         <!-- url_for('api.review_new_comment') -->
          review_id: review_id,
          content: content
      }, function(o) {
@@ -525,7 +551,8 @@
      if (!confirm('你真的要删除此评论吗？')) {
          return;
      }
-     $.post("{{ url_for('api.delete_comment') }}", { comment_id: comment_id },
+     $.post("https://www.baidu.com", { comment_id: comment_id },
+         <!-- url_for('api.delete_comment') -->
          function(o) {
             if (o.ok) {
                reload_comments(review_id);
@@ -544,7 +571,8 @@
 
  function hide_review(review_id)
  {
-     $.post("{{ url_for('api.hide_review') }}", { review_id: review_id },
+     $.post("https://www.baidu.com", { review_id: review_id },
+         <!-- url_for('api.hide_review') -->
          function(o) {
             if (o.ok) {
                alert('屏蔽成功，请刷新页面');
@@ -556,7 +584,8 @@
 
  function unhide_review(review_id)
  {
-     $.post("{{ url_for('api.unhide_review') }}", { review_id: review_id },
+     $.post("https://www.baidu.com", { review_id: review_id },
+         <!-- url_for('api.unhide_review') -->
          function(o) {
             if (o.ok) {
                alert('解除屏蔽成功，请刷新页面');
