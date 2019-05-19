@@ -86,45 +86,91 @@
         <hr>
         {% if course.review_count %}
         <div class="ud-pd-sm blue">
-          {% for star in range(0,5) %}
-            {% if course.rate.average_rate >= 1.5 + star * 2 %}
-            <span class="glyphicon glyphicon-star glyphicon-lg" aria-hidden="true"></span>
-            {% elif course.rate.average_rate >= 0.5 + star * 2 %}
-            <span class="glyphicon glyphicon-star-half glyphicon-lg" aria-hidden="true"></span>
-            {% else %}
-            <span class="glyphicon glyphicon-star-empty glyphicon-lg" aria-hidden="true"></span>
-            {% endif %}
-          {% endfor %}
-          <span class="rl-pd-sm h4">{{ course.rate.average_rate }}</span><span class="rl-pd-sm text-muted">({{ course.review_count }}人评价)</span>
-        </div>
+        <!-- wdnmd django template 不支持运算 widthratio出来数据类型还不是int-->
+        {% for star in range_list %}
+            {% widthratio course.rate.average_rate 1 2 as course_star %}
+          {% widthratio star 1 4 as result_rate1 %}
+          {% widthratio star 1 4 as result_rate2 %}
+          {% if course_star|add:0 >= result_rate1|add:3 %}
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+          {% elif course_star|add:0  >= result_rate2|add:1 %}
+          <span class="glyphicon glyphicon-star-half" aria-hidden="true"></span>
+          {% else %}
+          <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+          {% endif %}
+        {% endfor %}
+        <span class="rl-pd-sm h4">{{ course.rate.average_rate }}</span><span class="text-muted px12">({{ course.review_count }} 人评价)</span>
+      </div>
         {% else %}
         <div class="ud-pd-sm blue">
-          {% for star in range(0,5) %}
+          {% for star in range_list %}
             <span class="glyphicon glyphicon-star-empty glyphicon-lg" aria-hidden="true"></span>
           {% endfor %}
           <span class="rl-pd-sm h4"><span class="text-muted px12">(暂无评价)</span>
         </div>
         {% endif %}
         <ul class="text-muted list-inline list-unstyled ud-pd-sm">
-          <li class="right-mg-md">课程难度：{{ course.rate.difficulty or '你猜' }}</li>
-          <li class="right-mg-md">作业多少：{{ course.rate.homework or '你猜' }}</li>
-          <li class="right-mg-md">给分好坏：{{ course.rate.grading or '你猜' }}</li>
-          <li class="right-mg-md">收获大小：{{ course.rate.gain or '你猜' }}</li>
+          <ul class="text-muted list-inline list-unstyled">
+          {% if course.rate.difficulty != '' %}
+              <li class="right-mg-md">课程难度: {{ course.rate.difficulty }}</li>
+          {% else %}
+              <li class="right-mg-md">课程难度: {{ '你猜' }}</li>
+          {% endif %}
+          {% if course.rate.homework != '' %}
+              <li class="right-mg-md">作业多少: {{ course.rate.homework }}</li>
+          {% else %}
+              <li class="right-mg-md">作业多少: {{ '你猜' }}</li>
+          {% endif %}
+          {% if course.rate.grading != '' %}
+              <li class="right-mg-md">给分好坏: {{ course.rate.grading }}</li>
+          {% else %}
+              <li class="right-mg-md">给分好坏: {{ '你猜' }}</li>
+          {% endif %}
+          {% if course.rate.gain != '' %}
+              <li class="right-mg-md">收获大小: {{ course.rate.gain }}</li>
+          {% else %}
+              <li class="right-mg-md">收获大小: {{ '你猜' }}</li>
+          {% endif %}
         </ul>
 
         <table class="table table-condensed no-border">
+        <tbody>
           <tr>
-            <td><strong>选课类别：</strong>{{ course.join_type or '未知' }}</td>
-            <td><strong>教学类型：</strong>{{ course.teaching_type or '未知' }}</td>
+              {% if course.rate.grading != '' %}
+              <td><strong>选课类别：</strong>{{ course.join_type }}</td>
+              {% else %}
+                  <td><strong>选课类别：</strong>{{ '未知' }}</td>
+              {% endif %}
+              {% if course.rate.grading != '' %}
+              <td><strong>教学类型：</strong>{{ course.teaching_type }}</td>
+              {% else %}
+                  <td><strong>教学类型：</strong>{{ '未知' }}</td>
+              {% endif %}
           </tr>
           <tr>
-            <td><strong>课程类别：</strong>{{ course.course_type or '未知' }}</td>
-            <td><strong>开课单位：</strong>{{ course.dept or '未知' }}</td>
+              {% if course.rate.grading != '' %}
+              <td><strong>课程类别：</strong>{{ course.course_type }}</td>
+              {% else %}
+                  <td><strong>课程类别：</strong>{{ '未知' }}</td>
+              {% endif %}
+              {% if course.rate.grading != '' %}
+              <td><strong>开课单位：</strong>{{ course.dept }}</td>
+              {% else %}
+                  <td><strong>开课单位：</strong>{{ '未知' }}</td>
+              {% endif %}
           </tr>
-          <tr>
-            <td><strong>课程层次：</strong>{{ course.course_level or '未知' }}</td>
-            <td><strong>学分：</strong>{{ course.credit or '未知' }}</td>
-          </tr>
+           <tr>
+              {% if course.rate.grading != '' %}
+              <td><strong>课程层次：</strong>{{ course.course_level }}</td>
+              {% else %}
+                  <td><strong>课程层次：</strong>{{ '未知' }}</td>
+              {% endif %}
+              {% if course.rate.grading != '' %}
+              <td><strong>学分：</strong>{{ course.credit }}</td>
+              {% else %}
+                  <td><strong>学分：</strong>{{ '未知' }}</td>
+              {% endif %}
+           </tr>
           </tbody>
         </table>
 
@@ -201,14 +247,17 @@
         <div class="ud-pd-md dashed review" id="review-{{review.id}}">
           <div class="blue ud-pd-sm">
             <span class="right-pd-sm px16">
-              <a href="https://www.baidu.com">{{ review.author.username }}</a>
+              <a href="{% url 'mock:user_view_profile' %}">{{ review.author.username }}</a>
                 <!-- url_for('user.view_profile', user_id=review.author.id) -->
             </span>
 
-            {% for star in range(0,5) %}
-              {% if review.rate >= 1.5 + star * 2 %}
+            {% for star in range_list %}
+                {% widthratio review.rate 1 2 as course_star %}
+              {% widthratio star 1 4 as result_rate1 %}
+              {% widthratio star 1 4 as result_rate2 %}
+              {% if course_star|add:0 >= result_rate1|add:3 %}
               <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-              {% elif review.rate >= 0.5 + star * 2 %}
+              {% elif course_star|add:0  >= result_rate2|add:1 %}
               <span class="glyphicon glyphicon-star-half" aria-hidden="true"></span>
               {% else %}
               <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
@@ -227,8 +276,10 @@
           <div class="bm-pd-md grey" id="review-{{ review.id }}">
             <span class="small">{{ review.publish_time }}</span>
                 <!-- { review.publish_time|localtime } -->
-            <a class="nounderline" href="javascript: {{ 'cancel_' if review.is_upvoted() }}upvote_review({{ review.id }})">
-                <span class="glyphicon glyphicon-thumbs-up {{ 'blue' if review.is_upvoted() else 'grey' }} left-pd-lg" aria-hidden="true" ></span>
+            <a class="nounderline" href="">
+                <!--  <a class="nounderline" href="javascript: { 'cancel_' if review.is_upvoted() }}upvote_review({ review.id }})"> -->
+                <span class="glyphicon glyphicon-thumbs-up left-pd-lg" aria-hidden="true" ></span>
+                <!-- class="glyphicon glyphicon-thumbs-up { 'blue' if review.is_upvoted() else 'grey' }} left-pd-lg"-->
                 <span id="review-upvote-count-{{review.id}}">{{ review.upvote_count }}</span>
             </a>
             <a class="nounderline" href="javascript: show_review_comments({{ review.id }})">
@@ -292,13 +343,13 @@
         {% endfor %}
         {% if course.teachers_count == 0 %}
         <div class="ud-pd-md dashed">
-          <img class="avatar-lg cicle" src="/static/image/teacher.jpg"/>
+          <img class="avatar-lg cicle" src="/static/bootstrap/image/test.jpg"/>
           <h3 class="blue">老师甲</h3>
         </div>
         {% endif %}
 
         <div class="ud-pd-md dashed">
-          <h4 class="blue">其他老师的「{{ course.name }}」课</h5>
+          <h5 class="blue">其他老师的「{{ course.name }}」课</h5>
           {% for rel_course in course.related_courses %}
           {% if rel_course != course %}
           <div class="ud-pd-sm">
@@ -317,8 +368,8 @@
 
         {% for teacher in course.teachers %}
         <div class="ud-pd-md dashed">
-          <h4 class="blue">{{ teacher.name }}老师的其他课</h5>
-          {% for rel_course in course.same_teacher_courses(teacher) %}
+          <h5 class="blue">{{ teacher.name }}老师的其他课</h5>
+          {% for rel_course in course.same_teacher_courses %}
           {% if rel_course != course %}
           <div class="ud-pd-sm">
             <a href="https://www.baidu.com">{{ rel_course.name }}</a>
@@ -338,262 +389,4 @@
     </div> <!-- row -->
   </div>  <!-- float-element  -->
 </div>  <!-- container -->
-{% endblock %}
-
-
-
-
-{% block script %}
-<script>
- $('#myTab a').click(function (e) {
-   e.preventDefault()
-   $(this).tab('show')
- })
-
- var action_data = {
-   'follow': {
-     'enabled': {{ 'true' if course.following else 'false' }},
-     'count': {{ course.follow_count or 0 }},
-     'do_url': "https://www.baidu.com",
-       <!-- url_for('course.follow', course_id=course.id) -->
-     'undo_url': "https://www.baidu.com",
-       <!-- url_for('course.unfollow', course_id=course.id) -->
-   },
-   'downvote': {
-     'enabled': {{ 'true' if course.downvoted else 'false' }},
-     'count': {{ course.downvote_count or 0 }},
-     'do_url': "https://www.baidu.com",
-       <!-- url_for('course.downvote', course_id=course.id) -->
-     'undo_url': "https://www.baidu.com",
-       <!-- url_for('course.undo_downvote', course_id=course.id) -->
-     'conflict': 'upvote',
-   },
-   'upvote': {
-     'enabled': {{ 'true' if course.upvoted else 'false' }},
-     'count': {{ course.upvote_count or 0 }},
-     'do_url': "https://www.baidu.com",
-       <!-- url_for('course.upvote', course_id=course.id) -->
-     'undo_url': "https://www.baidu.com",
-       <!-- url_for('course.undo_upvote', course_id=course.id) -->
-     'conflict': 'downvote',
-   },
-   'join': {
-     'enabled': {{ 'true' if course.joined else 'false' }},
-     'do_url': "https://www.baidu.com",
-       <!-- url_for('course.join', course_id=course.id) -->
-     'undo_url': "https://www.baidu.com",
-       <!-- url_for('course.quit', course_id=course.id) -->
-   },
- }
-
- $(function() {
-   for (action in action_data) {
-
-     if (! $('.btn-' + action).length)
-       continue;
-
-     (function(action) {
-       var d = action_data[action];
-
-       var do_btn = $('.btn-' + action).filter('.btn-do');
-       var undo_btn = $('.btn-' + action).filter('.btn-undo');
-
-       function update_count(count) {
-         d.count = count;
-         $('.btn-' + action + ' .count').text(count);
-       }
-       function http_post_wrapper(url) {
-         $.post(url, null, function(o) {
-           if (o.count)
-             update_count(o.count);
-           if (!o.ok)
-             alert('Operation failed, please try again later!');
-         }, 'json');
-       }
-
-       do_btn.click(function() {
-         {% if user.is_authenticated %}
-         if (d.enabled)
-           return;
-         do_btn.hide();
-         undo_btn.show();
-         d.enabled = true;
-         update_count(d.count + 1);
-         if (d.conflict && action_data[d.conflict].enabled) {
-           $('.btn-' + d.conflict).filter('.btn-undo').click();
-         }
-         http_post_wrapper(d.do_url);
-         {% else %}
-         $('#signin').modal('show');
-         {% endif %}
-       });
-
-       undo_btn.click(function() {
-         {% if user.is_authenticated %}
-         if (!d.enabled)
-           return;
-         undo_btn.hide();
-         do_btn.show();
-         d.enabled = false;
-         update_count(d.count - 1);
-         http_post_wrapper(d.undo_url);
-         {% else %}
-         $('#signin').modal('show');
-         {% endif %}
-       });
-
-       update_count(d.count);
-
-       if (d.enabled) {
-         undo_btn.show();
-         do_btn.hide();
-       } else {
-         do_btn.show();
-         undo_btn.hide();
-       }
-     })(action);
-   }
-   $('#action-btn-group').show();
- });
-
- function show_review_comments(review_id)
- {
-   if (document.getElementById('review-'+ review_id +'-comments').style.display=="block") {
-       document.getElementById('review-'+ review_id +'-comments').style.display="none";
-       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').addClass('grey');
-       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').removeClass('blue');
-     }
-   else {
-       document.getElementById('review-'+ review_id +'-comments').style.display="block";
-       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').addClass('blue');
-       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').removeClass('grey');
-   }
- }
-
- function upvote_review(review_id)
- {
-     elem = $('#review-upvote-count-' + review_id);
-     //elem.text(parseInt(elem.text()) + 1);
-     $.post("https://www.baidu.com", { review_id: review_id }, function(o) {
-         <!-- url_for('api.review_upvote') -->
-       if (typeof o.count != "undefined") {
-         elem.text(o.count);
-         elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
-         elem.parent().find('span.glyphicon').removeClass('grey');
-         elem.parent().find('span.glyphicon').addClass('blue');
-       }
-     }, 'json');
- }
- 
- function cancel_upvote_review(review_id)
- {
-     elem = $('#review-upvote-count-' + review_id);
-     //elem.text(parseInt(elem.text()) - 1);
-     $.post("https://www.baidu.com", { review_id: review_id }, function(o) {
-         <!-- url_for('api.review_cancel_upvote') -->
-       if (typeof o.count != "undefined") {
-         elem.text(o.count);
-         elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
-         elem.parent().find('span.glyphicon').removeClass('blue');
-         elem.parent().find('span.glyphicon').addClass('grey');
-       }
-     }, 'json');
- }
-
- function delete_review(review_id)
- {
-     if (!confirm('你真的要删除此点评吗？')) {
-         return;
-     }
-     $.post("https://www.baidu.com", { id: review_id }, function(o) {
-         <!-- url_for('review.delete_review') -->
-         if (o.ok)
-            window.location.href = "https://www.baidu.com";
-            <!-- url_for('course.view_course', course_id=course.id) -->
-         else
-            alert(o.message);
-     }, 'json');
- }
-
- function reload_comments(review_id)
- {
-             $.get("https://www.baidu.com",
-                 <!-- url_for('review.show_comments') -->
-                { review_id: review_id},
-                function(html) {
-                    $('#review-' + review_id + '-comments').replaceWith(html);
-                    $('#review-' + review_id + '-comments').show();
-             }, 'html');
- }
-
- function submit_comment(review_id)
- {
-     content = $('#review-comment-input-' + review_id).val().trim();
-     if (content == '') {
-         alert('请输入评论内容');
-         return;
-     }
-     $.post("https://www.baidu.com", {
-         <!-- url_for('api.review_new_comment') -->
-         review_id: review_id,
-         content: content
-     }, function(o) {
-         if (o.ok) {
-             reload_comments(review_id);
-         } else {
-             alert(o.message);
-         }
-     }, 'json');
- }
-
- function delete_comment(review_id, comment_id)
- {
-     if (!confirm('你真的要删除此评论吗？')) {
-         return;
-     }
-     $.post("https://www.baidu.com", { comment_id: comment_id },
-         <!-- url_for('api.delete_comment') -->
-         function(o) {
-            if (o.ok) {
-               reload_comments(review_id);
-            } else {
-               alert(o.message);
-            }
-     }, 'json');
- }
-
- function reply_comment(review_id, reply_to)
- {
-     var elem = $('#review-comment-input-' + review_id);
-     elem.val('回复 @' + reply_to + ': ');
-     elem.focus();
- }
-
- function hide_review(review_id)
- {
-     $.post("https://www.baidu.com", { review_id: review_id },
-         <!-- url_for('api.hide_review') -->
-         function(o) {
-            if (o.ok) {
-               alert('屏蔽成功，请刷新页面');
-            } else {
-               alert(o.message);
-            }
-     }, 'json');
- }
-
- function unhide_review(review_id)
- {
-     $.post("https://www.baidu.com", { review_id: review_id },
-         <!-- url_for('api.unhide_review') -->
-         function(o) {
-            if (o.ok) {
-               alert('解除屏蔽成功，请刷新页面');
-            } else {
-               alert(o.message);
-            }
-     }, 'json');
- }
-
-</script>
 {% endblock %}

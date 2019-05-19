@@ -1,0 +1,30 @@
+<!--
+'error': unknown
+'status': unknown
+'message': unknown
+-->
+
+{% extends "layout-simple.html" %}
+{% block content %}
+
+<div class="container">
+  <div class="row float-element">
+
+    {{ error }}
+
+    {% if status %}
+    <h3 class="blue">Well Done!</h3>
+    {% else %}
+    <h3 class="blue">Oops!</h3>
+    {% endif %}
+    <hr>
+    <div class='status-message'>
+      <p>{{ message }}</p>
+      <!-- <p>{ message|safe }}</p> -->
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

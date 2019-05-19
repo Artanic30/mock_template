@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
 """
 All the pages' url are registered in the /mock/url.py 
 """
@@ -18,7 +17,7 @@ def test(request):
         'test_array': [1, 2, 3, 4]
 
     }
-    return render(request, template, {'data': data})
+    return render(request, template, data)
 
 
 def index(request):
@@ -161,6 +160,7 @@ def popular(request):
         'total': 213,
         'page': 23123,
         'has_next': True,
+        'navigation': [0, 1, 2, 3],
         'items': [
             {
                 'teachers': 'test_name',
@@ -216,14 +216,135 @@ def popular(request):
         'deptlist': 'deptlist',
         'dept': 'department',
         'current_uer': current_user,
-        'range_list': [0, 1, 2, 3, 4],
-        'result_rate1': 3,
-        'result_rate2': 2
-
+        'range_list': [0, 1, 2, 3, 4]
     }
     return render(request, 'course-index.html', data)
+
+
+def view_course(request):
+    current_user = {
+        'is_authenticated': True,
+        'username': 'TestName',
+        'unread_notification_count': 4,
+        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
+        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
+        'is_student': False
+    }
+    user = {
+        'is_authenticated': True,
+        'is_admin': False
+    }
+    course = {
+        'name': 'CS110计算机体系结构',
+        'teachers': [
+            {
+                'image': '/static/bootstrap/image/test.jpg',
+                'name': 'fivefiveopen',
+                'dept': {
+                    'name': 'dept_name'
+                },
+                'homepage': 'https://www.baidu.com'
+            },
+            {
+                'image': '/static/bootstrap/image/test.jpg',
+                'name': 'fivefiveopen',
+                'dept': {
+                    'name': 'dept_name'
+                },
+                'homepage': 'https://www.baidu.com'
+            }
+        ],
+        'teachers_names_display': 'Test_teacher_name',
+        'term_ids': 'CS110',
+        'has_next': True,
+        'courseries': 23123,
+        'teachers_count': 3,
+        'review_count': 12,
+        'rate': {
+                    'average_rate': 2.5,
+                    'difficulty': 'hell',
+                    'homework': 'EE187',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+        'join_type': "join_type",
+        'teaching_type': "teaching_type",
+        'course_type': "course_type",
+        'dept': "dept_unknown",
+        'course_level': "course_level",
+        'credit': 2,
+        'homepage': 'https://www.baidu.com',
+        'introduction': '简介之类的',
+        'last_edit_time': "19260817",
+        'reviewed': True,
+        'reviews': [{
+            'is_hidden': False,
+            'author': {
+                'username': 'fivefiveopen',
+                'course_rate': {
+                    'average_rate': 2.5,
+                    'difficulty': 'hell',
+                    'homework': 'EE187',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+                'review_count': 23,
+                'term_ids': 23
+            },
+            'id': 23333
+        },
+            {
+                'is_hidden': False,
+                'author': {
+                    'username': 'fivefiveopen',
+                    'course_rate': {
+                        'average_rate': 2.5,
+                        'difficulty': 'hell',
+                        'homework': 'EE187',
+                        'grading': 'well',
+                        'gain': 'many',
+                    },
+                    'review_count': 23,
+                    'term_ids': 23
+                },
+                'id': 23333
+            }
+        ],
+        'is_hidden': False,
+        'related_courses': [{
+            'teacher_names_display': 'Faker',
+        }],
+        'same_teacher_courses': [{
+            'course_rate': {
+                'average_rate': 2.5,
+                'difficulty': 'hell',
+                'homework': 'EE187',
+                'grading': 'well',
+                'gain': 'many',
+            },
+            'term_ids': 23,
+            'review_count': 21
+        }]
+    }
+    data = {
+        'course': course,
+        'range_list': [0, 1, 2, 3, 4],
+        'current_uer': current_user,
+        'user': user
+    }
+    return render(request, 'course.html', data)
 
 
 def not_found(request):
     """返回404页面"""
     return render(request, '404.html')
+
+
+def about(request):
+    """关于我们，网站介绍、联系方式"""
+    return render(request, 'about.html')
+
+
+def community_rules(request):
+    """社区规范页面"""
+    return render(request, 'community-rules.html')

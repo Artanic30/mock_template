@@ -19,9 +19,6 @@
 
       {% if course.review_count %}
       <div class="ud-pd-sm blue">
-      {% if course.rate.average_rate >= result_rate1 %}
-          <h2></h2>
-      {% endif %}
         <!-- wdnmd django template 不支持运算 widthratio出来数据类型还不是int-->
         {% for star in range_list %}
             {% widthratio course.rate.average_rate 1 2 as course_star %}
