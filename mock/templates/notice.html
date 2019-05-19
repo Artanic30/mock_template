@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- data: {
+        notifications: notification
+        notification: {
+            'display_text': 'lalala'
+            'time': "unknown"
+    }-->
+<div class="container">
+  <div class="row float-element">
+
+
+    <div class="bm-pd-lg">
+        <h3 class="blue">全部消息</h3>
+        
+        {% if notifications == 0 %}
+            <!-- if notifications|length == 0 -->
+        <p>还没有消息哦！</p>
+        {% endif %}
+
+        {% for notification in notifications %}
+        {% if notification.display_text %}
+        <div class="ud-pd-md dashed">
+            {{ notification.display_text }}
+                <!-- { notification.display_text|safe } -->
+            <span class="small grey align-bottom  float-right">{{ notification.time }}</span>
+                <!-- { notification.time|localtime } -->
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+
+  </div><!-- end float-element -->
+</div><!-- end container -->
+{% endblock %}
