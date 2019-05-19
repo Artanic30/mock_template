@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Page Content -->
+<!-- data: {
+    user: {
+        'username': string
+        'reviews_count': 23333
+        'reviews': {
+            'is_hidden': True
+            'course': {
+                'name': String
+                'teacher.name': String
+            }
+            'id': 23333
+            'content': "unknown"
+            'update_time': "unknown"
+            'term': "unknown"
+        }
+
+    }
+    'current_user': {
+        'is_admin': True
+    }
+ }-->
+<div class="container">
+  <div class="row float-element">
+
+      <div class="bm-pd-lg">
+        <div class="inline-h3">
+          <span class="blue h3"><a href="https://www.baidu.com">{{ user.username }}</a> 点评</span>
+            <!--url_for('user.view_profile', user_id=user.id)-->
+          （{{ user.reviews_count }}门）
+        </div>
+
+        {% for review in user.reviews %}
+          {% if not review.is_hidden or current_user.is_admin or current_user == user %}
+          {% if review.course %}
+        <div class="ud-pd-md dashed">
+          <div class="ud-pd-sm">
+            {% set course = review.course %}
+            <a href="https://www.baidu.com">{{ course.name }}（{{ course.teacher.name or _('未知') }}）</a>
+              <!--{url_for('course.view_course', course_id=course.id) }}#review-{review.id }}-->
+            <span class="small grey align-bottom left-pd-sm">学期：{{ review.term  }}</span>
+              <!--<span class="small grey align-bottom left-pd-sm">学期：{review.term|term_display }}</span>-->
+            <span class="text-muted small float-right desktop">{{ review.update_time  }}</span>
+              <!--<span class="text-muted small float-right desktop">{review.update_time|localtime }}</span>-->
+          </div>
+          {% include 'review-hidden.html' %}
+          <p class="dark-grey">{{ review.content }}
+              <!--<p class="dark-grey">{review.content|abstract }}-->
+            <a href="https://www.baidu.com"> >>{{ _('more') }}</a>
+              <!--{url_for('course.view_course', course_id=course.id) }}#review-{review.id }}-->
+          </p>
+        </div>
+          {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div><!-- end bm-pd-lg -->
+  </div><!-- end float-element -->
+</div><!-- end container -->
+{% endblock %}
