@@ -19,12 +19,17 @@
 
       {% if course.review_count %}
       <div class="ud-pd-sm blue">
+      {% if course.rate.average_rate >= result_rate1 %}
+          <h2></h2>
+      {% endif %}
+        <!-- wdnmd django template 不支持运算 widthratio出来数据类型还不是int-->
         {% for star in range_list %}
-          {% widthratio star 1 2|add:1.5 as result_rate1 %}
-          {% widthratio star 1 2|add:1.5 as result_rate2 %}
-          {% if course.rate.average_rate >= result_rate1 %}
+            {% widthratio course.rate.average_rate 1 2 as course_star %}
+          {% widthratio star 1 4 as result_rate1 %}
+          {% widthratio star 1 4 as result_rate2 %}
+          {% if course_star|add:0 >= result_rate1|add:3 %}
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-          {% elif course.rate.average_rate >= result_rate2 %}
+          {% elif course_star|add:0  >= result_rate2|add:1 %}
           <span class="glyphicon glyphicon-star-half" aria-hidden="true"></span>
           {% else %}
           <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
@@ -42,24 +47,24 @@
       {% endif %}
       <ul class="text-muted list-inline list-unstyled">
       {% if course.rate.difficulty != '' %}
-          <li class="right-mg-md">课程难度 {{ course.rate.difficulty }}</li>
+          <li class="right-mg-md">课程难度: {{ course.rate.difficulty }}</li>
       {% else %}
-          <li class="right-mg-md">课程难度 {{ '你猜' }}</li>
+          <li class="right-mg-md">课程难度: {{ '你猜' }}</li>
       {% endif %}
       {% if course.rate.homework != '' %}
-          <li class="right-mg-md">课程难度 {{ course.rate.homework }}</li>
+          <li class="right-mg-md">作业多少: {{ course.rate.homework }}</li>
       {% else %}
-          <li class="right-mg-md">课程难度 {{ '你猜' }}</li>
+          <li class="right-mg-md">作业多少: {{ '你猜' }}</li>
       {% endif %}
       {% if course.rate.grading != '' %}
-          <li class="right-mg-md">课程难度 {{ course.rate.grading }}</li>
+          <li class="right-mg-md">给分好坏: {{ course.rate.grading }}</li>
       {% else %}
-          <li class="right-mg-md">课程难度 {{ '你猜' }}</li>
+          <li class="right-mg-md">给分好坏: {{ '你猜' }}</li>
       {% endif %}
       {% if course.rate.gain != '' %}
-          <li class="right-mg-md">课程难度 {{ course.rate.gain }}</li>
+          <li class="right-mg-md">收获大小: {{ course.rate.gain }}</li>
       {% else %}
-          <li class="right-mg-md">课程难度 {{ '你猜' }}</li>
+          <li class="right-mg-md">收获大小: {{ '你猜' }}</li>
       {% endif %}
       <!-- 原始flask template 转成 django template-->
       <!-- <li class="right-mg-md">给分好坏：{ course.rate.grading or '你猜' }}</li> -->
