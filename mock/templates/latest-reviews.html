@@ -16,14 +16,14 @@
               </div>
               <div class="col-sm-11 col-xs-10">
                 <div class="grey bm-pd-md">
-              <a href="https://www.baidu.com">{{ review.author.username }}</a>
+              <a href={% url 'mock:user_view_profile' review.author.id %}>{{ review.author.username }}</a>
               点评了
-              <a href="https://www.baidu.com">{{ review.course.name }}{% if review.course.teachers %}（{{ review.course.teacher_names_display }}）{% endif %}</a>
+              <a href={% url 'mock:view_course' 231231 %}>{{ review.course.name }}{% if review.course.teachers %}（{{ review.course.teacher_names_display }}）{% endif %}</a>
 
                   <span class="float-right">{{ review.publish_time }}</span>
                 </div>
                 {% include 'review-hidden.html' %}
-                <p class="text-muted">{{ review.content}} <a href={% url 'mock:view_course' %}>&gt;&gt;更多</a></p>
+                <p class="text-muted">{{ review.content}} <a href={% url 'mock:view_course' review.course.id %}>&gt;&gt;更多</a></p>
               <!-- href="{ url_for('course.view_course', course_id=review.course.id) }}#review-{ review.id }}" -->
               </div>
             </div>

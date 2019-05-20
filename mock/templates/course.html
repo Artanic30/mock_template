@@ -204,7 +204,7 @@
             <span class="blue h3">简介</span>
 	  </div>
           <div>
-	  {{ course.introduction }}
+	  {{ course.introduction|safe }}
               <!-- { course.introduction|safe } -->
           </div>
           <p class="text-muted pull-right small">
@@ -247,7 +247,7 @@
         <div class="ud-pd-md dashed review" id="review-{{review.id}}">
           <div class="blue ud-pd-sm">
             <span class="right-pd-sm px16">
-              <a href="{% url 'mock:user_view_profile' %}">{{ review.author.username }}</a>
+              <a href="{% url 'mock:user_view_profile' review.author.id %}">{{ review.author.username }}</a>
                 <!-- url_for('user.view_profile', user_id=review.author.id) -->
             </span>
 

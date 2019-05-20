@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<!-- data: {
 
-    }-->
 <div class="container">
   <div class="row float-element">
 
@@ -24,13 +22,13 @@
         <p class="text-muted">快去写点评吧～</p>
         {% endif %}
 
-        {% for review in user.reviews[0:3] %}
+        {% for review in user.reviews %}
           {% if not review.is_hidden or current_user.is_admin or current_user == user %}
         <!-- profile页面最多显示3条点评 -->
         <div class="ud-pd-md dashed">
           <div class="ud-pd-sm">
-            {% set course = review.course %}
-            <a href="https://www.baidu.com">{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a>
+
+            <a href="https://www.baidu.com">{{ review.course.name }}{% if review.course.teachers %}（{{ review.course.teacher_names_display }}）{% endif %}</a>
                 <!-- url_for('course.view_course', course_id=course.id) -->
             <span class="small grey align-bottom left-pd-sm">{{ review.term_display }}</span>
             <span class="text-muted small float-right desktop">{{ review.update_time }}</span>
@@ -64,7 +62,7 @@
         <p class="text-muted">可以关注喜欢的课程哦！</p>
         {% endif %}
 
-        {% for course in user.courses_following[0:6] %}
+        {% for course in user.courses_following %}
         <!-- 关注课程最多显示6门 -->
         <div class="ud-pd-md dashed">
           <a href="https://www.baidu.com">{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a>
@@ -106,16 +104,16 @@
         {% if not current_user.is_authenticated %}
         <p class="text-muted">为保护隐私，您需要 <a data-toggle="modal" data-target="#signin">登录</a> 才能查看已学课程。</p>
         {% else %}
-        {% for course_class in user.classes_joined[0:6] %}
+        {% for course_class in user.classes_joined %}
         {% if course_class.course_id %}
         <!-- 学过课程最多显示6门 -->
         <div class="ud-pd-md dashed">
           <a href="https://www.baidu.com">{{ course_class.course.name }}{% if course_class.course.teachers %}（{{ course_class.course.teacher_names_display }}）{% endif %}</a>
             <!-- url_for('course.view_course', course_id=course_class.course_id) -->
-          {% if user != current_user and course_class.course.reviewed_by(user) %}
+          {% if user != current_user and course_class.course.reviewed_by %}
           <span class="label label-success">TA已点评</span>
           {% endif %}
-          {% if course_class.course.reviewed_by(current_user) %}
+          {% if course_class.course.reviewed_by %}
           <span class="label label-success">我已点评</span>
           {% endif %}
           <span class="small grey align-bottom  float-right">{{ course_class.term }}</span>
@@ -179,7 +177,7 @@
 {% block script %}
 <script>
 $(function() {
-    {% if current_user.is_authenticated and current_user.following(user) %}
+    {% if current_user.is_authenticated and current_user.following %}
     $('.btn-unfollow').show();
     {% else %}
     $('.btn-follow').show();

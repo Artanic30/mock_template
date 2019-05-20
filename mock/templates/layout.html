@@ -24,7 +24,6 @@
           <li {% if this_module and this_module == 'home.follow_reviews' %} class="active" {% endif %}><a href="{% url  'mock:follow_reviews' %}">关注</a></li>
           {% endif %}
           <li {% if this_module and this_module == 'course.popular' %} class="active" {% endif %}><a href="{% url  'mock:course_popular' %}">热门</a></li>
-          <li {% if this_module and this_module == 'course.public_courses' %} class="active" {% endif %}><a href="{% url  'mock:course_public' %}">公选</a></li>
         </ul>
 
 
@@ -62,7 +61,7 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ current_user.username }}<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{% url 'mock:user_view_profile' %}">个人主页</a></li>
+              <li><a href="{% url 'mock:user_view_profile' current_user.id %}">个人主页</a></li>
               <!-- <li><a href="{ url_for('user.account_settings', user_id=current_user.id) }}">设置</a></li> todo: 传参数-->
               <li><a href="{% url 'mock:user_account_settings' %}">设置</a></li>
               <li class="divider"></li>
@@ -82,7 +81,7 @@
             {% endif %}
             </a></li>
           <!-- <li><a href="{ url_for('user.view_profile', user_id=current_user.id) }}">个人主页</a></li> -->
-          <li><a href="{% url 'mock:user_view_profile' %}">个人主页</a></li>
+          <li><a href="{% url 'mock:user_view_profile' current_user.id%}">个人主页</a></li>
           <!-- <li><a href="{ url_for('user.account_settings', user_id=current_user.id) }}">设置</a></li> -->
           <li><a href="{% url 'mock:user_account_settings' %}">设置</a></li>
           <li class="divider"></li>

@@ -43,7 +43,9 @@ def latest_reviews(request):
         'username': 'TestName',
         'unread_notification_count': 4,
         'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-
+        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
+        'is_student': False,
+        'id': 23333
     }
     reviews_paged = {
         'total': 234,
@@ -103,8 +105,9 @@ def follow_reviews(request):
         'username': 'TestName',
         'unread_notification_count': 4,
         'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-        'courses_joined': ['EE1110', 'SI100B', 'CS120']
-
+        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
+        'is_student': False,
+        'id': 23333
     }
     reviews_paged = {
         'total': 234,
@@ -153,8 +156,9 @@ def popular(request):
         'username': 'TestName',
         'unread_notification_count': 4,
         'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-        'courses_joined': ['EE1110', 'SI100B', 'CS120']
-
+        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
+        'is_student': False,
+        'id': 23333
     }
     courses = {
         'total': 213,
@@ -221,14 +225,15 @@ def popular(request):
     return render(request, 'course-index.html', data)
 
 
-def view_course(request):
+def view_course(request, course_id):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
         'unread_notification_count': 4,
         'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
         'courses_joined': ['EE1110', 'SI100B', 'CS120'],
-        'is_student': False
+        'is_student': False,
+        'id': 23333
     }
     user = {
         'is_authenticated': True,
@@ -281,6 +286,7 @@ def view_course(request):
             'is_hidden': False,
             'author': {
                 'username': 'fivefiveopen',
+                'id': 232323,
                 'course_rate': {
                     'average_rate': 2.5,
                     'difficulty': 'hell',
@@ -297,6 +303,7 @@ def view_course(request):
                 'is_hidden': False,
                 'author': {
                     'username': 'fivefiveopen',
+                    'id': 232323,
                     'course_rate': {
                         'average_rate': 2.5,
                         'difficulty': 'hell',
@@ -333,6 +340,215 @@ def view_course(request):
         'user': user
     }
     return render(request, 'course.html', data)
+
+
+def view_profile(request, user_id):
+    """用户的个人主页,展示用户在站点的活跃情况"""
+    current_user = {
+        'is_authenticated': True,
+        'username': 'TestName',
+        'unread_notification_count': 4,
+        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
+        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
+        'is_student': False,
+        'id': 23333
+    }
+    user = {
+        'is_student': True,
+        'info': 'some information',
+        'review_count': 12,
+        'classes_joined_count': 4,
+        # 最多显示三条评论
+        'reviews': [
+            {
+                'is_hidden': False,
+                'course': {
+                    'name': 'course_name',
+                    'teachers': [
+                        {
+                            'image': '/static/bootstrap/image/test.jpg',
+                            'name': 'fivefiveopen',
+                            'dept': {
+                                'name': 'dept_name'
+                            },
+                            'homepage': 'https://www.baidu.com'
+                        },
+                        {
+                            'image': '/static/bootstrap/image/test.jpg',
+                            'name': 'fivefiveopen',
+                            'dept': {
+                                'name': 'dept_name'
+                            },
+                            'homepage': 'https://www.baidu.com'
+                        }
+                    ],
+                    'teachers_names_display': 'Test_teacher_name',
+                },
+                'term_display': 'dispaly_terms',
+                'update_time': 19260817,
+                'content': 'review_content',
+                'id': 2333
+
+            },
+            {
+                'is_hidden': False,
+                'course': {
+                    'name': 'course_name',
+                    'teachers': [
+                        {
+                            'image': '/static/bootstrap/image/test.jpg',
+                            'name': 'fivefiveopen',
+                            'dept': {
+                                'name': 'dept_name'
+                            },
+                            'homepage': 'https://www.baidu.com'
+                        },
+                        {
+                            'image': '/static/bootstrap/image/test.jpg',
+                            'name': 'fivefiveopen',
+                            'dept': {
+                                'name': 'dept_name'
+                            },
+                            'homepage': 'https://www.baidu.com'
+                        }
+                    ],
+                    'teachers_names_display': 'Test_teacher_name',
+                },
+                'term_display': 'dispaly_terms',
+                'update_time': 19260817,
+                'content': 'review_content',
+                'id': 2333
+
+            },
+            {
+                'is_hidden': True,
+                'course': {
+                    'name': 'course_name',
+                    'teachers': [
+                        {
+                            'image': '/static/bootstrap/image/test.jpg',
+                            'name': 'fivefiveopen',
+                            'dept': {
+                                'name': 'dept_name'
+                            },
+                            'homepage': 'https://www.baidu.com'
+                        },
+                        {
+                            'image': '/static/bootstrap/image/test.jpg',
+                            'name': 'fivefiveopen',
+                            'dept': {
+                                'name': 'dept_name'
+                            },
+                            'homepage': 'https://www.baidu.com'
+                        }
+                    ],
+                    'teachers_names_display': 'Test_teacher_name',
+                },
+                'term_display': 'dispaly_terms',
+                'update_time': 19260817,
+                'content': 'review_content',
+                'id': 404
+
+            }
+        ],
+        'courses_following_count': 9,
+        # 只显示前六门课
+        'courses_following': [{
+                    'name': 'course_name',
+                    'teachers': [
+                        {
+                            'image': '/static/bootstrap/image/test.jpg',
+                            'name': 'fivefiveopen',
+                            'dept': {
+                                'name': 'dept_name'
+                            },
+                            'homepage': 'https://www.baidu.com'
+                        },
+                        {
+                            'image': '/static/bootstrap/image/test.jpg',
+                            'name': 'fivefiveopen',
+                            'dept': {
+                                'name': 'dept_name'
+                            },
+                            'homepage': 'https://www.baidu.com'
+                        }
+                    ],
+                    'teachers_names_display': 'Test_teacher_name',
+                    'introduction': '简介之类的',
+                },
+            {
+                'name': 'course_name',
+                'teachers': [
+                    {
+                        'image': '/static/bootstrap/image/test.jpg',
+                        'name': 'fivefiveopen',
+                        'dept': {
+                            'name': 'dept_name'
+                        },
+                        'homepage': 'https://www.baidu.com'
+                    },
+                    {
+                        'image': '/static/bootstrap/image/test.jpg',
+                        'name': 'fivefiveopen',
+                        'dept': {
+                            'name': 'dept_name'
+                        },
+                        'homepage': 'https://www.baidu.com'
+                    }
+                ],
+                'teachers_names_display': 'Test_teacher_name',
+                'introduction': '简介之类的',
+            }
+        ],
+        'classes_joined': [
+            {
+                'course_id': 23333,
+                'course': {
+                    'name': 'class_joined_course_name',
+                    'teachers': [
+                                 {
+                                    'image': '/static/bootstrap/image/test.jpg',
+                                    'name': 'fivefiveopen',
+                                    'dept': {
+                                        'name': 'dept_name'
+                                    },
+                                    'homepage': 'https://www.baidu.com'
+                                 },
+                                 {
+                                    'image': '/static/bootstrap/image/test.jpg',
+                                    'name': 'fivefiveopen',
+                                    'dept': {
+                                        'name': 'dept_name'
+                                    },
+                                    'homepage': 'https://www.baidu.com'
+                                 }
+                            ],
+                    'teachers_names_display': 'Test_teacher_name',
+                    'reviewed_by': True,
+                },
+                'term': 'some_terms'
+            }
+        ],
+        'avatar': '/static/bootstrap/image/test.jpg',
+        'description': 'some descriptions',
+        'homepage': 'www.github.com',
+        'following_count': 23,
+        'follower_count': 12,
+        'reviews_count': 231
+    }
+    data = {
+        'user': user,
+        'current_user': current_user
+    }
+    if user_id == 404:
+        message = _('Sorry. But we could not find the user!')
+        data = {
+            'message': message,
+            'status': False
+        }
+        return render(request, 'feedback.html', data)
+
+    return render(request, 'profile.html', data)
 
 
 def not_found(request):
