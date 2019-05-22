@@ -50,7 +50,8 @@ def latest_reviews(request):
     reviews_paged = {
         'total': 234,
         'page': 2,
-        'items': [{
+        'items': [
+            {
                 'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
                 'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
                 'publish_time': 20181012,
@@ -179,7 +180,8 @@ def popular(request):
                     'homework': 'EE101',
                     'grading': 'well',
                     'gain': 'many',
-                }
+                },
+                'id': 112233
             },
             {
                 'teachers': 'test_name',
@@ -194,7 +196,8 @@ def popular(request):
                     'homework': 'EE102',
                     'grading': 'well',
                     'gain': 'many',
-                }
+                },
+                'id': 112233
             },
             {
                 'teachers': 'test_name',
@@ -209,7 +212,8 @@ def popular(request):
                     'homework': 'EE187',
                     'grading': 'well',
                     'gain': 'many',
-                }
+                },
+                'id': 112233
             }
         ]
     }
@@ -219,7 +223,7 @@ def popular(request):
         'this_module': 'course.popular',
         'deptlist': 'deptlist',
         'dept': 'department',
-        'current_uer': current_user,
+        'current_user': current_user,
         'range_list': [0, 1, 2, 3, 4]
     }
     return render(request, 'course-index.html', data)
@@ -240,6 +244,7 @@ def view_course(request, course_id):
         'is_admin': False
     }
     course = {
+        'id': 23333,
         'name': 'CS110计算机体系结构',
         'teachers': [
             {
@@ -282,25 +287,11 @@ def view_course(request, course_id):
         'introduction': '简介之类的',
         'last_edit_time': "19260817",
         'reviewed': False,
-        'reviews': [{
-            'is_hidden': False,
-            'author': {
-                'username': 'fivefiveopen',
-                'id': 232323,
-                'course_rate': {
-                    'average_rate': 2.5,
-                    'difficulty': 'hell',
-                    'homework': 'EE187',
-                    'grading': 'well',
-                    'gain': 'many',
-                },
-                'review_count': 23,
-                'term_ids': 23
-            },
-            'id': 23333
-        },
+        'reviews': [
             {
                 'is_hidden': False,
+                'content': '虽然不总是必须，但是某些时候你可能需要将某些 DOM 内容放到一个盒子里。对于这种情况，可以试试面板组件。',
+                'rate': 8.5,
                 'author': {
                     'username': 'fivefiveopen',
                     'id': 232323,
@@ -314,7 +305,28 @@ def view_course(request, course_id):
                     'review_count': 23,
                     'term_ids': 23
                 },
-                'id': 23333
+                'id': 23333,
+                'term': '2018 Fall'
+            },
+            {
+                'is_hidden': False,
+                'rate': 3.5,
+                'content': '通过 .panel-heading 可以很简单地为面板加入一个标题容器。你也可以通过添加设置了 .panel-title 类的 <h1>-<h6> 标签，添加一个预定义样式的标题。不过，<h1>-<h6> 标签的字体大小将被 .panel-heading 的样式所覆盖。',
+                'author': {
+                    'username': 'fivefiveopen',
+                    'id': 232323,
+                    'course_rate': {
+                        'average_rate': 2.5,
+                        'difficulty': 'hell',
+                        'homework': 'EE187',
+                        'grading': 'well',
+                        'gain': 'many',
+                    },
+                    'review_count': 23,
+                    'term_ids': 23
+                },
+                'id': 23333,
+                'term': '2018 Fall'
             }
         ],
         'is_hidden': False,

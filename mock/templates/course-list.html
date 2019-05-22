@@ -2,7 +2,7 @@
 <div class="ud-pd-md dashed">
   <div class="row">
     <div class="col-md-12 col-xs-12">
-      <a class="px16" href="{% url 'mock:view_course' 312321%}">{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a>
+      <a class="px16" href={% url 'mock:view_course' course.id %}>{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a>
 
       {% if course.introduction %}
       <span class="label label-danger">课程简介</span>
@@ -19,7 +19,7 @@
 
       {% if course.review_count %}
       <div class="ud-pd-sm blue">
-        <!-- wdnmd django template 不支持运算 widthratio出来数据类型还不是int-->
+        <!-- wdnmd django template 不支持运算 widthratio出来数据类型还不是int another solution: tags-->
         {% for star in range_list %}
             {% widthratio course.rate.average_rate 1 2 as course_star %}
           {% widthratio star 1 4 as result_rate1 %}
@@ -63,6 +63,7 @@
       {% else %}
           <li class="right-mg-md">收获大小: {{ '你猜' }}</li>
       {% endif %}
+
       <!-- 原始flask template 转成 django template-->
       <!-- <li class="right-mg-md">给分好坏：{ course.rate.grading or '你猜' }}</li> -->
       </ul>
