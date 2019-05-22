@@ -144,7 +144,7 @@ def follow_reviews(request):
     data = {
         'reviews': reviews_paged,
         'title': '我关注的点评',
-        'this_module': 'home.latest_reviews',
+        'this_module': 'home.follow_reviews',
         'current_user': current_user
     }
     return render(request, template, data)
@@ -216,7 +216,7 @@ def popular(request):
     data = {
         'title': '热门课程',
         'courses': courses,
-        'this.module': 'course.popular',
+        'this_module': 'course.popular',
         'deptlist': 'deptlist',
         'dept': 'department',
         'current_uer': current_user,
@@ -281,7 +281,7 @@ def view_course(request, course_id):
         'homepage': 'https://www.baidu.com',
         'introduction': '简介之类的',
         'last_edit_time': "19260817",
-        'reviewed': True,
+        'reviewed': False,
         'reviews': [{
             'is_hidden': False,
             'author': {
@@ -336,7 +336,7 @@ def view_course(request, course_id):
     data = {
         'course': course,
         'range_list': [0, 1, 2, 3, 4],
-        'current_uer': current_user,
+        'current_user': current_user,
         'user': user
     }
     return render(request, 'course.html', data)
@@ -549,6 +549,55 @@ def view_profile(request, user_id):
         return render(request, 'feedback.html', data)
 
     return render(request, 'profile.html', data)
+
+
+def new_review(request, course_id):
+    polls = [
+        {'name': 'difficulty', 'display': '课程难度', 'options': ['简单', '中等', '困难'] },
+        {'name': 'homework', 'display': '作业多少', 'options': ['不多', '中等', '超多'] },
+        {'name': 'grading', 'display': '给分好坏', 'options': ['超好', '一般', '杀手'] },
+        {'name': 'gain', 'display': '收获多少', 'options': ['很多', '一般', '没有'] },
+    ]
+    course = {
+            'name': 'course_name',
+            'teachers': [
+                {
+                    'image': '/static/bootstrap/image/test.jpg',
+                    'name': 'fivefiveopen',
+                    'dept': {
+                        'name': 'dept_name'
+                    },
+                    'homepage': 'https://www.baidu.com'
+                },
+                {
+                    'image': '/static/bootstrap/image/test.jpg',
+                    'name': 'fivefiveopen',
+                    'dept': {
+                        'name': 'dept_name'
+                    },
+                    'homepage': 'https://www.baidu.com'
+                }
+            ],
+            'teachers_names_display': 'Test_teacher_name',
+            'courseries': 'EVA110',
+            'joined_term': 222,
+            'term_ids': [111, 222, 333, 44],
+        }
+    review = {
+            'term': "unknown",
+            'rate': 2.5,
+            'content': 'lalala',
+            'content_text': 'lalala'
+        }
+    data = {
+        'form': {'csrf_token': 'csrf_token'},
+        'course': course,
+        'review': review,
+        'polls': polls,
+        'message': '谨言慎行，君子之道',
+        'is_new': True
+    }
+    return render(request, 'new-review.html', data)
 
 
 def not_found(request):

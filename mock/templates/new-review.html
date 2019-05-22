@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+    {% load extra_filters %}
 <!-- data: {
         course: {
             'name':
@@ -24,7 +25,7 @@
 <div class="container">
   <div class="row float-element">
     <div class="inline-h3">
-    <span class="blue h4">{% if not is_new %}编辑{% endif %}点评 &bull; <a href="https://www.baidu.com">{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a></span>
+    <span class="blue h4">{% if not is_new %}编辑{% endif %}点评 &bull; <a href={% url 'mock:view_course' 32323 %}>{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a></span>
         <!-- url_for('course.view_course', course_id=course.id) -->
     <span class="align-bottom left-pd-sm desktop">学期：{{ review.term }} &nbsp;课程号：{{ course.courseries }}</span>
         <!-- { review.term|term_display } -->
@@ -37,15 +38,15 @@
     {% endif %}
     <form id="review-form" class="form-horizontal" method="post" action="https://www.baidu.com">
         <!-- url_for('course.new_review', course_id=course.id) -->
-      {{ form.csrf_token }}
+      {% csrf_token %}
       <div class="rate-part ud-pd-md">
         <div class="ud-pd-sm">
           <span class="right-pd-sm weight-heavy">学　　期</span>
 
           <select name="term">
-            {% set joined_term = course.joined_term() %}
             {% for term in course.term_ids %}
-              <option value="{{ term }}" {% if review.term == term or ((not review.term or review.term not in course.term_ids) and joined_term == term) %}selected="selected"{% endif %}>{{ term }}
+                {% check_new_review term review.term course.term_ids course.joined_term as result_comparison%}
+              <option value="{{ term }}" {% if result_comparison %}selected="selected"{% endif %}>{{ term }}
                 <!-- { term|term_display } -->
               {% if joined_term == term %}(学过){% endif %}
               </option>
@@ -56,11 +57,11 @@
 
         {% for poll in polls %}
         <div class="ud-pd-sm">
-          <span class="right-pd-sm weight-heavy">{{ poll['display'] }}</span>
+          <span class="right-pd-sm weight-heavy">{{ poll.display }}</span>
           <div class="btn-group btn-group-inv" data-toggle="buttons">
-            {% for option in poll['options'] %}
-            <label class="btn btn-flat btn-grey rl-mg-sm {% if review[poll['name']] == loop.index %}active{% endif %}">
-                <input type="radio" name="{{ poll['name'] }}" autocomplete="off" value="{{ loop.index }}" {% if review[poll['name']] == loop.index %}checked{% endif %}>
+            {% for option in poll.options  %}
+            <label class="btn btn-flat btn-grey rl-mg-sm {% if review.poll.name == loop.index %}active{% endif %}">
+                <input type="radio" name="{{ poll.name }}" autocomplete="off" value="{{ loop.index }}" {% if review.poll.name == loop.index %}checked{% endif %}>
                 {{ option }}
             </label>
             {% endfor %}
@@ -68,10 +69,11 @@
         </div>
         {% endfor %}
 
-        <link rel="stylesheet" href="/static/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/static/css/star-rating.min.css" media="all" type="text/css">
         <div class="ud-pd-sm">
           <span class="weight-heavy pull-left">评个分吧？</span>
-          <input id="rate-star" name="rate" value="{{ review.rate / 2.0 if review.rate else 0 }}">
+            {% count_rate review.rate as result_rate %}
+          <input id="rate-star" name="rate" value="{{ result_rate }}">
           <span class="clearfix"></span>
         </div>
       </div>
@@ -79,7 +81,7 @@
       <div class="container-md desktop">
         <h4 class="grey">说几句吧！</h4>
         <div class="ud-pd-sm">
-          <textarea id="content-editor" name="content">{% if review.content %}{{ review.content }}{% endif %}</textarea>
+          <textarea id="content-editor" name="content">{% if review.content %}{{ review.content|safe }}{% endif %}</textarea>
             <!-- { review.content|safe } -->
         </div>
         <button type="submit" class="btn btn-blue btn-flat float-right shadow">发布</button>
@@ -184,5 +186,4 @@ $(function(){
     });
 });
 </script>
-{% include 'ckeditor.html' %}
 {% endblock %}

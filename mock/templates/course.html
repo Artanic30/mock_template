@@ -225,7 +225,7 @@
 	<div class="solid ud-pd-md inline-h3">
           <span class="blue h3">点评</span>
           {% if current_user.is_authenticated %}
-          <a type="button" href="https://www.baidu.com" class="btn btn-white float-right blue">
+          <a type="button" class="btn btn-white float-right blue" href={% url "mock:course_new_review" 23123 %} >
             <!-- url_for('course.new_review',course_id=course.id) -->
             <span class="glyphicon glyphicon-pencil glyphicon-sm right-pd-sm" aria-hidden="true" ></span>
             {% if not course.reviewed %}写点评{% else %}编辑点评{% endif %}
@@ -311,7 +311,7 @@
             </span>
           </div>
 
-          {% include 'review-comments.html' %}
+          {% include 'Unimplemented/review-comments.html' %}
         </div>
 	  {% endif %}
         {% endfor %}

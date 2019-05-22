@@ -7,6 +7,7 @@
 <body>
 {% load extra_filters %}
     {{ test_data }}
+{% test_tag 1 2 3 as result %}
     <p>
     {{ test_array }}
     <p>
@@ -15,8 +16,10 @@
     {% endfor %}
     <h2>lalala</h2>
     <h3>iiiiii</h3>
+<h1>{{ result }}</h1>
     <h1>{{ test_data| test_filter:'asdas' }}</h1>
     <h2>{{ 'dsa!s!!dsadda' | cut:'!' }}</h2>
+
 <h1>{{ 'dasDDSA' | lower }}</h1>
 </body>
 </html>

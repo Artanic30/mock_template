@@ -19,6 +19,7 @@ urlpatterns = [
     path('course', views.index, name='course_index'),
     path('course/popular', views.popular, name='course_popular'),
     path('course/<int:course_id>', views.view_course, name='view_course'),
+    path('course/<int:course_id>/review', views.new_review, name='course_new_review'),
     path('course/public', views.index, name='course_public'),
     path('user/<int:user_id>', views.view_profile, name='user_view_profile'),
     path('user/notice', views.index, name='user_notice'),
