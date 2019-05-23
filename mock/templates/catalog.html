@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row float-element">
+        <div class="bm-pd-md">
+            {% include 'mobile-navbar.html' %}
+            <div class="ud-pd-lg">
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                        <td><strong>Code</strong></td>
+                        <td><strong>学分</strong></td>
+                        <td><strong>老师</strong></td>
+                        <td><strong>评分</strong></td>
+                        <td><strong>赞</strong></td>
+                        <td><strong>时间</strong></td>
+                    </tr>
+                  {% for rate in course %}
+                      <tr>
+                        <td><a href={% url 'mock:view_course' rate.course_id %}>{{ rate.code }}</a></td>
+                        <td>{{ rate.credit }}</td>
+                        <td>{{ rate.teachers_names_display }}</td>
+                        <td>{{ rate.score }}</td>
+                        <td>{{ rate.suggest_count }}</td>
+                        <td>{{ rate.time }}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

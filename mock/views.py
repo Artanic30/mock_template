@@ -311,7 +311,8 @@ def view_course(request, course_id):
             {
                 'is_hidden': False,
                 'rate': 3.5,
-                'content': '通过 .panel-heading 可以很简单地为面板加入一个标题容器。你也可以通过添加设置了 .panel-title 类的 <h1>-<h6> 标签，添加一个预定义样式的标题。不过，<h1>-<h6> 标签的字体大小将被 .panel-heading 的样式所覆盖。',
+                'content': '通过 .panel-heading 可以很简单地为面板加入一个标题容器。你也可以通过添加设置了 .panel-title 类的 <h1>'
+                           '-<h6> 标签，添加一个预定义样式的标题。不过，<h1>-<h6> 标签的字体大小将被 .panel-heading 的样式所覆盖。',
                 'author': {
                     'username': 'fivefiveopen',
                     'id': 232323,
@@ -553,7 +554,7 @@ def view_profile(request, user_id):
         'current_user': current_user
     }
     if user_id == 404:
-        message = _('Sorry. But we could not find the user!')
+        message = 'Sorry. But we could not find the user!'
         data = {
             'message': message,
             'status': False
@@ -602,7 +603,6 @@ def new_review(request, course_id):
             'content_text': 'lalala'
         }
     data = {
-        'form': {'csrf_token': 'csrf_token'},
         'course': course,
         'review': review,
         'polls': polls,
@@ -610,6 +610,63 @@ def new_review(request, course_id):
         'is_new': True
     }
     return render(request, 'new-review.html', data)
+
+
+def catalog(request):
+    current_user = {
+        'is_authenticated': True,
+        'username': 'TestName',
+        'unread_notification_count': 4,
+        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
+        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
+        'is_student': False,
+        'id': 23333
+    }
+    course = [
+        {
+            'course_id': 23333,
+            'code': 'EE110',
+            'credit': 4,
+            'teachers_names_display': 'fivefiveopen',
+            'score': 8.5,
+            'suggest_count': 123,
+            'time': '2019 Fall'
+        },
+        {
+            'course_id': 23333,
+            'code': 'EE110',
+            'credit': 4,
+            'teachers_names_display': 'fivefiveopen',
+            'score': 8.5,
+            'suggest_count': 123,
+            'time': '2019 Fall'
+        },
+        {
+            'course_id': 23333,
+            'code': 'EE110',
+            'credit': 4,
+            'teachers_names_display': 'fivefiveopen',
+            'score': 8.5,
+            'suggest_count': 123,
+            'time': '2019 Fall'
+        },
+        {
+            'course_id': 23333,
+            'code': 'EE110',
+            'credit': 4,
+            'teachers_names_display': 'fivefiveopen',
+            'score': 8.5,
+            'suggest_count': 123,
+            'time': '2019 Fall'
+        }
+    ]
+    data = {
+        'current_user': current_user,
+        'this_module': 'home.catalog',
+        'course': course,
+        'title': '课程目录',
+    }
+    return render(request, 'catalog.html', data)
 
 
 def not_found(request):

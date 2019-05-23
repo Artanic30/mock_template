@@ -16,6 +16,7 @@ urlpatterns = [
     path('community-rules/', views.community_rules, name='about'),
     path('latest_reviews', views.latest_reviews, name='latest_reviews'),
     path('follow_reviews', views.follow_reviews, name='follow_reviews'),
+    path('catalog', views.catalog, name='catalog'),
     path('course', views.index, name='course_index'),
     path('course/popular', views.popular, name='course_popular'),
     path('course/<int:course_id>', views.view_course, name='view_course'),

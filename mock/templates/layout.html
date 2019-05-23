@@ -2,7 +2,7 @@
 
 <body>
   <div id="wrap">
-  <nav class="navbar navbar-inverse" style="background-color: #A40006;">
+  <nav class="navbar navbar-inverse" style="">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -11,7 +11,7 @@
           {{ current_user.username }} <span class="caret"></span>
         </button>
         {% else %}
-        <button type="button" class="btn btn-default navbar-btn pull-right right-mg-md" style="outline:none" data-toggle="modal" data-target="#signin">登录</button>
+        <button type="button" class="mobile btn btn-default navbar-btn pull-right right-mg-md" style="outline:none" data-toggle="modal" data-target="#signin">登录</button>
         {% endif %}
         <a class="navbar-brand" href="{% url 'mock:index' %}">Gcourse</a>
       </div>
@@ -24,6 +24,7 @@
           <li {% if this_module and this_module == 'home.follow_reviews' %} class="active" {% endif %}><a href="{% url  'mock:follow_reviews' %}">关注</a></li>
           {% endif %}
           <li {% if this_module and this_module == 'course.popular' %} class="active" {% endif %}><a href="{% url  'mock:course_popular' %}">热门</a></li>
+         <li {% if this_module and this_module == 'home.catalog' %} class="active" {% endif %}><a href="{% url 'mock:catalog' %}">目录</a></li>
         </ul>
 
 
@@ -38,31 +39,33 @@
 
         <ul class="nav navbar-nav navbar-right desktop">
           {% if current_user.is_authenticated %}
+              <!-- todo:reversed for version 2
           <li id="dropdown-notice">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" onclick="read_notification({{ current_user.unread_notification_count }})">消息
-              {% if current_user.unread_notification_count > 0 %}
-              <span class="badge notice-number-box">{{ current_user.unread_notification_count }}</span>
-              {% endif %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" onclick="read_notification({ current_user.unread_notification_count }})">消息
+              { if current_user.unread_notification_count > 0 %}
+              <span class="badge notice-number-box">{ current_user.unread_notification_count }}</span>
+              { endif %}
             </a>
             <ul class="dropdown-menu" role="menu">
-              {% if current_user.latest_notifications_text|length == 0 %}
+              { if current_user.latest_notifications_text|length == 0 %}
               <p>还没有消息哦！</p>
-              {% endif %}
-              {% for notification_text in current_user.latest_notifications_text %}
+              { endif %}
+              { for notification_text in current_user.latest_notifications_text %}
               <li class="ud-pd-sm dashed">
-                <div class="notice">{{ notification_text|safe }}</div>
+                <div class="notice">{ notification_text|safe }}</div>
               </li>
-              {% endfor %}
-              <li class="ud-pd-sm pull-right"><a class="blue" href="{% url 'mock:user_notice' %}">查看全部</a></li>
+              { endfor %}
+              <li class="ud-pd-sm pull-right"><a class="blue" href="{ url 'mock:user_notice' %}">查看全部</a></li>
             </ul>
           </li>
+          -->
 
 
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ current_user.username }}<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li><a href="{% url 'mock:user_view_profile' current_user.id %}">个人主页</a></li>
-              <!-- <li><a href="{ url_for('user.account_settings', user_id=current_user.id) }}">设置</a></li> todo: 传参数-->
+              <!-- <li><a href="{ url_for('user.account_settings', user_id=current_user.id) }}">设置</a></li> -->
               <li><a href="{% url 'mock:user_account_settings' %}">设置</a></li>
               <li class="divider"></li>
               <li><a href="{% url 'mock:logout' %}">退出</a></li>
