@@ -65,7 +65,7 @@
         {% for course in user.courses_following %}
         <!-- 关注课程最多显示6门 -->
         <div class="ud-pd-md dashed">
-          <a href="https://www.baidu.com">{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a>
+          <a href={% url 'mock:view_course' course.id %}>{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a>
             <!-- url_for('course.view_course', course_id=course.id) -->
 	  {% if course.introduction %}
 	  <span class="label label-danger">课程简介</span>
@@ -150,6 +150,7 @@
           </li>
 	  {% if user != current_user  %}
           <div id="action-btn-group" class="ud-pd-sm">
+          <!-- todo: reversed for version 2 -->
             <button style="display:none" onclick="follow_user({{ user.id }})" class="btn btn-white btn-flat btn-follow"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> 关注</button>
             <button style="display:none" onclick="unfollow_user({{ user.id }})" class="btn btn-blue btn-flat btn-unfollow"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 已关注</button>
           </div>
@@ -185,7 +186,7 @@ $(function() {
 });
 
 function follow_user(user_id) {
-    $.post("https://www.baidu.com", { user_id: user_id }, function(o) {
+    $.post({% url 'mock:api_follow_user' %}, { user_id: user_id }, function(o) {
         <!-- url_for('api.follow_user') -->
         if (o.ok) {
             $('.btn-follow').hide();
@@ -197,7 +198,7 @@ function follow_user(user_id) {
 }
 
 function unfollow_user(user_id) {
-    $.post("https://www.baidu.com", { user_id: user_id }, function(o) {
+    $.post({% url 'mock:api_unfollow_user' %}, { user_id: user_id }, function(o) {
         <!-- url_for('api.unfollow_user') -->
         if (o.ok) {
             $('.btn-unfollow').hide();

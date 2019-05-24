@@ -377,6 +377,7 @@ def view_profile(request, user_id):
                 'is_hidden': False,
                 'course': {
                     'name': 'course_name',
+                    'id': 565656,
                     'teachers': [
                         {
                             'image': '/static/bootstrap/image/test.jpg',
@@ -407,6 +408,7 @@ def view_profile(request, user_id):
                 'is_hidden': False,
                 'course': {
                     'name': 'course_name',
+                    'id': 565656,
                     'teachers': [
                         {
                             'image': '/static/bootstrap/image/test.jpg',
@@ -437,6 +439,7 @@ def view_profile(request, user_id):
                 'is_hidden': True,
                 'course': {
                     'name': 'course_name',
+                    'id': 565656,
                     'teachers': [
                         {
                             'image': '/static/bootstrap/image/test.jpg',
@@ -468,6 +471,7 @@ def view_profile(request, user_id):
         # 只显示前六门课
         'courses_following': [{
                     'name': 'course_name',
+                    'id': 565656,
                     'teachers': [
                         {
                             'image': '/static/bootstrap/image/test.jpg',
@@ -491,6 +495,7 @@ def view_profile(request, user_id):
                 },
             {
                 'name': 'course_name',
+                'id': 565656,
                 'teachers': [
                     {
                         'image': '/static/bootstrap/image/test.jpg',
@@ -518,6 +523,7 @@ def view_profile(request, user_id):
                 'course_id': 23333,
                 'course': {
                     'name': 'class_joined_course_name',
+                    'id': 5656123,
                     'teachers': [
                                  {
                                     'image': '/static/bootstrap/image/test.jpg',

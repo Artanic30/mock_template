@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 
-from . import views
+from . import views, api
 """
 set unfinished path's default as index
 """
@@ -25,4 +25,6 @@ urlpatterns = [
     path('user/<int:user_id>', views.view_profile, name='user_view_profile'),
     path('user/notice', views.index, name='user_notice'),
     path('user/account_settings', views.index, name='user_account_settings'),
+    path('api/follow_user', api.follow_user, name='api_follow_user'),
+    path('api/unfollow_user', api.unfollow_user, name='api_unfollow_user')
 ]
