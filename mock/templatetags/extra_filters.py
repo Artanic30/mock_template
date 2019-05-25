@@ -35,3 +35,18 @@ def count_rate(review_rate):
         return 0
     else:
         return review_rate / 2.0
+
+
+@register.simple_tag
+def check_empty(value):
+    return True if value else False
+
+
+@register.simple_tag
+def check_count(value):
+    return value if value else 0
+
+
+@register.simple_tag
+def check_is_upvoted(value, front, back):
+    return front if value else back

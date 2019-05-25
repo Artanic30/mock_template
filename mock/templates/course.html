@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+    {% load extra_filters %}
 
 <!-- data: {
         course: {
@@ -242,7 +243,7 @@
         </div>
         <div class="ud-pd-md"></div>
         {% else %}
-        {% for review in course.reviews %}
+      {% for review in course.reviews %}
 	  {% if not review.is_hidden or current_user.is_admin or review.author == current_user %}
         <div class="ud-pd-md dashed review" id="review-{{review.id}}">
           <div class="blue ud-pd-sm">
@@ -269,16 +270,19 @@
           </div>
           {% include 'review-hidden.html' %}
           <div>
-            <p>{{ review.content }}</p>
+            <p>{{ review.content|safe }}</p>
               <!-- { review.content|my_urlize(nofollow=true)|safe } -->
           </div>
 
           <div class="bm-pd-md grey" id="review-{{ review.id }}">
             <span class="small">{{ review.publish_time }}</span>
                 <!-- { review.publish_time|localtime } -->
-            <a class="nounderline" href="">
+          {% check_is_upvoted review.is_upvoted 'cancel_' '' as result1 %}
+            <a class="nounderline" href="javascript: {{ result1 }}upvote_review({{ review.id }})">
+                <!-- todo:review.is_upvoted() in USTC/models/review.py -- line:105 -->
                 <!--  <a class="nounderline" href="javascript: { 'cancel_' if review.is_upvoted() }}upvote_review({ review.id }})"> -->
-                <span class="glyphicon glyphicon-thumbs-up left-pd-lg" aria-hidden="true" ></span>
+                {% check_is_upvoted review.is_upvoted 'blue' 'grey' as result2 %}
+                <span class="glyphicon glyphicon-thumbs-up left-pd-lg {{ result2 }}" aria-hidden="true" ></span>
                 <!-- class="glyphicon glyphicon-thumbs-up { 'blue' if review.is_upvoted() else 'grey' }} left-pd-lg"-->
                 <span id="review-upvote-count-{{review.id}}">{{ review.upvote_count }}</span>
             </a>
@@ -311,7 +315,7 @@
             </span>
           </div>
 
-          {% include 'Unimplemented/review-comments.html' %}
+          {% include 'review-comments.html' %}
         </div>
 	  {% endif %}
         {% endfor %}
@@ -389,4 +393,249 @@
     </div> <!-- row -->
   </div>  <!-- float-element  -->
 </div>  <!-- container -->
+{% endblock %}
+
+{% block script %}
+<script>
+ $('#myTab a').click(function (e) {
+   e.preventDefault()
+   $(this).tab('show')
+ })
+
+ let action_data = {
+     {% check_empty course.following else as result1 %}
+     {% check_empty course.downvoted else as result2 %}
+     {% check_empty course.upvoted else as result3 %}
+     {% check_empty course.joined else as result4 %}
+     {% check_count course.follow_count else as count1 %}
+     {% check_count course.downvote_count else as count2 %}
+     {% check_count course.upvote_count else as count3 %}
+   'follow': {
+     'enabled': {{ result1 }},
+     'count': {{ count1 }},
+     'do_url': "{% url 'mock:api_follow' course.id %}",
+     'undo_url': "{% url 'mock:api_unfollow' course.id %}",
+   },
+   'downvote': {
+     'enabled': {{ result2 }},
+     'count': {{ count2 }},
+     'do_url': "{% url 'mock:api_downvote' course.id %}",
+     'undo_url': "{% url 'mock:api_undo_downvote' course.id %}",
+     'conflict': 'upvote',
+   },
+   'upvote': {
+     'enabled': {{ result3 }},
+     'count': {{ count3 }},
+     'do_url': "{% url 'mock:api_upvote' course.id %}",
+     'undo_url': "{% url 'mock:api_undo_upvote' course.id %}",
+     'conflict': 'downvote',
+   },
+   'join': {
+     'enabled': {{ result4 }},
+     'do_url': "{% url 'mock:api_join' course.id %}",
+     'undo_url': "{% url 'mock:api_quit' course.id %}",
+   },
+ }
+ // created ():
+ $(function() {
+   for (action in action_data) {
+
+     if (! $('.btn-' + action).length)
+       continue;
+
+     (function(action) {
+       var d = action_data[action];
+
+       var do_btn = $('.btn-' + action).filter('.btn-do');
+       var undo_btn = $('.btn-' + action).filter('.btn-undo');
+
+       function update_count(count) {
+         d.count = count;
+         $('.btn-' + action + ' .count').text(count);
+       }
+       function http_post_wrapper(url) {
+         $.post(url, null, function(o) {
+           if (o.count)
+             update_count(o.count);
+           if (!o.ok)
+             alert('Operation failed, please try again later!');
+         }, 'json');
+       }
+
+       do_btn.click(function() {
+         {% if user.is_authenticated %}
+         if (d.enabled)
+           return;
+         do_btn.hide();
+         undo_btn.show();
+         d.enabled = true;
+         update_count(d.count + 1);
+         if (d.conflict && action_data[d.conflict].enabled) {
+           $('.btn-' + d.conflict).filter('.btn-undo').click();
+         }
+         http_post_wrapper(d.do_url);
+         {% else %}
+         $('#signin').modal('show');
+         {% endif %}
+       });
+
+       undo_btn.click(function() {
+         {% if user.is_authenticated %}
+         if (!d.enabled)
+           return;
+         undo_btn.hide();
+         do_btn.show();
+         d.enabled = false;
+         update_count(d.count - 1);
+         http_post_wrapper(d.undo_url);
+         {% else %}
+         $('#signin').modal('show');
+         {% endif %}
+       });
+
+       update_count(d.count);
+
+       if (d.enabled) {
+         undo_btn.show();
+         do_btn.hide();
+       } else {
+         do_btn.show();
+         undo_btn.hide();
+       }
+     })(action);
+   }
+   $('#action-btn-group').show();
+ });
+
+ function show_review_comments(review_id)
+ {
+   if (document.getElementById('review-'+ review_id +'-comments').style.display=="block") {
+       document.getElementById('review-'+ review_id +'-comments').style.display="none";
+       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').addClass('grey');
+       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').removeClass('blue');
+     }
+   else {
+       document.getElementById('review-'+ review_id +'-comments').style.display="block";
+       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').addClass('blue');
+       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').removeClass('grey');
+   }
+ }
+
+ function upvote_review(review_id)
+ {
+     elem = $('#review-upvote-count-' + review_id);
+     //elem.text(parseInt(elem.text()) + 1);
+     $.post("{%  url 'mock:api_review_upvote' %}", { review_id: review_id }, function(o) {
+       if (typeof o.count != "undefined") {
+         elem.text(o.count);
+         elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
+         elem.parent().find('span.glyphicon').removeClass('grey');
+         elem.parent().find('span.glyphicon').addClass('blue');
+       }
+     }, 'json');
+ }
+
+ function cancel_upvote_review(review_id)
+ {
+     elem = $('#review-upvote-count-' + review_id);
+     //elem.text(parseInt(elem.text()) - 1);
+     $.post("{%  url 'mock:api_review_cancel_upvote' %}", { review_id: review_id }, function(o) {
+       if (typeof o.count != "undefined") {
+         elem.text(o.count);
+         elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
+         elem.parent().find('span.glyphicon').removeClass('blue');
+         elem.parent().find('span.glyphicon').addClass('grey');
+       }
+     }, 'json');
+ }
+
+ function delete_review(review_id)
+ {
+     if (!confirm('你真的要删除此点评吗？')) {
+         return;
+     }
+     $.post("{% url 'mock:api_delete_review' %}", { id: review_id }, function(o) {
+         if (o.ok)
+            window.location.href = "{% url 'mock:view_course' course.id %}";
+         else
+            alert(o.message);
+     }, 'json');
+ }
+
+ function reload_comments(review_id)
+ {
+             $.get("{% url 'mock:api_show_comments' %}",
+                { review_id: review_id},
+                function(html) {
+                    $('#review-' + review_id + '-comments').replaceWith(html);
+                    $('#review-' + review_id + '-comments').show();
+             }, 'html');
+ }
+
+ function submit_comment(review_id)
+ {
+     content = $('#review-comment-input-' + review_id).val().trim();
+     if (content === '') {
+         alert('请输入评论内容');
+         return;
+     }
+     $.post("{%  url 'mock:api_review_new_comment' %}", {
+         review_id: review_id,
+         content: content
+     }, function(o) {
+         if (o.ok) {
+             reload_comments(review_id);
+         } else {
+             alert(o.message);
+         }
+     }, 'json');
+ }
+
+ function delete_comment(review_id, comment_id)
+ {
+     if (!confirm('你真的要删除此评论吗？')) {
+         return;
+     }
+     $.post("{% url 'mock:api_delete_comment' %}", { comment_id: comment_id },
+         function(o) {
+            if (o.ok) {
+               reload_comments(review_id);
+            } else {
+               alert(o.message);
+            }
+     }, 'json');
+ }
+
+ function reply_comment(review_id, reply_to)
+ {
+     var elem = $('#review-comment-input-' + review_id);
+     elem.val('回复 @' + reply_to + ': ');
+     elem.focus();
+ }
+
+ function hide_review(review_id)
+ {
+     $.post("{% url 'mock:api_hide_review' %}", { review_id: review_id },
+         function(o) {
+            if (o.ok) {
+               alert('屏蔽成功，请刷新页面');
+            } else {
+               alert(o.message);
+            }
+     }, 'json');
+ }
+
+ function unhide_review(review_id)
+ {
+     $.post("{% url 'mock:api_unhide_review' %}", { review_id: review_id },
+         function(o) {
+            if (o.ok) {
+               alert('解除屏蔽成功，请刷新页面');
+            } else {
+               alert(o.message);
+            }
+     }, 'json');
+ }
+
+</script>
 {% endblock %}

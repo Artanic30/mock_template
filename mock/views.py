@@ -306,7 +306,8 @@ def view_course(request, course_id):
                     'term_ids': 23
                 },
                 'id': 23333,
-                'term': '2018 Fall'
+                'term': '2018 Fall',
+                'is_upvoted': True
             },
             {
                 'is_hidden': False,
@@ -327,7 +328,8 @@ def view_course(request, course_id):
                     'term_ids': 23
                 },
                 'id': 23333,
-                'term': '2018 Fall'
+                'term': '2018 Fall',
+                'is_upvoted': True
             }
         ],
         'is_hidden': False,
@@ -344,7 +346,14 @@ def view_course(request, course_id):
             },
             'term_ids': 23,
             'review_count': 21
-        }]
+        }],
+        'downvoted': 'unknown',
+        'following': 'unknown',
+        'upvoted': 'unknown',
+        'joined': 'unknown',
+        'follow_count': 23,
+        'downvote_count': 21,
+        'upvote_count': 12
     }
     data = {
         'course': course,

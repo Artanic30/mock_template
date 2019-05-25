@@ -21,14 +21,14 @@
             <div class="panel-body">
               {% for comment in review.comments %}
               <div class="solid ud-pd-sm">
-                  <a href="https://www.baidu.com">{{ comment.author.username }}</a>：
+                  <a href={% url 'mock:user_view_profile' comment.author.id %}>{{ comment.author.username }}</a>：
                     <!-- url_for('user.view_profile', user_id=comment.author.id) -->
-                  <span>{{ comment.content }}</span>
+                  <span>{{ comment.content|safe }}</span>
                     <!-- { comment.content|safe|urlize(nofollow=true) } -->
                   <span class="text-muted small float-right">
                     {% if user.is_authenticated %}
                     <span class="glyphicon glyphicon-share-alt grey left-pd-md" aria-hidden="true"></span>
-                    <a href="javascript: reply_comment({{review.id}}, '{{ comment.author.username }}');">回复</a>
+                    <a href="javascript: reply_comment({{review.id}},{{ comment.author.username }});">回复</a>
                     {% endif %}
                     {% if user == comment.author or user.is_admin %}
                     <span class="glyphicon glyphicon-trash grey left-pd-md" aria-hidden="true"></span>
