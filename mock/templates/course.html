@@ -403,13 +403,13 @@
  })
 
  let action_data = {
-     {% check_empty course.following else as result1 %}
-     {% check_empty course.downvoted else as result2 %}
-     {% check_empty course.upvoted else as result3 %}
-     {% check_empty course.joined else as result4 %}
-     {% check_count course.follow_count else as count1 %}
-     {% check_count course.downvote_count else as count2 %}
-     {% check_count course.upvote_count else as count3 %}
+     {% check_empty course.following as result1 %}
+     {% check_empty course.downvoted as result2 %}
+     {% check_empty course.upvoted as result3 %}
+     {% check_empty course.joined as result4 %}
+     {% check_count course.follow_count as count1 %}
+     {% check_count course.downvote_count as count2 %}
+     {% check_count course.upvote_count as count3 %}
    'follow': {
      'enabled': {{ result1 }},
      'count': {{ count1 }},
