@@ -43,5 +43,6 @@ urlpatterns = [
     path('api/review/delete_comment', api.delete_comment, name='api_delete_comment'),
     path('api/review/hide', api.hide_review, name='api_hide_review'),
     path('api/review/unhide', api.unhide_review, name='api_unhide_review'),
+    path('teacher/<int:teacher_id>', views.view_teacher_profile, name='view_teacher_profile'),
 
 ]
