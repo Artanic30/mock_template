@@ -683,6 +683,94 @@ def catalog(request):
     }
     return render(request, 'catalog.html', data)
 
+def view_teacher_profile(request, teacher_id):
+    courses = {
+        'total': 213,
+        'page': 23123,
+        'has_next': True,
+        'navigation': [0, 1, 2, 3],
+        'items': [
+            {
+                'teachers': 'test_name',
+                'teacher_names_display': 'test_name',
+                'name': 'course_name',
+                'introduction': 'introduction',
+                'term_ids': 14,
+                'review_count': 23,
+                'courseries': 67,
+                'reviewed': False,
+                'rate': {
+                    'average_rate': 4.5,
+                    'difficulty': 'hell',
+                    'homework': 'EE101',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+                'id': 112233
+            },
+            {
+                'teachers': 'test_name',
+                'teacher_names_display': 'test_name',
+                'name': 'course_name',
+                'introduction': 'introduction',
+                'term_ids': 13,
+                'review_count': 233,
+                'courseries': 677,
+                'reviewed': False,
+                'rate': {
+                    'average_rate': 7.7,
+                    'difficulty': 'hell',
+                    'homework': 'EE102',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+                'id': 112233
+            },
+            {
+                'teachers': 'test_name',
+                'teacher_names_display': 'test_name',
+                'name': 'course_name',
+                'introduction': 'introduction',
+                'term_ids': 16,
+                'review_count': 23333,
+                'courseries': 6777,
+                'reviewed': False,
+                'rate': {
+                    'average_rate': 8.7,
+                    'difficulty': 'hell',
+                    'homework': 'EE187',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+                'id': 112233
+            }
+        ]
+    }
+    current_user = {
+        'is_authenticated': True,
+        'username': 'TestName',
+        'unread_notification_count': 4,
+        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
+        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
+        'is_student': False,
+        'id': 23333
+    }
+    teacher = {
+        'image': '/static/bootstrap/image/test.jpg',
+        'name': 'teacher_test_name',
+        'homepage': 'https://www.hao123.com',
+        'dept': {
+            'name': 'dept_name'
+        },
+        'id': 55667
+    }
+    data = {
+        'courses': courses,
+        'current_user': current_user,
+        'teacher': teacher,
+        'range_list': [0, 1, 2, 3, 4]
+    }
+    return render(request, 'teacher-profile.html', data)
 
 def not_found(request):
     """返回404页面"""
