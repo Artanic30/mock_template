@@ -67,3 +67,12 @@ def count_course_average_rate_2(course_rate_average_rate, star):
 def count_course_average_rate_3(course_rate_average_rate, star):
     if course_rate_average_rate < 0.5 + star * 2:
         return True
+
+
+@register.simple_tag
+def return_list_top(list):
+    print(list)
+    if list:
+        return list[0]
+    else:
+        return None

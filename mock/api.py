@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 
 """all the functions have the same function name as USTC"""
-def follow_user(request):
+def follow_user(request): # delete
     """关注用户 返回一个状态 ok = bool 和 message =  string"""
     result = {
         'ok': True,
@@ -12,7 +12,7 @@ def follow_user(request):
     return JsonResponse(result)
 
 
-def unfollow_user(request):
+def unfollow_user(request): # delete
     """不关注用户 返回一个状态 ok = bool 和 和 message =  string"""
     result = {
         'ok': True,
@@ -75,7 +75,7 @@ def undo_upvote(course_id):
     return JsonResponse(result)
 
 
-def join(course_id):
+def join(course_id):# delete
     """返回一个状态 ok = bool """
     result = {
         'ok': True,
@@ -83,7 +83,7 @@ def join(course_id):
     return JsonResponse(result)
 
 
-def quit(course_id):
+def quit(course_id):# delete
     """返回一个状态 ok = bool """
     result = {
         'ok': True,
@@ -111,7 +111,7 @@ def review_cancel_upvote():
     return JsonResponse(result)
 
 
-def delete_review():
+def delete_review(): # delete
     result = {
         'ok': True,
         'message': 'success',
@@ -119,7 +119,7 @@ def delete_review():
     return JsonResponse(result)
 
 
-def show_comments(request):
+def show_comments(request):# delete
     user = {
         'is_authenticated': True,
         'is_admin': True
@@ -144,7 +144,7 @@ def show_comments(request):
     return render(request, 'review-comments.html', data)
 
 
-def review_new_comment():
+def review_new_comment():# delete
     result = {
         'ok': True,
         'message': 'success',
@@ -153,7 +153,7 @@ def review_new_comment():
     return JsonResponse(result)
 
 
-def delete_comment():
+def delete_comment():# delete
     result = {
         'ok': True,
         'message': 'success',
@@ -161,7 +161,7 @@ def delete_comment():
     return JsonResponse(result)
 
 
-def hide_review():
+def hide_review():# delete
     result = {
         'ok': True,
         'message': 'success',
@@ -169,9 +169,16 @@ def hide_review():
     return JsonResponse(result)
 
 
-def unhide_review():
+def unhide_review():# delete
     result = {
         'ok': True,
         'message': 'success',
     }
     return JsonResponse(result)
+
+
+def new_review(request):
+    result = {
+        'ok': True
+    }
+    return result
