@@ -35,3 +35,44 @@ def count_rate(review_rate):
         return 0
     else:
         return review_rate / 2.0
+
+
+@register.simple_tag
+def check_empty(value):
+    return True if value else False
+
+
+@register.simple_tag
+def check_count(value):
+    return value if value else 0
+
+
+@register.simple_tag
+def check_is_upvoted(value, front, back):
+    return front if value else back
+
+
+@register.simple_tag
+def count_course_average_rate_1(course_rate_average_rate, star):
+    return course_rate_average_rate >= 1.5 + star * 2
+
+
+@register.simple_tag
+def count_course_average_rate_2(course_rate_average_rate, star):
+    if course_rate_average_rate < 1.5 + star * 2:
+        return course_rate_average_rate >= 0.5 + star * 2
+
+
+@register.simple_tag
+def count_course_average_rate_3(course_rate_average_rate, star):
+    if course_rate_average_rate < 0.5 + star * 2:
+        return True
+
+
+@register.simple_tag
+def return_list_top(list):
+    print(list)
+    if list:
+        return list[0]
+    else:
+        return None

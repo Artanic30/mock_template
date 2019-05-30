@@ -27,9 +27,9 @@
     <div class="inline-h3">
     <span class="blue h4">{% if not is_new %}编辑{% endif %}点评 &bull; <a href={% url 'mock:view_course' 32323 %}>{{ course.name }}{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</a></span>
         <!-- url_for('course.view_course', course_id=course.id) -->
-    <span class="align-bottom left-pd-sm desktop">学期：{{ review.term }} &nbsp;课程号：{{ course.courseries }}</span>
+    <span class="align-bottom left-pd-sm desktop">学期：{{ review.term }} &nbsp;课程号：{{ course.code }}</span>
         <!-- { review.term|term_display } -->
-    <br><span class="align-bottom mobile">学期：{{ review.term }} &nbsp;课程号：{{ course.courseries }}</span>
+    <br><span class="align-bottom mobile">学期：{{ review.term }} &nbsp;课程号：{{ course.code }}</span>
         <!-- { review.term|term_display } -->
     </div>
     <hr>

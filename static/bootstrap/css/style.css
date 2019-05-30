@@ -252,7 +252,9 @@ p { line-height: 25px; word-wrap: break-word; }
 .blue { color: #337ab7; }
 .dark-grey { color: #666; }
 
-
+.shadow-card {
+    box-shadow: 3px 2px 5px gray;
+}
 .shadow { box-shadow: 3px 3px 2px #ddd; }
 .btn-flat {
     border: 0;

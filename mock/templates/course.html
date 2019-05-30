@@ -1,83 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
+    {% load extra_filters %}
 
-<!-- data: {
-        course: {
-            'name': 'CS110计算机体系结构'
-            'teachers': "unknown"
-            'teachers_names_display': 'Who'
-            'teachers_count': 3
-            'courseries':  23123
-            'has_next': True
-            'term_ids': 'CS110'
-            'review_count': 12
-            'course_rate': rate
-            'rate': rate
-            'join_type': "unknown"
-            'teaching_type': "unknown"
-            'course_type': "unknown"
-            'dept': "unknown"
-            'course_level': "unknown"
-            'course_credit': 2
-            'homepage': 'www.baidu.com'
-            'introduction': '简介之类的'
-            'last_edit_time': "unknown"
-            'reviewed': True
-            'reviews': "unknown"
-            'related_courses': course
-            same_teacher_courses(teacher): "unknown"
-            'following': True
-            'follow_count': 233
-            'downvote_count': 233
-            'upvote_count': 233
-            'follow': "unknown"
-            'unfollow': "unknown"
-            'downvote': "unknown"
-            'undo_downvote': "unknown"
-            'joined': True
-            'join': "unknown"
-            'quit': "unknown"
-        }
-        review: {
-            'is_hidden'
-            'author': current_user
-            'id': 233
-            'rate': 2.2
-            'content': "unknown"
-            'term': "unknown"
-            'publish_time': "unknown"
-            is_upvoted(): True
-            'comment_count': 233
-            'is_hidden': False
-        }
-        rate: {
-            'average_rate': 1.5
-            'difficulty': "unknown"
-            'homework': "unknown"
-            'grading': "unknown"
-            'gain': "unknown"
-        }
-        current_user:{
-            'is_authenticated': True
-            'is_student': True
-            'is_admin': True
-        }
-        teacher:{
-            'image': 'image url'
-            'name': 'soren'
-            'dept': "unknown"
-            'homepage': 'www.'
-        }
-    }-->
 <div class="container">
 
   <div class="row float-element">
     <div class="row">
       <div class="col-md-8 inline-h3">
         <span class="blue h3">{{ course.name }}</span><span class="h3 blue mobile">{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</span>
-        <span class="small grey align-bottom left-pd-sm desktop">{{ course.term_ids }} &nbsp;课程号：{{ course.courseries }}</span>
+        <span class="small grey align-bottom left-pd-sm desktop">{{ course.term_ids }} &nbsp;课程号：{{ course.code }}</span>
             <!-- { course.term_ids|term_display } -->
-        <br><span class="small grey align-bottom mobile">{{ course.term_ids }} &nbsp;课程号：{{ course.courseries }}</span>
+        <br><span class="small grey align-bottom mobile">{{ course.term_ids }} &nbsp;课程号：{{ course.code }}</span>
             <!-- { course.term_ids|term_display } -->
         {% if current_user.is_authenticated %}
         <btn class="btn btn-link float-right"><a href="https://www.baidu.com">编辑课程信息</a></btn>
@@ -137,18 +70,6 @@
         <tbody>
           <tr>
               {% if course.rate.grading != '' %}
-              <td><strong>选课类别：</strong>{{ course.join_type }}</td>
-              {% else %}
-                  <td><strong>选课类别：</strong>{{ '未知' }}</td>
-              {% endif %}
-              {% if course.rate.grading != '' %}
-              <td><strong>教学类型：</strong>{{ course.teaching_type }}</td>
-              {% else %}
-                  <td><strong>教学类型：</strong>{{ '未知' }}</td>
-              {% endif %}
-          </tr>
-          <tr>
-              {% if course.rate.grading != '' %}
               <td><strong>课程类别：</strong>{{ course.course_type }}</td>
               {% else %}
                   <td><strong>课程类别：</strong>{{ '未知' }}</td>
@@ -160,11 +81,13 @@
               {% endif %}
           </tr>
            <tr>
-              {% if course.rate.grading != '' %}
-              <td><strong>课程层次：</strong>{{ course.course_level }}</td>
-              {% else %}
-                  <td><strong>课程层次：</strong>{{ '未知' }}</td>
-              {% endif %}
+               <td>
+               {% if course.homepage and course.homepage != 'http://' %}
+                  <strong>课程主页</strong>：<a href="{{ course.homepage }}">{{ course.homepage }}</a>
+                  {% else %}
+                  <strong>课程主页</strong>：暂无（如果你知道，劳烦告诉我们！）
+                  {% endif %}
+                </td>
               {% if course.rate.grading != '' %}
               <td><strong>学分：</strong>{{ course.credit }}</td>
               {% else %}
@@ -175,14 +98,10 @@
         </table>
 
         <div class="ud-pd-sm">
-          {% if course.homepage and course.homepage != 'http://' %}
-          <strong>课程主页</strong>：<a href="{{ course.homepage }}">{{ course.homepage }}</a>
-          {% else %}
-          <strong>课程主页</strong>：暂无（如果你知道，劳烦告诉我们！）
-          {% endif %}
+
         </div>
 
-        <div id="action-btn-group" class="ud-pd-md" style="display:none">
+        <div id="action-btn-group" class="ud-pd-md">
           <button class="btn btn-white btn-flat btn-follow btn-do"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> 关注 <small>(<span class="count"></span>)</small></button>
           <button class="btn btn-blue btn-flat btn-follow btn-undo"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 已关注 <small>(<span class="count"></span>)</small></button>
 
@@ -204,7 +123,7 @@
             <span class="blue h3">简介</span>
 	  </div>
           <div>
-	  {{ course.introduction|safe }}
+	        {{ course.introduction|safe }}
               <!-- { course.introduction|safe } -->
           </div>
           <p class="text-muted pull-right small">
@@ -212,11 +131,6 @@
              <span class="glyphicon glyphicon-pencil grey left-pd-sm" aria-hidden="true" ></span>
              <a href="https://www.baidu.com">编辑课程简介</a>
                  <!-- url_for('course.edit_course', course_id=course.id) -->
-             {% endif %}
-             {% if course.last_edit_time %}
-             <span class="glyphicon glyphicon-time grey left-pd-sm" aria-hidden="true" ></span>
-             最后更新：{{ course.last_edit_time }}
-                 <!-- { course.last_edit_time|localtime } -->
              {% endif %}
           </p>
 	</div>
@@ -242,7 +156,7 @@
         </div>
         <div class="ud-pd-md"></div>
         {% else %}
-        {% for review in course.reviews %}
+      {% for review in course.reviews %}
 	  {% if not review.is_hidden or current_user.is_admin or review.author == current_user %}
         <div class="ud-pd-md dashed review" id="review-{{review.id}}">
           <div class="blue ud-pd-sm">
@@ -269,16 +183,19 @@
           </div>
           {% include 'review-hidden.html' %}
           <div>
-            <p>{{ review.content }}</p>
+            <p>{{ review.content|safe }}</p>
               <!-- { review.content|my_urlize(nofollow=true)|safe } -->
           </div>
 
           <div class="bm-pd-md grey" id="review-{{ review.id }}">
             <span class="small">{{ review.publish_time }}</span>
                 <!-- { review.publish_time|localtime } -->
-            <a class="nounderline" href="">
+          {% check_is_upvoted review.is_upvoted 'cancel_' '' as result1 %}
+            <a class="nounderline" href="javascript: {{ result1 }}upvote_review({{ review.id }})">
+                <!-- todo:review.is_upvoted() in USTC/models/review.py -- line:105 -->
                 <!--  <a class="nounderline" href="javascript: { 'cancel_' if review.is_upvoted() }}upvote_review({ review.id }})"> -->
-                <span class="glyphicon glyphicon-thumbs-up left-pd-lg" aria-hidden="true" ></span>
+                {% check_is_upvoted review.is_upvoted 'blue' 'grey' as result2 %}
+                <span class="glyphicon glyphicon-thumbs-up left-pd-lg {{ result2 }}" aria-hidden="true" ></span>
                 <!-- class="glyphicon glyphicon-thumbs-up { 'blue' if review.is_upvoted() else 'grey' }} left-pd-lg"-->
                 <span id="review-upvote-count-{{review.id}}">{{ review.upvote_count }}</span>
             </a>
@@ -311,7 +228,7 @@
             </span>
           </div>
 
-          {% include 'Unimplemented/review-comments.html' %}
+          {% include 'review-comments.html' %}
         </div>
 	  {% endif %}
         {% endfor %}
@@ -338,32 +255,17 @@
             <a href="{{ teacher.homepage }}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> 戳这里</a>
             {% else %}暂无{% endif %}
           </p>
-          <div class="ud-pd-md" style="display: none"><a>教师排行榜：23</a></div>
+          <div class="ud-pd-md" style="display: none"></div>
         </div>
         {% endfor %}
         {% if course.teachers_count == 0 %}
         <div class="ud-pd-md dashed">
           <img class="avatar-lg cicle" src="/static/bootstrap/image/test.jpg"/>
-          <h3 class="blue">老师甲</h3>
+          <h3 class="blue">莫得老师</h3>
         </div>
         {% endif %}
 
-        <div class="ud-pd-md dashed">
-          <h5 class="blue">其他老师的「{{ course.name }}」课</h5>
-          {% for rel_course in course.related_courses %}
-          {% if rel_course != course %}
-          <div class="ud-pd-sm">
-            <a href="https://www.baidu.com">{{ rel_course.teacher_names_display }}</a>
-                <!-- url_for('course.view_course', course_id=rel_course.id) -->
-            {% if rel_course.review_count %}
-            <span>{{ rel_course.course_rate.average_rate }}</span>
-            <span class="grey">({{ rel_course.review_count }})</span>
-            {% endif %}
-            <span class="small grey align-bottom  float-right">{{ rel_course.term_ids }}</span>
-                <!-- { rel_course.term_ids|term_display_short } -->
-          </div>
-          {% endif %}
-          {% endfor %}
+        <div class="ud-pd-md">
         </div>
 
         {% for teacher in course.teachers %}
@@ -372,7 +274,7 @@
           {% for rel_course in course.same_teacher_courses %}
           {% if rel_course != course %}
           <div class="ud-pd-sm">
-            <a href="https://www.baidu.com">{{ rel_course.name }}</a>
+            <a href={% url 'mock:view_course' rel_course.id %}>{{ rel_course.name }}</a>
                 <!-- url_for('course.view_course', course_id=rel_course.id) -->
             {% if rel_course.review_count %}
             <span>{{ rel_course.course_rate.average_rate }}</span>
@@ -389,4 +291,249 @@
     </div> <!-- row -->
   </div>  <!-- float-element  -->
 </div>  <!-- container -->
+{% endblock %}
+
+{% block script %}
+<script>
+ $('#myTab a').click(function (e) {
+   e.preventDefault()
+   $(this).tab('show')
+ })
+
+ let action_data = {
+     {% check_empty course.following as result1 %}
+     {% check_empty course.downvoted as result2 %}
+     {% check_empty course.upvoted as result3 %}
+     {% check_empty course.joined as result4 %}
+     {% check_count course.follow_count as count1 %}
+     {% check_count course.downvote_count as count2 %}
+     {% check_count course.upvote_count as count3 %}
+   'follow': {
+     'enabled': {{ result1 }},
+     'count': {{ count1 }},
+     'do_url': "{% url 'mock:api_follow' course.id %}",
+     'undo_url': "{% url 'mock:api_unfollow' course.id %}",
+   },
+   'downvote': {
+     'enabled': {{ result2 }},
+     'count': {{ count2 }},
+     'do_url': "{% url 'mock:api_downvote' course.id %}",
+     'undo_url': "{% url 'mock:api_undo_downvote' course.id %}",
+     'conflict': 'upvote',
+   },
+   'upvote': {
+     'enabled': {{ result3 }},
+     'count': {{ count3 }},
+     'do_url': "{% url 'mock:api_upvote' course.id %}",
+     'undo_url': "{% url 'mock:api_undo_upvote' course.id %}",
+     'conflict': 'downvote',
+   },
+   'join': {
+     'enabled': {{ result4 }},
+     'do_url': "{% url 'mock:api_join' course.id %}",
+     'undo_url': "{% url 'mock:api_quit' course.id %}",
+   },
+ }
+ // created ():
+ $(function() {
+   for (action in action_data) {
+
+     if (! $('.btn-' + action).length)
+       continue;
+
+     (function(action) {
+       var d = action_data[action];
+
+       var do_btn = $('.btn-' + action).filter('.btn-do');
+       var undo_btn = $('.btn-' + action).filter('.btn-undo');
+
+       function update_count(count) {
+         d.count = count;
+         $('.btn-' + action + ' .count').text(count);
+       }
+       function http_post_wrapper(url) {
+         $.post(url, null, function(o) {
+           if (o.count)
+             update_count(o.count);
+           if (!o.ok)
+             alert('Operation failed, please try again later!');
+         }, 'json');
+       }
+
+       do_btn.click(function() {
+         {% if user.is_authenticated %}
+         if (d.enabled)
+           return;
+         do_btn.hide();
+         undo_btn.show();
+         d.enabled = true;
+         update_count(d.count + 1);
+         if (d.conflict && action_data[d.conflict].enabled) {
+           $('.btn-' + d.conflict).filter('.btn-undo').click();
+         }
+         http_post_wrapper(d.do_url);
+         {% else %}
+         $('#signin').modal('show');
+         {% endif %}
+       });
+
+       undo_btn.click(function() {
+         {% if user.is_authenticated %}
+         if (!d.enabled)
+           return;
+         undo_btn.hide();
+         do_btn.show();
+         d.enabled = false;
+         update_count(d.count - 1);
+         http_post_wrapper(d.undo_url);
+         {% else %}
+         $('#signin').modal('show');
+         {% endif %}
+       });
+
+       update_count(d.count);
+
+       if (d.enabled) {
+         undo_btn.show();
+         do_btn.hide();
+       } else {
+         do_btn.show();
+         undo_btn.hide();
+       }
+     })(action);
+   }
+   $('#action-btn-group').show();
+ });
+
+ function show_review_comments(review_id)
+ {
+   if (document.getElementById('review-'+ review_id +'-comments').style.display=="block") {
+       document.getElementById('review-'+ review_id +'-comments').style.display="none";
+       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').addClass('grey');
+       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').removeClass('blue');
+     }
+   else {
+       document.getElementById('review-'+ review_id +'-comments').style.display="block";
+       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').addClass('blue');
+       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').removeClass('grey');
+   }
+ }
+
+ function upvote_review(review_id)
+ {
+     elem = $('#review-upvote-count-' + review_id);
+     //elem.text(parseInt(elem.text()) + 1);
+     $.post("{%  url 'mock:api_review_upvote' %}", { review_id: review_id }, function(o) {
+       if (typeof o.count != "undefined") {
+         elem.text(o.count);
+         elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
+         elem.parent().find('span.glyphicon').removeClass('grey');
+         elem.parent().find('span.glyphicon').addClass('blue');
+       }
+     }, 'json');
+ }
+
+ function cancel_upvote_review(review_id)
+ {
+     elem = $('#review-upvote-count-' + review_id);
+     //elem.text(parseInt(elem.text()) - 1);
+     $.post("{%  url 'mock:api_review_cancel_upvote' %}", { review_id: review_id }, function(o) {
+       if (typeof o.count != "undefined") {
+         elem.text(o.count);
+         elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
+         elem.parent().find('span.glyphicon').removeClass('blue');
+         elem.parent().find('span.glyphicon').addClass('grey');
+       }
+     }, 'json');
+ }
+
+ function delete_review(review_id)
+ {
+     if (!confirm('你真的要删除此点评吗？')) {
+         return;
+     }
+     $.post("{% url 'mock:api_delete_review' %}", { id: review_id }, function(o) {
+         if (o.ok)
+            window.location.href = "{% url 'mock:view_course' course.id %}";
+         else
+            alert(o.message);
+     }, 'json');
+ }
+
+ function reload_comments(review_id)
+ {
+             $.get("{% url 'mock:api_show_comments' %}",
+                { review_id: review_id},
+                function(html) {
+                    $('#review-' + review_id + '-comments').replaceWith(html);
+                    $('#review-' + review_id + '-comments').show();
+             }, 'html');
+ }
+
+ function submit_comment(review_id)
+ {
+     content = $('#review-comment-input-' + review_id).val().trim();
+     if (content === '') {
+         alert('请输入评论内容');
+         return;
+     }
+     $.post("{%  url 'mock:api_review_new_comment' %}", {
+         review_id: review_id,
+         content: content
+     }, function(o) {
+         if (o.ok) {
+             reload_comments(review_id);
+         } else {
+             alert(o.message);
+         }
+     }, 'json');
+ }
+
+ function delete_comment(review_id, comment_id)
+ {
+     if (!confirm('你真的要删除此评论吗？')) {
+         return;
+     }
+     $.post("{% url 'mock:api_delete_comment' %}", { comment_id: comment_id },
+         function(o) {
+            if (o.ok) {
+               reload_comments(review_id);
+            } else {
+               alert(o.message);
+            }
+     }, 'json');
+ }
+
+ function reply_comment(review_id, reply_to)
+ {
+     var elem = $('#review-comment-input-' + review_id);
+     elem.val('回复 @' + reply_to + ': ');
+     elem.focus();
+ }
+
+ function hide_review(review_id)
+ {
+     $.post("{% url 'mock:api_hide_review' %}", { review_id: review_id },
+         function(o) {
+            if (o.ok) {
+               alert('屏蔽成功，请刷新页面');
+            } else {
+               alert(o.message);
+            }
+     }, 'json');
+ }
+
+ function unhide_review(review_id)
+ {
+     $.post("{% url 'mock:api_unhide_review' %}", { review_id: review_id },
+         function(o) {
+            if (o.ok) {
+               alert('解除屏蔽成功，请刷新页面');
+            } else {
+               alert(o.message);
+            }
+     }, 'json');
+ }
+
+</script>
 {% endblock %}

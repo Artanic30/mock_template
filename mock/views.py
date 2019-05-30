@@ -52,24 +52,39 @@ def latest_reviews(request):
         'page': 2,
         'items': [
             {
-                'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
-                'publish_time': 20181012,
-                'content': 'test_content',
+                'author': {
+                    'username': 'test_username',
+                    'id': 23333333
+                },
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'id': 23333
             },
             {
-                'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
-                'publish_time': 20181012,
-                'content': 'test_content',
+                'author': {'username': 'test_username', 'id': 23333333},
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'id': 23333
             },
             {
-                'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
-                'publish_time': 20181012,
-                'content': 'test_content',
+                'author': {'username': 'test_username', 'id': 23333333},
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'id': 23333
             }
         ],
@@ -113,25 +128,41 @@ def follow_reviews(request):
     reviews_paged = {
         'total': 234,
         'page': 2,
-        'items': [{
-                'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
-                'course': {'id': 5, 'name': 'follow_test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
-                'publish_time': 19261113,
-                'content': 'test_content',
+        'items': [
+            {
+                'author': {
+                    'username': 'test_username',
+                    'id': 23333333
+                },
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'id': 23333
             },
             {
-                'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
-                'course': {'id': 3, 'name': 'follow_test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
-                'publish_time': 19640823,
-                'content': 'test_content',
+                'author': {'username': 'test_username', 'id': 23333333},
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'id': 23333
             },
             {
-                'author': {'avatar': '/static/bootstrap/image/test.jpg', 'username': 'test_username', 'id': 23333333},
-                'course': {'id': 2, 'name': 'follow_test_name', 'teacher_names_display': 'HammerWang', 'teachers': True},
-                'publish_time': 20110417,
-                'content': 'test_content',
+                'author': {'username': 'test_username', 'id': 23333333},
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'id': 23333
             }
         ],
@@ -163,16 +194,15 @@ def popular(request):
     }
     courses = {
         'total': 213,
-        'page': 23123,
-        'has_next': True,
+        'page': 23123,# delete
+        'has_next': True,# delete
         'navigation': [0, 1, 2, 3],
         'items': [
             {
                 'teachers': 'test_name',
                 'teacher_names_display': 'test_name',
                 'name': 'course_name',
-                'introduction': 'introduction',
-                'term_ids': 14,
+                'term_ids': 'Fall 2018',
                 'review_count': 23,
                 'rate': {
                     'average_rate': 4.5,
@@ -187,8 +217,7 @@ def popular(request):
                 'teachers': 'test_name',
                 'teacher_names_display': 'test_name',
                 'name': 'course_name',
-                'introduction': 'introduction',
-                'term_ids': 13,
+                'term_ids': 'Fall 2018',
                 'review_count': 233,
                 'rate': {
                     'average_rate': 3.5,
@@ -203,8 +232,7 @@ def popular(request):
                 'teachers': 'test_name',
                 'teacher_names_display': 'test_name',
                 'name': 'course_name',
-                'introduction': 'introduction',
-                'term_ids': 16,
+                'term_ids': 'Fall 2018',
                 'review_count': 23333,
                 'rate': {
                     'average_rate': 2.5,
@@ -250,24 +278,19 @@ def view_course(request, course_id):
             {
                 'image': '/static/bootstrap/image/test.jpg',
                 'name': 'fivefiveopen',
-                'dept': {
-                    'name': 'dept_name'
-                },
+                'dept': 'department',
                 'homepage': 'https://www.baidu.com'
             },
             {
                 'image': '/static/bootstrap/image/test.jpg',
                 'name': 'fivefiveopen',
-                'dept': {
-                    'name': 'dept_name'
-                },
+                'dept': 'department',
                 'homepage': 'https://www.baidu.com'
             }
         ],
-        'teachers_names_display': 'Test_teacher_name',
         'term_ids': 'CS110',
-        'has_next': True,
-        'courseries': 23123,
+        'has_next': True,# delete
+        'code': 'EE2103',
         'teachers_count': 3,
         'review_count': 12,
         'rate': {
@@ -277,20 +300,23 @@ def view_course(request, course_id):
                     'grading': 'well',
                     'gain': 'many',
                 },
-        'join_type': "join_type",
-        'teaching_type': "teaching_type",
+        # add instructor note
         'course_type': "course_type",
         'dept': "dept_unknown",
-        'course_level': "course_level",
+        'course_level': "course_level", # delete
         'credit': 2,
         'homepage': 'https://www.baidu.com',
         'introduction': '简介之类的',
-        'last_edit_time': "19260817",
         'reviewed': False,
         'reviews': [
             {
                 'is_hidden': False,
-                'content': '虽然不总是必须，但是某些时候你可能需要将某些 DOM 内容放到一个盒子里。对于这种情况，可以试试面板组件。',
+                'content': [
+                    {
+                        'content': 'content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'rate': 8.5,
                 'author': {
                     'username': 'fivefiveopen',
@@ -303,16 +329,21 @@ def view_course(request, course_id):
                         'gain': 'many',
                     },
                     'review_count': 23,
-                    'term_ids': 23
+                    'term_ids': 'Fall 2012'
                 },
-                'id': 23333,
-                'term': '2018 Fall'
+                'id': 23333, # pk
+                'term': '2018 Fall',
+                'is_upvoted': True
             },
             {
                 'is_hidden': False,
                 'rate': 3.5,
-                'content': '通过 .panel-heading 可以很简单地为面板加入一个标题容器。你也可以通过添加设置了 .panel-title 类的 <h1>'
-                           '-<h6> 标签，添加一个预定义样式的标题。不过，<h1>-<h6> 标签的字体大小将被 .panel-heading 的样式所覆盖。',
+                'content': [
+                    {
+                        'content': 'content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'author': {
                     'username': 'fivefiveopen',
                     'id': 232323,
@@ -327,24 +358,34 @@ def view_course(request, course_id):
                     'term_ids': 23
                 },
                 'id': 23333,
-                'term': '2018 Fall'
+                'term': '2018 Fall',
+                'is_upvoted': True
             }
         ],
         'is_hidden': False,
-        'related_courses': [{
-            'teacher_names_display': 'Faker',
-        }],
-        'same_teacher_courses': [{
-            'course_rate': {
-                'average_rate': 2.5,
-                'difficulty': 'hell',
-                'homework': 'EE187',
-                'grading': 'well',
-                'gain': 'many',
-            },
-            'term_ids': 23,
-            'review_count': 21
-        }]
+        # version 2
+        'same_teacher_courses': [
+            {
+                'course_rate': {
+                    'average_rate': 3.5,
+                    'difficulty': 'hell',
+                    'homework': 'EE182',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+                'term_ids': 'term',
+                'review_count': 21,
+                'id': 12312,
+                'name': 'DT'
+            }
+        ],
+        'downvoted': 'unknown',
+        'following': 'unknown',
+        'upvoted': 'unknown',
+        'joined': 'unknown',
+        'follow_count': 23,
+        'downvote_count': 21,
+        'upvote_count': 12
     }
     data = {
         'course': course,
@@ -367,16 +408,17 @@ def view_profile(request, user_id):
         'id': 23333
     }
     user = {
+        'username': 'username',
         'is_student': True,
         'info': 'some information',
         'review_count': 12,
-        'classes_joined_count': 4,
         # 最多显示三条评论
         'reviews': [
             {
                 'is_hidden': False,
                 'course': {
                     'name': 'course_name',
+                    'id': 565656,
                     'teachers': [
                         {
                             'image': '/static/bootstrap/image/test.jpg',
@@ -407,6 +449,7 @@ def view_profile(request, user_id):
                 'is_hidden': False,
                 'course': {
                     'name': 'course_name',
+                    'id': 565656,
                     'teachers': [
                         {
                             'image': '/static/bootstrap/image/test.jpg',
@@ -437,6 +480,7 @@ def view_profile(request, user_id):
                 'is_hidden': True,
                 'course': {
                     'name': 'course_name',
+                    'id': 565656,
                     'teachers': [
                         {
                             'image': '/static/bootstrap/image/test.jpg',
@@ -465,88 +509,7 @@ def view_profile(request, user_id):
             }
         ],
         'courses_following_count': 9,
-        # 只显示前六门课
-        'courses_following': [{
-                    'name': 'course_name',
-                    'teachers': [
-                        {
-                            'image': '/static/bootstrap/image/test.jpg',
-                            'name': 'fivefiveopen',
-                            'dept': {
-                                'name': 'dept_name'
-                            },
-                            'homepage': 'https://www.baidu.com'
-                        },
-                        {
-                            'image': '/static/bootstrap/image/test.jpg',
-                            'name': 'fivefiveopen',
-                            'dept': {
-                                'name': 'dept_name'
-                            },
-                            'homepage': 'https://www.baidu.com'
-                        }
-                    ],
-                    'teachers_names_display': 'Test_teacher_name',
-                    'introduction': '简介之类的',
-                },
-            {
-                'name': 'course_name',
-                'teachers': [
-                    {
-                        'image': '/static/bootstrap/image/test.jpg',
-                        'name': 'fivefiveopen',
-                        'dept': {
-                            'name': 'dept_name'
-                        },
-                        'homepage': 'https://www.baidu.com'
-                    },
-                    {
-                        'image': '/static/bootstrap/image/test.jpg',
-                        'name': 'fivefiveopen',
-                        'dept': {
-                            'name': 'dept_name'
-                        },
-                        'homepage': 'https://www.baidu.com'
-                    }
-                ],
-                'teachers_names_display': 'Test_teacher_name',
-                'introduction': '简介之类的',
-            }
-        ],
-        'classes_joined': [
-            {
-                'course_id': 23333,
-                'course': {
-                    'name': 'class_joined_course_name',
-                    'teachers': [
-                                 {
-                                    'image': '/static/bootstrap/image/test.jpg',
-                                    'name': 'fivefiveopen',
-                                    'dept': {
-                                        'name': 'dept_name'
-                                    },
-                                    'homepage': 'https://www.baidu.com'
-                                 },
-                                 {
-                                    'image': '/static/bootstrap/image/test.jpg',
-                                    'name': 'fivefiveopen',
-                                    'dept': {
-                                        'name': 'dept_name'
-                                    },
-                                    'homepage': 'https://www.baidu.com'
-                                 }
-                            ],
-                    'teachers_names_display': 'Test_teacher_name',
-                    'reviewed_by': True,
-                },
-                'term': 'some_terms'
-            }
-        ],
         'avatar': '/static/bootstrap/image/test.jpg',
-        'description': 'some descriptions',
-        'homepage': 'www.github.com',
-        'following_count': 23,
-        'follower_count': 12,
         'reviews_count': 231
     }
     data = {
@@ -626,6 +589,7 @@ def catalog(request):
         {
             'course_id': 23333,
             'code': 'EE110',
+            'name': 'mane',
             'credit': 4,
             'teachers_names_display': 'fivefiveopen',
             'score': 8.5,
@@ -636,6 +600,7 @@ def catalog(request):
             'course_id': 23333,
             'code': 'EE110',
             'credit': 4,
+            'name': 'mane',
             'teachers_names_display': 'fivefiveopen',
             'score': 8.5,
             'suggest_count': 123,
@@ -645,6 +610,7 @@ def catalog(request):
             'course_id': 23333,
             'code': 'EE110',
             'credit': 4,
+            'name': 'mane',
             'teachers_names_display': 'fivefiveopen',
             'score': 8.5,
             'suggest_count': 123,
@@ -654,6 +620,7 @@ def catalog(request):
             'course_id': 23333,
             'code': 'EE110',
             'credit': 4,
+            'name': 'mane',
             'teachers_names_display': 'fivefiveopen',
             'score': 8.5,
             'suggest_count': 123,
@@ -667,6 +634,96 @@ def catalog(request):
         'title': '课程目录',
     }
     return render(request, 'catalog.html', data)
+
+
+def view_teacher_profile(request, teacher_id):
+    courses = {
+        'total': 213,
+        'page': 23123,
+        'has_next': True,
+        'navigation': [0, 1, 2, 3],
+        'items': [
+            {
+                'teachers': 'test_name', # delete
+                'teacher_names_display': 'test_name',
+                'name': 'course_name', # delete
+                'introduction': 'introduction',
+                'term_ids': 'pingqilaidexueqi',
+                'review_count': 23,
+                'courseries': 'EE110',# change to code
+                'reviewed': False,
+                'rate': {
+                    'average_rate': 4.5,
+                    'difficulty': 'hell',# delete
+                    'homework': 'EE101',# delete
+                    'grading': 'well',# delete
+                    'gain': 'many',# delete
+                },
+                'id': 112233 # course pk
+            },
+            {
+                'teachers': 'test_name',
+                'teacher_names_display': 'test_name',
+                'name': 'course_name',
+                'introduction': 'introduction',
+                'term_ids': 13,
+                'review_count': 233,
+                'courseries': 677,
+                'reviewed': False,
+                'rate': {
+                    'average_rate': 7.7,
+                    'difficulty': 'hell',
+                    'homework': 'EE102',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+                'id': 112233
+            },
+            {
+                'teachers': 'test_name',
+                'teacher_names_display': 'test_name',
+                'name': 'course_name',
+                'introduction': 'introduction',
+                'term_ids': 16,
+                'review_count': 23333,
+                'courseries': 6777,
+                'reviewed': False,
+                'rate': {
+                    'average_rate': 8.7,
+                    'difficulty': 'hell',
+                    'homework': 'EE187',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+                'id': 112233
+            }
+        ]
+    }
+    current_user = {
+        'is_authenticated': True,
+        'username': 'TestName',
+        'unread_notification_count': 4,
+        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
+        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
+        'is_student': False,
+        'id': 23333
+    }
+    teacher = {
+        'image': '/static/bootstrap/image/test.jpg',
+        'name': 'teacher_test_name',
+        'homepage': 'https://www.hao123.com',
+        'dept': { # delete
+            'name': 'dept_name'
+        },
+        'id': 55667 # pk
+    }
+    data = {
+        'courses': courses,
+        'current_user': current_user,
+        'teacher': teacher,
+        'range_list': [0, 1, 2, 3, 4]
+    }
+    return render(request, 'teacher-profile.html', data)
 
 
 def not_found(request):
