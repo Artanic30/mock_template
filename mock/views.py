@@ -290,7 +290,7 @@ def view_course(request, course_id):
         ],
         'term_ids': 'CS110',
         'has_next': True,# delete
-        'courseries': 23123, # code
+        'code': 'EE2103',
         'teachers_count': 3,
         'review_count': 12,
         'rate': {
@@ -301,15 +301,12 @@ def view_course(request, course_id):
                     'gain': 'many',
                 },
         # add instructor note
-        'join_type': "join_type", # delete
-        'teaching_type': "teaching_type", # delete
         'course_type': "course_type",
         'dept': "dept_unknown",
         'course_level': "course_level", # delete
         'credit': 2,
         'homepage': 'https://www.baidu.com',
-        'introduction': '简介之类的', # delete
-        'last_edit_time': "19260817", # delete
+        'introduction': '简介之类的',
         'reviewed': False,
         'reviews': [
             {
@@ -324,7 +321,7 @@ def view_course(request, course_id):
                 'author': {
                     'username': 'fivefiveopen',
                     'id': 232323,
-                    'course_rate': { # check
+                    'course_rate': {
                         'average_rate': 2.5,
                         'difficulty': 'hell',
                         'homework': 'EE187',
@@ -332,7 +329,7 @@ def view_course(request, course_id):
                         'gain': 'many',
                     },
                     'review_count': 23,
-                    'term_ids': 23
+                    'term_ids': 'Fall 2012'
                 },
                 'id': 23333, # pk
                 'term': '2018 Fall',
@@ -341,8 +338,12 @@ def view_course(request, course_id):
             {
                 'is_hidden': False,
                 'rate': 3.5,
-                'content': '通过 .panel-heading 可以很简单地为面板加入一个标题容器。你也可以通过添加设置了 .panel-title 类的 <h1>'
-                           '-<h6> 标签，添加一个预定义样式的标题。不过，<h1>-<h6> 标签的字体大小将被 .panel-heading 的样式所覆盖。',
+                'content': [
+                    {
+                        'content': 'content',
+                        'publish_time': 'time'
+                    }
+                ],
                 'author': {
                     'username': 'fivefiveopen',
                     'id': 232323,
@@ -362,20 +363,22 @@ def view_course(request, course_id):
             }
         ],
         'is_hidden': False,
-        'related_courses': [{ # version 2
-            'teacher_names_display': 'Faker',
-        }],
-        'same_teacher_courses': [{
-            'course_rate': {
-                'average_rate': 2.5,
-                'difficulty': 'hell',
-                'homework': 'EE187',
-                'grading': 'well',
-                'gain': 'many',
-            },
-            'term_ids': 'term',
-            'review_count': 21
-        }],
+        # version 2
+        'same_teacher_courses': [
+            {
+                'course_rate': {
+                    'average_rate': 3.5,
+                    'difficulty': 'hell',
+                    'homework': 'EE182',
+                    'grading': 'well',
+                    'gain': 'many',
+                },
+                'term_ids': 'term',
+                'review_count': 21,
+                'id': 12312,
+                'name': 'DT'
+            }
+        ],
         'downvoted': 'unknown',
         'following': 'unknown',
         'upvoted': 'unknown',

@@ -3,6 +3,8 @@ from django.shortcuts import render
 
 
 """all the functions have the same function name as USTC"""
+
+
 def follow_user(request): # delete
     """关注用户 返回一个状态 ok = bool 和 message =  string"""
     result = {

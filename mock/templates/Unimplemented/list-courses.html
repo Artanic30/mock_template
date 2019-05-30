@@ -103,9 +103,9 @@
         <div class="col-md-8 col-xs-10">
           <a class="px16" href=https://www.baidu.com>{{ course.name }}（{{ course.teacher.name }}）</a>
             <!-- url_for('course.view_course', course_id=course.id) -->
-          <span class="small grey align-bottom left-pd-sm desktop">学期：{{ course.term_ids }} &nbsp;课程号：{{ course.courseries }}</span>
+          <span class="small grey align-bottom left-pd-sm desktop">学期：{{ course.term_ids }} &nbsp;课程号：{{ course.code }}</span>
             <!-- { course.term_ids|term_display } -->
-          <br><span class="small grey align-bottom mobile">学期：{{ course.term_ids }} &nbsp;课程号：{{ course.courseries }}</span>
+          <br><span class="small grey align-bottom mobile">学期：{{ course.term_ids }} &nbsp;课程号：{{ course.code }}</span>
             <!-- { course.term_ids|term_display } -->
           {% if course.review_count %}
           <div class="ud-pd-sm blue">
@@ -120,7 +120,7 @@
             {% endfor %}
             <span class="rl-pd-sm h4">{{ course.rate.average_rate }}</span><span class="text-muted px12">({{ course.review_count }} 人评价)</span>
           </div>
- 
+
           <ul class="text-muted list-inline list-unstyled">
               <li class="right-mg-md">课程难度：{{ course.rate.difficulty }}</li>
               <li class="right-mg-md">作业多少：{{ course.rate.homework }}</li>
@@ -150,17 +150,17 @@
 
     <nav>
       <ul class="pagination">
-        {% if courses.has_prev %} 
+        {% if courses.has_prev %}
         <li>
             <a href="https://www.baidu.com" aria-label="Previous">
                 <!-- url_for('home.search', q=keyword, page=courses.prev_num) -->
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        {% else %} 
+        {% else %}
         <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
         {% endif %}
-        
+
         {% for page in courses.iter_pages(left_edge=1, right_edge=1) %}
             {% if page == courses.page %}
             <li class="active"><a href="#">{{ page }}<span class="sr-only">(current)</span></a></li>
