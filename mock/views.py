@@ -269,7 +269,7 @@ def view_course(request, course_id):
     }
     user = {
         'is_authenticated': True,
-        'is_admin': False
+        'is_admin': True
     }
     course = {
         'id': 23333,
@@ -336,7 +336,7 @@ def view_course(request, course_id):
                 'is_upvoted': True
             },
             {
-                'is_hidden': False,
+                'is_hidden': True,
                 'rate': 3.5,
                 'content': [
                     {

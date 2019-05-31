@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path
 
 from . import views, api
 """
@@ -25,24 +25,17 @@ urlpatterns = [
     path('user/<int:user_id>', views.view_profile, name='user_view_profile'),
     path('user/notice', views.index, name='user_notice'),
     path('user/account_settings', views.index, name='user_account_settings'),
-    path('api/follow_user', api.follow_user, name='api_follow_user'),
-    path('api/unfollow_user', api.unfollow_user, name='api_unfollow_user'),
     path('api/<int:course_id>/follow', api.follow, name='api_follow'),
     path('api/<int:course_id>/unfollow', api.unfollow, name='api_unfollow'),
     path('api/<int:course_id>/downvote', api.downvote, name='api_downvote'),
     path('api/<int:course_id>/undo_downvote', api.undo_downvote, name='api_undo_downvote'),
     path('api/<int:course_id>/upvote', api.upvote, name='api_upvote'),
     path('api/<int:course_id>/undo_upvote', api.undo_upvote, name='api_undo_upvote'),
-    path('api/<int:course_id>/join', api.join, name='api_join'),
-    path('api/<int:course_id>/quit', api.quit, name='api_quit'),
     path('api/review/upvote', api.review_upvote, name='api_review_upvote'),
     path('api/review/cancel_upvote', api.review_cancel_upvote, name='api_review_cancel_upvote'),
-    path('api/review/delete', api.delete_review, name='api_delete_review'),
-    path('api/review/comments', api.show_comments, name='api_show_comments'),
-    path('api/review/new_comment', api.review_new_comment, name='api_review_new_comment'),
-    path('api/review/delete_comment', api.delete_comment, name='api_delete_comment'),
     path('api/review/hide', api.hide_review, name='api_hide_review'),
     path('api/review/unhide', api.unhide_review, name='api_unhide_review'),
     path('teacher/<int:teacher_id>', views.view_teacher_profile, name='view_teacher_profile'),
-
+    path('api/delete_comment', api.delete_comment, name='api_delete_comment'),
+    path('api/show_comment', api.show_comments, name='api_show_comment'),
 ]

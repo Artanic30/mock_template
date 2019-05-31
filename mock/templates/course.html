@@ -199,19 +199,8 @@
                 <!-- class="glyphicon glyphicon-thumbs-up { 'blue' if review.is_upvoted() else 'grey' }} left-pd-lg"-->
                 <span id="review-upvote-count-{{review.id}}">{{ review.upvote_count }}</span>
             </a>
-            <a class="nounderline" href="javascript: show_review_comments({{ review.id }})">
-              <span class="glyphicon glyphicon-comment grey left-pd-md" aria-hidden="true"></span>
-              <span id="review-comment-count-{{review.id}}">{{ review.comment_count }}</span>
-            </a>
             <span class="pull-right">
-              {% if review.author == user %}
-              <a class="nounderline desktop" href="https://www.baidu.com">
-                <!-- url_for('course.new_review',course_id=course.id) -->
-                <span class="glyphicon glyphicon-pencil grey left-pd-sm small" aria-hidden="true" ></span>
-                编辑
-              </a>
-              {% endif %}
-              {% if review.author == user or user.is_admin %}
+              {% if user.is_admin %}
               <a class="nounderline" href="javascript: delete_review({{ review.id }})">
                 <span class="glyphicon glyphicon-trash grey left-pd-md small" aria-hidden="true"></span>
                 删除
@@ -304,7 +293,6 @@
      {% check_empty course.following as result1 %}
      {% check_empty course.downvoted as result2 %}
      {% check_empty course.upvoted as result3 %}
-     {% check_empty course.joined as result4 %}
      {% check_count course.follow_count as count1 %}
      {% check_count course.downvote_count as count2 %}
      {% check_count course.upvote_count as count3 %}
@@ -327,11 +315,6 @@
      'do_url': "{% url 'mock:api_upvote' course.id %}",
      'undo_url': "{% url 'mock:api_undo_upvote' course.id %}",
      'conflict': 'downvote',
-   },
-   'join': {
-     'enabled': {{ result4 }},
-     'do_url': "{% url 'mock:api_join' course.id %}",
-     'undo_url': "{% url 'mock:api_quit' course.id %}",
    },
  }
  // created ():
@@ -405,25 +388,11 @@
    $('#action-btn-group').show();
  });
 
- function show_review_comments(review_id)
- {
-   if (document.getElementById('review-'+ review_id +'-comments').style.display=="block") {
-       document.getElementById('review-'+ review_id +'-comments').style.display="none";
-       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').addClass('grey');
-       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').removeClass('blue');
-     }
-   else {
-       document.getElementById('review-'+ review_id +'-comments').style.display="block";
-       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').addClass('blue');
-       $('#review-comment-count-' + review_id).parent().find('span.glyphicon').removeClass('grey');
-   }
- }
-
  function upvote_review(review_id)
  {
      elem = $('#review-upvote-count-' + review_id);
      //elem.text(parseInt(elem.text()) + 1);
-     $.post("{%  url 'mock:api_review_upvote' %}", { review_id: review_id }, function(o) {
+     $.post("{%  url 'mock:api_review_upvote' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' }, function(o) {
        if (typeof o.count != "undefined") {
          elem.text(o.count);
          elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
@@ -437,7 +406,7 @@
  {
      elem = $('#review-upvote-count-' + review_id);
      //elem.text(parseInt(elem.text()) - 1);
-     $.post("{%  url 'mock:api_review_cancel_upvote' %}", { review_id: review_id }, function(o) {
+     $.post("{%  url 'mock:api_review_cancel_upvote' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' }, function(o) {
        if (typeof o.count != "undefined") {
          elem.text(o.count);
          elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
@@ -447,73 +416,9 @@
      }, 'json');
  }
 
- function delete_review(review_id)
- {
-     if (!confirm('你真的要删除此点评吗？')) {
-         return;
-     }
-     $.post("{% url 'mock:api_delete_review' %}", { id: review_id }, function(o) {
-         if (o.ok)
-            window.location.href = "{% url 'mock:view_course' course.id %}";
-         else
-            alert(o.message);
-     }, 'json');
- }
-
- function reload_comments(review_id)
- {
-             $.get("{% url 'mock:api_show_comments' %}",
-                { review_id: review_id},
-                function(html) {
-                    $('#review-' + review_id + '-comments').replaceWith(html);
-                    $('#review-' + review_id + '-comments').show();
-             }, 'html');
- }
-
- function submit_comment(review_id)
- {
-     content = $('#review-comment-input-' + review_id).val().trim();
-     if (content === '') {
-         alert('请输入评论内容');
-         return;
-     }
-     $.post("{%  url 'mock:api_review_new_comment' %}", {
-         review_id: review_id,
-         content: content
-     }, function(o) {
-         if (o.ok) {
-             reload_comments(review_id);
-         } else {
-             alert(o.message);
-         }
-     }, 'json');
- }
-
- function delete_comment(review_id, comment_id)
- {
-     if (!confirm('你真的要删除此评论吗？')) {
-         return;
-     }
-     $.post("{% url 'mock:api_delete_comment' %}", { comment_id: comment_id },
-         function(o) {
-            if (o.ok) {
-               reload_comments(review_id);
-            } else {
-               alert(o.message);
-            }
-     }, 'json');
- }
-
- function reply_comment(review_id, reply_to)
- {
-     var elem = $('#review-comment-input-' + review_id);
-     elem.val('回复 @' + reply_to + ': ');
-     elem.focus();
- }
-
  function hide_review(review_id)
  {
-     $.post("{% url 'mock:api_hide_review' %}", { review_id: review_id },
+     $.post("{% url 'mock:api_hide_review' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' },
          function(o) {
             if (o.ok) {
                alert('屏蔽成功，请刷新页面');
@@ -525,7 +430,7 @@
 
  function unhide_review(review_id)
  {
-     $.post("{% url 'mock:api_unhide_review' %}", { review_id: review_id },
+     $.post("{% url 'mock:api_unhide_review' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' },
          function(o) {
             if (o.ok) {
                alert('解除屏蔽成功，请刷新页面');
@@ -535,5 +440,29 @@
      }, 'json');
  }
 
+ function delete_comment(review_id, comment_id)
+ {
+     if (!confirm('你真的要删除此评论吗？')) {
+         return;
+     }
+     $.post("{% url 'mock:api_delete_comment' %}", { comment_id: comment_id, csrfmiddlewaretoken:'{{ csrf_token  }}' },
+         function(o) {
+            if (o.ok) {
+               reload_comments(review_id);
+            } else {
+               alert(o.message);
+            }
+     }, 'json');
+ }
+
+ function reload_comments(review_id)
+ {
+             $.get("{% url 'mock:api_show_comment' %}",
+                { review_id: review_id},
+                function(html) {
+                    $('#review-' + review_id + '-comments').replaceWith(html);
+                    $('#review-' + review_id + '-comments').show();
+             }, 'html');
+ }
 </script>
 {% endblock %}
