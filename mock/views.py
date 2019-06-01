@@ -56,7 +56,15 @@ def latest_reviews(request):
                     'username': 'test_username',
                     'id': 23333333
                 },
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'course': {'id': 23333, 'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'Soren'
+                        },
+                        {
+                            'teacher_names_display': 'Chen Hao'
+                        }],
+                    'teacher_names_display': 'Soren', 'code': 'EE110'},
                 'contents': [
                     {
                         'content': 'content content content content content',
