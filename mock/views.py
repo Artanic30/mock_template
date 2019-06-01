@@ -281,7 +281,7 @@ def view_course(request, course_id):
     }
     course = {
         'id': 23333,
-        'name': 'CS110计算机体系结构',
+        'name': '计算机体系结构',
         'teachers': [
             {
                 'image': '/static/bootstrap/image/test.jpg',
@@ -297,8 +297,8 @@ def view_course(request, course_id):
             }
         ],
         'term_ids': 'CS110',
-        'has_next': True,# delete
-        'code': 'EE2103',
+        'has_next': True,  # delete
+        'code': 'CS110',
         'teachers_count': 3,
         'review_count': 12,
         'rate': {
@@ -311,7 +311,7 @@ def view_course(request, course_id):
         # add instructor note
         'course_type': "course_type",
         'dept': "dept_unknown",
-        'course_level': "course_level", # delete
+        'course_level': "course_level",  # delete
         'credit': 2,
         'homepage': 'https://www.baidu.com',
         'introduction': '简介之类的',
