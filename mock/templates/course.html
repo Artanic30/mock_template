@@ -255,7 +255,7 @@
           <btn class="btn btn-link float-right"><a href="https://www.baidu.com">编辑教师信息</a></btn>
               <!-- url_for('teacher.edit_profile', teacher_id=teacher.id) -->
           {% endif %}
-          <h3 class="blue"><a href="https://www.baidu.com">{{ teacher.name }}</a></h3>
+          <h3 class="blue"><a href={% url 'mock:view_teacher_profile' teacher.id %}>{{ teacher.name }}</a></h3>
             <!-- url_for('teacher.view_profile', teacher_id=teacher.id) -->
           <p>{{ teacher.dept.name }}</p>
           <p>教师主页：

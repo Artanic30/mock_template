@@ -284,12 +284,14 @@ def view_course(request, course_id):
         'name': '计算机体系结构',
         'teachers': [
             {
+                'id': 1,
                 'image': '/static/bootstrap/image/test.jpg',
                 'name': 'fivefiveopen',
                 'dept': 'department',
                 'homepage': 'https://www.baidu.com'
             },
             {
+                'id':2,
                 'image': '/static/bootstrap/image/test.jpg',
                 'name': 'fivefiveopen',
                 'dept': 'department',
