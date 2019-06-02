@@ -49,7 +49,7 @@ def latest_reviews(request):
     }
     reviews_paged = {
         'total': 234,
-        'page': 2,
+        'page': 1,
         'items': [
             {
                 'author': {
@@ -64,7 +64,7 @@ def latest_reviews(request):
                         {
                             'teacher_names_display': 'Chen Hao'
                         }],
-                    'teacher_names_display': 'Soren', 'code': 'EE110'},
+                    'code': 'EE110'},
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -75,7 +75,10 @@ def latest_reviews(request):
             },
             {
                 'author': {'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'course': {'id': 23333, 'name': 'test_name', 'teachers': [
+                        {
+                            'teacher_names_display': '赵登吉'
+                        }], 'code': 'CS101'},
                 'contents': [
                     {
                         'content': 'content content content content content',
