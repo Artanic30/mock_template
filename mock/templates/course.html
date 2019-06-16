@@ -8,6 +8,7 @@
     <div class="row">
       <div class="col-md-8 inline-h3">
         <span class="blue h3">{{ course.name }}</span><span class="h3 blue mobile">{% if course.teachers %}（{{ course.teacher_names_display }}）{% endif %}</span>
+
         <span class="small grey align-bottom left-pd-sm desktop">{{ course.term_ids }} &nbsp;课程号：{{ course.code }}</span>
             <!-- { course.term_ids|term_display } -->
         <br><span class="small grey align-bottom mobile">{{ course.term_ids }} &nbsp;课程号：{{ course.code }}</span>
@@ -18,7 +19,7 @@
         {% endif %}
         <hr>
         {% if course.review_count %}
-        <div class="ud-pd-sm blue">
+        <div style="display:inline-block" class="ud-pd-sm blue">
         <!-- wdnmd django template 不支持运算 widthratio出来数据类型还不是int-->
         {% for star in range_list %}
             {% widthratio course.rate.average_rate 1 2 as course_star %}
@@ -35,15 +36,15 @@
         <span class="rl-pd-sm h4">{{ course.rate.average_rate }}</span><span class="text-muted px12">({{ course.review_count }} 人评价)</span>
       </div>
         {% else %}
-        <div class="ud-pd-sm blue">
+        <div style="display:inline-block" class="ud-pd-sm blue">
           {% for star in range_list %}
             <span class="glyphicon glyphicon-star-empty glyphicon-lg" aria-hidden="true"></span>
           {% endfor %}
           <span class="rl-pd-sm h4"><span class="text-muted px12">(暂无评价)</span>
         </div>
         {% endif %}
-        <ul class="text-muted list-inline list-unstyled ud-pd-sm">
-          <ul class="text-muted list-inline list-unstyled">
+        &nbsp;&nbsp;&nbsp;
+        <ul style="display:inline-block" class="list-inline list-unstyled text-muted">
           {% if course.rate.difficulty != '' %}
               <li class="right-mg-md">课程难度: {{ course.rate.difficulty }}</li>
           {% else %}
@@ -65,7 +66,6 @@
               <li class="right-mg-md">收获大小: {{ '你猜' }}</li>
           {% endif %}
         </ul>
-
         <table class="table table-condensed no-border">
         <tbody>
           <tr>
@@ -93,14 +93,30 @@
               {% else %}
                   <td><strong>学分：</strong>{{ '未知' }}</td>
               {% endif %}
+               <td>
+               {% if course.homepage and course.homepage != 'http://' %}
+                  <strong>课程主页</strong>：<a href="{{ course.homepage }}">{{ course.homepage }}</a>
+                  {% else %}
+                  <strong>课程主页</strong>：暂无（如果你知道，劳烦告诉我们！）
+                  {% endif %}
+                </td>
            </tr>
           </tbody>
         </table>
 
+        <div>
+          <tbody>
+            <tr>
+                {% if True %}
+                  <td><strong>相似课程：</strong>2019春(5)、2018秋(4) ???</td>
+                {% endif %}
+            </tr>
+          </tbody>
+        </div>
+
         <div class="ud-pd-sm">
 
         </div>
-
         <div id="action-btn-group" class="ud-pd-md">
           <button class="btn btn-white btn-flat btn-follow btn-do"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> 关注 <small>(<span class="count"></span>)</small></button>
           <button class="btn btn-blue btn-flat btn-follow btn-undo"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 已关注 <small>(<span class="count"></span>)</small></button>
@@ -236,7 +252,7 @@
           <btn class="btn btn-link float-right"><a href="https://www.baidu.com">编辑教师信息</a></btn>
               <!-- url_for('teacher.edit_profile', teacher_id=teacher.id) -->
           {% endif %}
-          <h3 class="blue"><a href="https://www.baidu.com">{{ teacher.name }}</a></h3>
+          <h3 class="blue"><a href={% url 'mock:view_teacher_profile' teacher.id %}>{{ teacher.name }}</a></h3>
             <!-- url_for('teacher.view_profile', teacher_id=teacher.id) -->
           <p>{{ teacher.dept.name }}</p>
           <p>教师主页：

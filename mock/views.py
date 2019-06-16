@@ -49,7 +49,7 @@ def latest_reviews(request):
     }
     reviews_paged = {
         'total': 234,
-        'page': 2,
+        'page': 1,
         'items': [
             {
                 'author': {
@@ -273,15 +273,17 @@ def view_course(request, course_id):
     }
     course = {
         'id': 23333,
-        'name': 'CS110计算机体系结构',
+        'name': '计算机体系结构',
         'teachers': [
             {
+                'id': 1,
                 'image': '/static/bootstrap/image/test.jpg',
                 'name': 'fivefiveopen',
                 'dept': 'department',
                 'homepage': 'https://www.baidu.com'
             },
             {
+                'id':2,
                 'image': '/static/bootstrap/image/test.jpg',
                 'name': 'fivefiveopen',
                 'dept': 'department',

@@ -21,7 +21,16 @@
                 <div class="grey bm-pd-md">
               <a href={% url 'mock:user_view_profile' review.author.id %}>{{ review.author.username }}</a>
               点评了
-              <a href={% url 'mock:view_course' review.course.id %}>{{ review.course.name }}{% if review.course.teachers %}（{{ review.course.teacher_names_display }}）{% endif %}</a>
+              <!-- <a href={% url 'mock:view_course' review.course.id %}>{% if review.course.teachers %}（{{ review.course.teacher_names_display }}）{% endif %}</a> -->
+              <a href={% url 'mock:view_course' review.course.id %}>
+                {% if review.course.teachers %}
+                  {% for teacher in review.course.teachers %}{{ teacher.teacher_names_display }}{% if not forloop.last %}、{% endif %}{% endfor %}
+                {% else %}
+                  {{ review.course.teacher_names_display }}
+                {% endif %}
+              </a>
+              的
+              <a href={% url 'mock:view_course' review.course.id %}>{{ review.course.code }} : {{ review.course.name }}</a>
                     {% return_list_top review.contents as top_review %}
                   <span class="float-right">{{ top_review.publish_time }}</span>
                 </div>
