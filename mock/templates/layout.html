@@ -153,7 +153,6 @@
     <script src="/static/bootstrap/js/jquery.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-  {% include 'common-scripts.html' %}
   <script>
    $('#signin').on('shown.bs.modal', function () {
      $('#inputEmail').focus()
@@ -193,15 +192,6 @@
        }
      })
    });
-
-   function read_notification(count) {
-     if (count == 0)
-         return;
-     $.ajax({
-        type: "POST",
-        // url: "{ url_for('api.read_notifications') }}",
-     });
-   }
   </script>
 
   {% block script %} {% endblock %}

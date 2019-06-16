@@ -56,15 +56,7 @@ def latest_reviews(request):
                     'username': 'test_username',
                     'id': 23333333
                 },
-                'course': {'id': 23333, 'name': 'test_name',
-                    'teachers': [
-                        {
-                            'teacher_names_display': 'Soren'
-                        },
-                        {
-                            'teacher_names_display': 'Chen Hao'
-                        }],
-                    'code': 'EE110'},
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -75,10 +67,7 @@ def latest_reviews(request):
             },
             {
                 'author': {'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teachers': [
-                        {
-                            'teacher_names_display': '赵登吉'
-                        }], 'code': 'CS101'},
+                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -280,7 +269,7 @@ def view_course(request, course_id):
     }
     user = {
         'is_authenticated': True,
-        'is_admin': False
+        'is_admin': True
     }
     course = {
         'id': 23333,
@@ -302,8 +291,8 @@ def view_course(request, course_id):
             }
         ],
         'term_ids': 'CS110',
-        'has_next': True,  # delete
-        'code': 'CS110',
+        'has_next': True,# delete
+        'code': 'EE2103',
         'teachers_count': 3,
         'review_count': 12,
         'rate': {
@@ -316,7 +305,7 @@ def view_course(request, course_id):
         # add instructor note
         'course_type': "course_type",
         'dept': "dept_unknown",
-        'course_level': "course_level",  # delete
+        'course_level': "course_level", # delete
         'credit': 2,
         'homepage': 'https://www.baidu.com',
         'introduction': '简介之类的',
@@ -349,7 +338,7 @@ def view_course(request, course_id):
                 'is_upvoted': True
             },
             {
-                'is_hidden': False,
+                'is_hidden': True,
                 'rate': 3.5,
                 'content': [
                     {
