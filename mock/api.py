@@ -54,59 +54,8 @@ def review_cancel_upvote(id):
     return JsonResponse(result)
 
 
-def hide_review(id):
-    print(id, 'hide_review')
-    result = {
-        'ok': True,
-        'message': 'success',
-    }
-    return JsonResponse(result)
-
-
-def unhide_review(id):
-    print(id, 'unhide_review')
-    result = {
-        'ok': True,
-        'message': 'success',
-    }
-    return JsonResponse(result)
-
-
-def show_comments(request):
-    user = {
-        'is_authenticated': True,
-        'is_admin': True
-    }
-    review = {
-        'id': 23333,
-        'comments': [
-            {
-                'author': {
-                    'username': 'author_name'
-                },
-                'content' 'comment_content'
-                'id': 777777,
-                'publish_time': "19260817"
-            }
-        ]
-    }
-    data = {
-        'review': review,
-        'user': user
-    }
-    return render(request, 'review-comments.html', data)
-
-
 def new_review(request):
     print(request, 'new_review')
-    result = {
-        'ok': True
-    }
-    return result
-
-
-def delete_comment(id):
-    print(id, 'delete_review')
     result = {
         'ok': True
     }
