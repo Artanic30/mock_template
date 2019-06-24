@@ -20,7 +20,6 @@
         <hr>
         {% if course.review_count %}
         <div style="display:inline-block" class="ud-pd-sm blue">
-        <!-- wdnmd django template 不支持运算 widthratio出来数据类型还不是int-->
         {% for star in range_list %}
             {% widthratio course.rate.average_rate 1 2 as course_star %}
           {% widthratio star 1 4 as result_rate1 %}
@@ -43,8 +42,8 @@
           <span class="rl-pd-sm h4"><span class="text-muted px12">(暂无评价)</span>
         </div>
         {% endif %}
-        &nbsp;&nbsp;&nbsp;
-        <ul style="display:inline-block" class="list-inline list-unstyled text-muted">
+      <div style="width: 100%">
+          <ul style="display:inline-block" class="list-inline list-unstyled text-muted">
           {% if course.rate.difficulty != '' %}
               <li class="right-mg-md">课程难度: {{ course.rate.difficulty }}</li>
           {% else %}
@@ -66,6 +65,8 @@
               <li class="right-mg-md">收获大小: {{ '你猜' }}</li>
           {% endif %}
         </ul>
+      </div>
+
         <table class="table table-condensed no-border">
         <tbody>
           <tr>
@@ -93,44 +94,32 @@
               {% else %}
                   <td><strong>学分：</strong>{{ '未知' }}</td>
               {% endif %}
-               <td>
-               {% if course.homepage and course.homepage != 'http://' %}
-                  <strong>课程主页</strong>：<a href="{{ course.homepage }}">{{ course.homepage }}</a>
-                  {% else %}
-                  <strong>课程主页</strong>：暂无（如果你知道，劳烦告诉我们！）
-                  {% endif %}
-                </td>
            </tr>
-          </tbody>
-        </table>
-
-        <div>
-          <tbody>
             <tr>
                 {% if True %}
                   <td><strong>相似课程：</strong>2019春(5)、2018秋(4) ???</td>
                 {% endif %}
             </tr>
           </tbody>
-        </div>
+        </table>
+
 
         <div class="ud-pd-sm">
-
         </div>
-        <div id="action-btn-group" class="ud-pd-md">
-          <button class="btn btn-white btn-flat btn-follow btn-do"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> 关注 <small>(<span class="count"></span>)</small></button>
-          <button class="btn btn-blue btn-flat btn-follow btn-undo"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 已关注 <small>(<span class="count"></span>)</small></button>
+        <div class="ud-pd-md">
+            <button class="btn btn-blue btn-flat btn-upvote btn-undo;" id="like_button"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 推荐 <small>(<span class="count"></span>)</small></button>
+            <button class="btn btn-white btn-flat btn-upvote btn-do" id="already_like_button"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 取消推荐 <small>(<span class="count"></span>)</small></button>
 
-          <button class="btn btn-white btn-flat btn-upvote btn-do"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 推荐 <small>(<span class="count"></span>)</small></button>
-          <button class="btn btn-blue btn-flat btn-upvote btn-undo"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 已推荐 <small>(<span class="count"></span>)</small></button>
+          <button class="btn btn-blue btn-flat btn-downvote btn-undo" id="dislike_button"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 不推荐 <small>(<span class="count"></span>)</small></button>
+          <button class="btn btn-white btn-flat btn-downvote btn-do" id="already_dislike_button"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 取消不推荐 <small>(<span class="count"></span>)</small></button>
+        </div>
+      <div class="ud-pd-md">
+            <button class="btn btn-blue btn-flat btn-upvote btn-undo;" id="_button"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 推荐 <small>(<span class="count"></span>)</small></button>
+            <button class="btn btn-white btn-flat btn-upvote btn-do" id="already_like_button"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 取消推荐 <small>(<span class="count"></span>)</small></button>
 
-          <button class="btn btn-white btn-flat btn-downvote btn-do"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 不推荐 <small>(<span class="count"></span>)</small></button>
-          <button class="btn btn-blue btn-flat btn-downvote btn-undo"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 取消不推荐 <small>(<span class="count"></span>)</small></button>
+          <button class="btn btn-blue btn-flat btn-downvote btn-undo" id="dislike_button"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 不推荐 <small>(<span class="count"></span>)</small></button>
+          <button class="btn btn-white btn-flat btn-downvote btn-do" id="already_dislike_button"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 取消不推荐 <small>(<span class="count"></span>)</small></button>
 
-          {% if current_user.is_student %}
-          <button class="btn btn-white btn-flat btn-join btn-do"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 学过 <small></small></button>
-          <button class="btn btn-blue btn-flat btn-join btn-undo"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 学过 <small></small></button>
-          {% endif %}
         </div>
 
 	{% if course.introduction %}
@@ -305,105 +294,29 @@
    $(this).tab('show')
  })
 
- let action_data = {
-     {% check_empty course.following as result1 %}
-     {% check_empty course.downvoted as result2 %}
-     {% check_empty course.upvoted as result3 %}
-     {% check_count course.follow_count as count1 %}
-     {% check_count course.downvote_count as count2 %}
-     {% check_count course.upvote_count as count3 %}
-   'follow': {
-     'enabled': {{ result1 }},
-     'count': {{ count1 }},
-     'do_url': "{% url 'mock:api_follow' course.id %}",
-     'undo_url': "{% url 'mock:api_unfollow' course.id %}",
-   },
-   'downvote': {
-     'enabled': {{ result2 }},
-     'count': {{ count2 }},
-     'do_url': "{% url 'mock:api_downvote' course.id %}",
-     'undo_url': "{% url 'mock:api_undo_downvote' course.id %}",
-     'conflict': 'upvote',
-   },
-   'upvote': {
-     'enabled': {{ result3 }},
-     'count': {{ count3 }},
-     'do_url': "{% url 'mock:api_upvote' course.id %}",
-     'undo_url': "{% url 'mock:api_undo_upvote' course.id %}",
-     'conflict': 'downvote',
-   },
- }
  // created ():
+
  $(function() {
-   for (action in action_data) {
+     // ignore the warning by pycharm
+     let test = '{{ current_user.username }}';
+     if ({{ current_user.is_like_course }} ===  1) {
+         $('#like_button').hide()
+         $('#dislike_button').hide()
+         $('#already_dislike_button').hide()
+     } else if ({{ current_user.is_dislike_course }} === 1) {
+         $('#dislike_button').hide()
+         $('#like_button').hide()
+         $('#already_like_button').hide()
+     } else {
+         $('#already_dislike_button').hide()
+         $('#already_like_button').hide()
+     }
+ })
 
-     if (! $('.btn-' + action).length)
-       continue;
 
-     (function(action) {
-       var d = action_data[action];
+ like(() => {
 
-       var do_btn = $('.btn-' + action).filter('.btn-do');
-       var undo_btn = $('.btn-' + action).filter('.btn-undo');
-
-       function update_count(count) {
-         d.count = count;
-         $('.btn-' + action + ' .count').text(count);
-       }
-       function http_post_wrapper(url) {
-         $.post(url, null, function(o) {
-           if (o.count)
-             update_count(o.count);
-           if (!o.ok)
-             alert('Operation failed, please try again later!');
-         }, 'json');
-       }
-
-       do_btn.click(function() {
-         {% if user.is_authenticated %}
-         if (d.enabled)
-           return;
-         do_btn.hide();
-         undo_btn.show();
-         d.enabled = true;
-         update_count(d.count + 1);
-         if (d.conflict && action_data[d.conflict].enabled) {
-           $('.btn-' + d.conflict).filter('.btn-undo').click();
-         }
-         http_post_wrapper(d.do_url);
-         {% else %}
-         $('#signin').modal('show');
-         {% endif %}
-       });
-
-       undo_btn.click(function() {
-         {% if user.is_authenticated %}
-         if (!d.enabled)
-           return;
-         undo_btn.hide();
-         do_btn.show();
-         d.enabled = false;
-         update_count(d.count - 1);
-         http_post_wrapper(d.undo_url);
-         {% else %}
-         $('#signin').modal('show');
-         {% endif %}
-       });
-
-       update_count(d.count);
-
-       if (d.enabled) {
-         undo_btn.show();
-         do_btn.hide();
-       } else {
-         do_btn.show();
-         undo_btn.hide();
-       }
-     })(action);
-   }
-   $('#action-btn-group').show();
- });
-
+ })
  function upvote_review(review_id)
  {
      elem = $('#review-upvote-count-' + review_id);
@@ -430,55 +343,6 @@
          elem.parent().find('span.glyphicon').addClass('grey');
        }
      }, 'json');
- }
-
- function hide_review(review_id)
- {
-     $.post("{% url 'mock:api_hide_review' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' },
-         function(o) {
-            if (o.ok) {
-               alert('屏蔽成功，请刷新页面');
-            } else {
-               alert(o.message);
-            }
-     }, 'json');
- }
-
- function unhide_review(review_id)
- {
-     $.post("{% url 'mock:api_unhide_review' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' },
-         function(o) {
-            if (o.ok) {
-               alert('解除屏蔽成功，请刷新页面');
-            } else {
-               alert(o.message);
-            }
-     }, 'json');
- }
-
- function delete_comment(review_id, comment_id)
- {
-     if (!confirm('你真的要删除此评论吗？')) {
-         return;
-     }
-     $.post("{% url 'mock:api_delete_comment' %}", { comment_id: comment_id, csrfmiddlewaretoken:'{{ csrf_token  }}' },
-         function(o) {
-            if (o.ok) {
-               reload_comments(review_id);
-            } else {
-               alert(o.message);
-            }
-     }, 'json');
- }
-
- function reload_comments(review_id)
- {
-             $.get("{% url 'mock:api_show_comment' %}",
-                { review_id: review_id},
-                function(html) {
-                    $('#review-' + review_id + '-comments').replaceWith(html);
-                    $('#review-' + review_id + '-comments').show();
-             }, 'html');
  }
 </script>
 {% endblock %}

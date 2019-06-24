@@ -261,15 +261,15 @@ def view_course(request, course_id):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
-        'unread_notification_count': 4,
-        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
         'courses_joined': ['EE1110', 'SI100B', 'CS120'],
-        'is_student': False,
-        'id': 23333
+        'is_student': True,
+        'id': 23333,
+        'is_like_course': 0,  # todo: !!!新加是否推荐 1 = true 0 = false
+        'is_dislike_course': 0
     }
     user = {
         'is_authenticated': True,
-        'is_admin': True
+        'is_admin': False
     }
     course = {
         'id': 23333,
