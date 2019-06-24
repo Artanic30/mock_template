@@ -1,68 +1,35 @@
-from django.http import JsonResponse
 from django.shortcuts import render
+from mock.models import *
+from django.db import models
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
+import datetime
+import json
 
 
 """all the functions have the same function name as USTC"""
 
 
-def follow(course_id):
-    """返回一个状态 ok = bool 和 count = int """
-    print(course_id, 'follow_course')
-    result = {
-        'ok': True,
-        'count': 11
-    }
-    return JsonResponse(result)
+def follow_course(request):
+    """
+    Post: { course_id, subcription_level,
+    """
+    if request.method == "POST":
+        print('follow here!')
+        print(request.POST.get('course_id'), request.POST.get('subcription_level', None))
+        return HttpResponse(json.dumps({'res': 'processed'}), content_type="application/json")
 
 
-def unfollow(course_id):
-    """返回一个状态 ok = bool 和 count = int """
-    print(course_id, 'unfollow_course')
-    result = {
-        'ok': True,
-        'count': 22
-    }
-    return JsonResponse(result)
-
-
-def downvote(course_id):
-    """返回一个状态 ok = bool 和 count = int """
-    print(course_id, 'downvote')
-    result = {
-        'ok': True,
-        'count': 33
-    }
-    return JsonResponse(result)
-
-
-def undo_downvote(course_id):
-    """返回一个状态 ok = bool 和 count = int """
-    print(course_id, 'undo_downvote')
-    result = {
-        'ok': True,
-        'count': 44
-    }
-    return JsonResponse(result)
-
-
-def upvote(course_id):
-    """返回一个状态 ok = bool 和 count = int """
-    print(course_id, 'upvote')
-    result = {
-        'ok': True,
-        'count': 55
-    }
-    return JsonResponse(result)
-
-
-def undo_upvote(course_id):
-    """返回一个状态 ok = bool 和 count = int """
-    print(course_id, 'undo_upvote')
-    result = {
-        'ok': True,
-        'count': 66
-    }
-    return JsonResponse(result)
+def vote_thread(request):
+    """
+    thread_id == course_id ???
+    Post: { thread_id, score,
+    :param request:
+    :return:
+    """
+    print('vote success!')
+    print(request.POST.get('thread_id'), request.POST.get('score', None))
+    return HttpResponse(json.dumps({'res': 'processed'}), content_type="application/json")
 
 
 def review_upvote(id):

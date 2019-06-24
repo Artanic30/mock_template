@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% load extra_filters %}
+{% load extra_filters %}
 
 <div class="container">
 
@@ -107,19 +107,15 @@
         <div class="ud-pd-sm">
         </div>
         <div class="ud-pd-md">
-            <button class="btn btn-blue btn-flat btn-upvote btn-undo;" id="like_button"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 推荐 <small>(<span class="count"></span>)</small></button>
-            <button class="btn btn-white btn-flat btn-upvote btn-do" id="already_like_button"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 取消推荐 <small>(<span class="count"></span>)</small></button>
+            <button class="btn btn-blue btn-flat btn-upvote btn-undo;" id="like_button" onclick="like(1)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 推荐 <small>(<span class="count"></span>)</small></button>
+            <button class="btn btn-blue btn-flat btn-upvote btn-do" id="already_like_button" onclick="like(0)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 取消推荐 <small>(<span class="count"></span>)</small></button>
 
-          <button class="btn btn-blue btn-flat btn-downvote btn-undo" id="dislike_button"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 不推荐 <small>(<span class="count"></span>)</small></button>
-          <button class="btn btn-white btn-flat btn-downvote btn-do" id="already_dislike_button"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 取消不推荐 <small>(<span class="count"></span>)</small></button>
+          <button class="btn btn-blue btn-flat btn-downvote btn-undo" id="dislike_button" onclick="like(-1)"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 不推荐 <small>(<span class="count"></span>)</small></button>
+          <button class="btn btn-blue btn-flat btn-downvote btn-do" id="already_dislike_button" onclick="like(0)"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 取消不推荐 <small>(<span class="count"></span>)</small></button>
         </div>
       <div class="ud-pd-md">
-            <button class="btn btn-blue btn-flat btn-upvote btn-undo;" id="_button"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 推荐 <small>(<span class="count"></span>)</small></button>
-            <button class="btn btn-white btn-flat btn-upvote btn-do" id="already_like_button"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 取消推荐 <small>(<span class="count"></span>)</small></button>
-
-          <button class="btn btn-blue btn-flat btn-downvote btn-undo" id="dislike_button"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 不推荐 <small>(<span class="count"></span>)</small></button>
-          <button class="btn btn-white btn-flat btn-downvote btn-do" id="already_dislike_button"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 取消不推荐 <small>(<span class="count"></span>)</small></button>
-
+            <button class="btn btn-blue btn-flat btn-upvote btn-undo;" id="followed_button" onclick="follow(1)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 关注 <small>(<span class="count"></span>)</small></button>
+            <button class="btn btn-blue btn-flat btn-upvote btn-do" id="unfollowed_button" onclick="follow(0)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 取消关注 <small>(<span class="count"></span>)</small></button>
         </div>
 
 	{% if course.introduction %}
@@ -298,7 +294,6 @@
 
  $(function() {
      // ignore the warning by pycharm
-     let test = '{{ current_user.username }}';
      if ({{ current_user.is_like_course }} ===  1) {
          $('#like_button').hide()
          $('#dislike_button').hide()
@@ -311,12 +306,56 @@
          $('#already_dislike_button').hide()
          $('#already_like_button').hide()
      }
+
+
+     if ({{ current_user.is_followed }} ===  1) {
+         $('#followed_button').hide()
+     } else {
+         $('#unfollowed_button').hide()
+     }
  })
 
+ function like(score) {
+     $.post("{%  url 'mock:api_course_like' %}", { score: score, thread_id: {{ course.id }} ,csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json')
+         .then((response) => {
+         if (response.res === 'processed') {
+             switch (score) {
+                 case 1:
+                   $('#like_button').hide();
+                   $('#dislike_button').hide();
+                   $('#already_like_button').show();
+                   break;
+                 case 0:
+                   $('#like_button').show();
+                   $('#dislike_button').show();
+                   $('#already_like_button').hide();
+                   $('#already_dislike_button').hide();
+                   break;
+                 case -1:
+                   $('#already_dislike_button').show();
+                   $('#like_button').hide();
+                   $('#dislike_button').hide();
+             }}},
+         ).catch(e => console.log(e))
+ }
 
- like(() => {
-
- })
+ function follow (level) {
+     $.post("{%  url 'mock:api_course_follow' %}", { subcription_level: level, course_id: {{ course.id }} ,csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json')
+         .then( response => {
+             if (response.res === 'processed') {
+                 switch (level) {
+                     case 1:
+                         $('#unfollowed_button').show();
+                         $('#followed_button').hide();
+                         break;
+                     case 0:
+                         $('#unfollowed_button').hide();
+                         $('#followed_button').show();
+                         break;
+                 }
+             }
+         }).catch(e => console.log(e))
+ }
  function upvote_review(review_id)
  {
      elem = $('#review-upvote-count-' + review_id);
@@ -335,7 +374,7 @@
  {
      elem = $('#review-upvote-count-' + review_id);
      //elem.text(parseInt(elem.text()) - 1);
-     $.post("{%  url 'mock:api_review_cancel_upvote' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' }, function(o) {
+     $.post("{%  url 'mock:api_review_cancel_upvote' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token }}' }, function(o) {
        if (typeof o.count != "undefined") {
          elem.text(o.count);
          elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
