@@ -43,7 +43,7 @@
         <div class="ud-pd-sm">
           <span class="right-pd-sm weight-heavy">学　　期</span>
 
-          <select name="term">
+          <select style="border-radius: 6px; padding: 8px; font-size: 15px" name="term">
             {% for term in course.term_ids %}
                 {% check_new_review term review.term course.term_ids course.joined_term as result_comparison%}
               <option value="{{ term }}" {% if result_comparison %}selected="selected"{% endif %}>{{ term }}
@@ -69,19 +69,34 @@
         </div>
         {% endfor %}
 
+
+
         <link rel="stylesheet" href="/static/css/star-rating.min.css" media="all" type="text/css">
         <div class="ud-pd-sm">
-          <span class="weight-heavy pull-left">评个分吧？</span>
-            {% count_rate review.rate as result_rate %}
-          <input id="rate-star" name="rate" value="{{ result_rate }}">
+          <span class="right-pd-sm weight-heavy">评个分吧？</span>
+          {% count_rate review.rate as result_rate %}
+          <select style="border-radius: 6px; padding: 8px; font-size: 15px" name="score">
+            {% for score in range_list %}
+                <option value="score">{{ score }}</option>
+
+            {% endfor %}
+          </select>
+
+          <!--  {% count_rate review.rate as result_rate %}
+          <input id="rate-star" name="rate" value="{{ result_rate }}"> -->
+
+
+
           <span class="clearfix"></span>
         </div>
       </div>
 
+
+
       <div class="container-md desktop">
         <h4 class="grey">说几句吧！</h4>
         <div class="ud-pd-sm">
-          <textarea id="content-editor" name="content">{% if review.content %}{{ review.content|safe }}{% endif %}</textarea>
+          <textarea style="border-radius: 10px; padding: 15px; width: 80%; height: 150px; font-size: 20px" id="content-editor" name="content">{% if review.content %}{{ review.content|safe }}{% endif %}</textarea>
             <!-- { review.content|safe } -->
         </div>
         <button type="submit" class="btn btn-blue btn-flat float-right shadow">发布</button>

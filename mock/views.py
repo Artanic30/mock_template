@@ -265,8 +265,7 @@ def view_course(request, course_id):
         'is_student': True,
         'id': 23333,
         'is_like_course': 0,  # todo: !!!新加是否推荐 1 = true 0 = false
-        'is_dislike_course': 0,
-        'is_followed': 1
+        'is_dislike_course': 0
     }
     user = {
         'is_authenticated': True,
@@ -538,7 +537,6 @@ def new_review(request, course_id):
         {'name': 'gain', 'display': '收获多少', 'options': ['很多', '一般', '没有'] },
     ]
     course = {
-            'id': 2,
             'name': 'course_name',
             'teachers': [
                 {
@@ -574,7 +572,8 @@ def new_review(request, course_id):
         'review': review,
         'polls': polls,
         'message': '谨言慎行，君子之道',
-        'is_new': True
+        'is_new': True,
+        'range_list': [0,1,2,3,4,5,6,7,8,9,10]
     }
     return render(request, 'new-review.html', data)
 
