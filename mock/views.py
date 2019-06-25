@@ -283,7 +283,7 @@ def view_course(request, course_id):
                 'homepage': 'https://www.baidu.com'
             },
             {
-                'id':2,
+                'id': 2,
                 'image': '/static/bootstrap/image/test.jpg',
                 'name': 'fivefiveopen',
                 'dept': 'department',
@@ -312,7 +312,7 @@ def view_course(request, course_id):
         'reviewed': False,
         'reviews': [
             {
-                'is_hidden': False,
+                'upvote_count': 12,
                 'content': [
                     {
                         'content': 'content',
@@ -333,13 +333,13 @@ def view_course(request, course_id):
                     'review_count': 23,
                     'term_ids': 'Fall 2012'
                 },
-                'id': 23333, # pk
+                'id': 111, # pk
                 'term': '2018 Fall',
                 'is_upvoted': True
             },
             {
-                'is_hidden': True,
                 'rate': 3.5,
+                'upvote_count': 12,
                 'content': [
                     {
                         'content': 'content',
@@ -359,12 +359,11 @@ def view_course(request, course_id):
                     'review_count': 23,
                     'term_ids': 23
                 },
-                'id': 23333,
+                'id': 22222,
                 'term': '2018 Fall',
                 'is_upvoted': True
             }
         ],
-        'is_hidden': False,
         # version 2
         'same_teacher_courses': [
             {
@@ -387,7 +386,6 @@ def view_course(request, course_id):
         'joined': 'unknown',
         'follow_count': 23,
         'downvote_count': 21,
-        'upvote_count': 12
     }
     data = {
         'course': course,

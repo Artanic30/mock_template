@@ -29,7 +29,7 @@ def vote_thread(request):
     """
     print('vote success!')
     print(request.POST.get('thread_id'), request.POST.get('score', None))
-    return HttpResponse(json.dumps({'res': 'processed'}), content_type="application/json")
+    return HttpResponse(json.dumps({'res': 'processed', 'count': 233}), content_type="application/json")
 
 
 def review_upvote(id):

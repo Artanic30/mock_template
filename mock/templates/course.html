@@ -13,10 +13,6 @@
             <!-- { course.term_ids|term_display } -->
         <br><span class="small grey align-bottom mobile">{{ course.term_ids }} &nbsp;课程号：{{ course.code }}</span>
             <!-- { course.term_ids|term_display } -->
-        {% if current_user.is_authenticated %}
-        <btn class="btn btn-link float-right"><a href="https://www.baidu.com">编辑课程信息</a></btn>
-            <!-- url_for('course.edit_course', course_id=course.id) -->
-        {% endif %}
         <hr>
         {% if course.review_count %}
         <div style="display:inline-block" class="ud-pd-sm blue">
@@ -107,11 +103,13 @@
         <div class="ud-pd-sm">
         </div>
         <div class="ud-pd-md">
+            <!--
             <button class="btn btn-blue btn-flat btn-upvote btn-undo;" id="like_button" onclick="like(1)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 推荐 <small>(<span class="count"></span>)</small></button>
             <button class="btn btn-blue btn-flat btn-upvote btn-do" id="already_like_button" onclick="like(0)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 取消推荐 <small>(<span class="count"></span>)</small></button>
 
           <button class="btn btn-blue btn-flat btn-downvote btn-undo" id="dislike_button" onclick="like(-1)"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 不推荐 <small>(<span class="count"></span>)</small></button>
           <button class="btn btn-blue btn-flat btn-downvote btn-do" id="already_dislike_button" onclick="like(0)"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 取消不推荐 <small>(<span class="count"></span>)</small></button>
+          -->
         </div>
       <div class="ud-pd-md">
             <button class="btn btn-blue btn-flat btn-upvote btn-undo;" id="followed_button" onclick="follow(1)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 关注 <small>(<span class="count"></span>)</small></button>
@@ -128,11 +126,6 @@
               <!-- { course.introduction|safe } -->
           </div>
           <p class="text-muted pull-right small">
-             {% if user.is_authenticated %}
-             <span class="glyphicon glyphicon-pencil grey left-pd-sm" aria-hidden="true" ></span>
-             <a href="https://www.baidu.com">编辑课程简介</a>
-                 <!-- url_for('course.edit_course', course_id=course.id) -->
-             {% endif %}
           </p>
 	</div>
 	{% endif %}
@@ -193,7 +186,6 @@
                 <!-- { review.publish_time|localtime } -->
           {% check_is_upvoted review.is_upvoted 'cancel_' '' as result1 %}
             <a class="nounderline" href="javascript: {{ result1 }}upvote_review({{ review.id }})">
-                <!-- todo:review.is_upvoted() in USTC/models/review.py -- line:105 -->
                 <!--  <a class="nounderline" href="javascript: { 'cancel_' if review.is_upvoted() }}upvote_review({ review.id }})"> -->
                 {% check_is_upvoted review.is_upvoted 'blue' 'grey' as result2 %}
                 <span class="glyphicon glyphicon-thumbs-up left-pd-lg {{ result2 }}" aria-hidden="true" ></span>
@@ -298,9 +290,9 @@
          $('#unfollowed_button').hide()
      }
  })
-
+ /*
  function like(score) {
-     $.post("{%  url 'mock:api_course_like' %}", { score: score, thread_id: {{ course.id }} ,csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json')
+     $.post("{  url 'mock:api_course_like' %}", { score: score, thread_id: { course.id }} ,csrfmiddlewaretoken:'{ csrf_token  }}' }, 'json')
          .then((response) => {
          if (response.res === 'processed') {
              switch (score) {
@@ -321,7 +313,7 @@
                    $('#dislike_button').hide();
              }}},
          ).catch(e => console.log(e))
- }
+ }    */
 
  function follow (level) {
      $.post("{%  url 'mock:api_course_follow' %}", { subcription_level: level, course_id: {{ course.id }} ,csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json')
@@ -343,27 +335,27 @@
  function upvote_review(review_id)
  {
      elem = $('#review-upvote-count-' + review_id);
-     $.post("{%  url 'mock:api_review_upvote' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' }, function(o) {
-       if (typeof o.count != "undefined") {
-         elem.text(o.count);
-         elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
-         elem.parent().find('span.glyphicon').removeClass('grey');
-         elem.parent().find('span.glyphicon').addClass('blue');
-       }
-     }, 'json');
+     $.post("{%  url 'mock:api_course_like' %}", { score: 1, thread_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json').then( response => {
+         if (response.res === 'processed') {
+             elem.text(response.count);
+             elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
+             elem.parent().find('span.glyphicon').removeClass('grey');
+             elem.parent().find('span.glyphicon').addClass('blue');
+         }
+     });
  }
-
  function cancel_upvote_review(review_id)
  {
      elem = $('#review-upvote-count-' + review_id);
-     $.post("{%  url 'mock:api_review_cancel_upvote' %}", { review_id: review_id, csrfmiddlewaretoken:'{{ csrf_token }}' }, function(o) {
-       if (typeof o.count != "undefined") {
-         elem.text(o.count);
-         elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
-         elem.parent().find('span.glyphicon').removeClass('blue');
-         elem.parent().find('span.glyphicon').addClass('grey');
-       }
-     }, 'json');
+     $.post("{%  url 'mock:api_course_like' %}", { score: 0, thread_id: review_id, csrfmiddlewaretoken:'{{ csrf_token }}' }, 'json').then( response => {
+         if ( response.res === 'processed') {
+             elem.text(response.count);
+             elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
+             elem.parent().find('span.glyphicon').removeClass('blue');
+             elem.parent().find('span.glyphicon').addClass('grey');
+
+         }
+     });
  }
 </script>
 {% endblock %}
