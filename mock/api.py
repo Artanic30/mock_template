@@ -9,6 +9,18 @@ import json
 
 """all the functions have the same function name as USTC"""
 
+def submit_review(request):
+    """
+    Post: { content, course_id, semester_year, semester_season, difficulty, workload, grading, gaining
+    """
+    print('reach submit function!')
+    print(request.POST.get('content'), 2)
+    if request.method == "POST":
+
+        return HttpResponse(json.dumps({'res':'processed'}), content_type="application/json")
+    else:
+        return Http404
+
 
 def follow_course(request):
     """

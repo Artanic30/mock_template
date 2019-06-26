@@ -15,8 +15,7 @@
     {% if message != '' %}
     <div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ message }}</div>
     {% endif %}
-    <form id="review-form" class="form-horizontal" method="post" action="https://www.baidu.com">
-        <!-- url_for('course.new_review', course_id=course.id) -->
+    <form id="review-form" class="form-horizontal" action="javascript: submit_data()" method="post">
       {% csrf_token %}
       <div class="rate-part ud-pd-md">
         <div class="ud-pd-sm">
@@ -25,7 +24,7 @@
           <select style="border-radius: 6px; padding: 8px; font-size: 15px" name="term">
             {% for term in course.term_ids %}
                 {% check_new_review term review.term course.term_ids course.joined_term as result_comparison%}
-              <option value="{{ term }}" {% if result_comparison %}selected="selected"{% endif %}>{{ term }}
+              <option value="{{ term }}" {% if result_comparison %} selected="selected"{% endif %}>{{ term }}
                 <!-- { term|term_display } -->
               {% if joined_term == term %}(学过){% endif %}
               </option>
@@ -40,7 +39,7 @@
           <div class="btn-group btn-group-inv" data-toggle="buttons">
             {% for option in poll.options  %}
             <label class="btn btn-flat btn-grey rl-mg-sm {% if review.poll.name == loop.index %}active{% endif %}">
-                <input type="radio" name="{{ poll.name }}" autocomplete="off" value="{{ loop.index }}" {% if review.poll.name == loop.index %}checked{% endif %}>
+                <input type="radio" name="{{ poll.name }}" autocomplete="off" value="{{ option }}" {% if review.poll.name == loop.index %}checked{% endif %}>
                 {{ option }}
             </label>
             {% endfor %}
@@ -50,19 +49,14 @@
 
 
 
-        <link rel="stylesheet" href="/static/css/star-rating.min.css" media="all" type="text/css">
         <div class="ud-pd-sm">
-          <span class="right-pd-sm weight-heavy">评个分吧？</span>
+          <span class="right-pd-sm weight-heavy">评个分吧</span>
           {% count_rate review.rate as result_rate %}
           <select style="border-radius: 6px; padding: 8px; font-size: 15px" name="score">
             {% for score in range_list %}
-                <option value="score">{{ score }}</option>
-
+                <option value="{{ score }}">{{ score }}</option>
             {% endfor %}
           </select>
-
-          <!--  {% count_rate review.rate as result_rate %}
-          <input id="rate-star" name="rate" value="{{ result_rate }}"> -->
 
 
 
@@ -99,64 +93,112 @@
 {% endblock %}
 
 {% block script %}
-<script src="/static/js/star-rating.min.js" type="text/javascript"></script>
 <script>
-$('#rate-star').rating({
-    min: 0,
-    max: 5,
-    step: 0.5,
-    size: "xs",
-    showClear: false,
-    glyphicon: false,
-    ratingClass: 'glyphicon glyphicon-star',
-    starCaptions: function(val) {
-        return val*2;
-    },
-    starCaptionClasses: function(val) {
-        return "blue";
-    },
-});
+let result = {
+            'course_id': '{{ course.id }}',
+        }
 
 $(function(){
     // remove desktop/mobile-only elements to avoid name conflicts
-    if ($('.desktop').css('display') == 'none') {
+    if ($('.desktop').css('display') === 'none') {
         $('.desktop').remove();
     }
-    if ($('.mobile').css('display') == 'none') {
+    if ($('.mobile').css('display') === 'none') {
         $('.mobile').remove();
     }
 
     $('#review-form').submit(function(e) {
-            if ($('input[name=difficulty]:radio:checked').length == 0) {
+
+            if ($('select[name=term]').val()) {
+                result.semester_season = $('select[name=term]').val()
+            } else {
+                e.preventDefault();
+                alert('请选择学期！');
+            }
+            if ($('input[name=difficulty]:radio:checked').length === 0) {
                 e.preventDefault();
                 alert('请选择课程难度！');
                 return;
+            } else {
+                switch ($('input[name=difficulty]:radio:checked').val()) {
+                    case '简单':
+                        result.difficulty = 1;
+                        break;
+                    case '中等':
+                        result.difficulty = 2;
+                        break;
+                    case '困难':
+                        result.difficulty = 3;
+                        break;
+                }
+
             }
-            if ($('input[name=homework]:radio:checked').length == 0) {
+            if ($('input[name=homework]:radio:checked').length === 0) {
                 e.preventDefault();
                 alert('请选择作业多少！');
                 return;
+            } else {
+                switch ($('input[name=homework]:radio:checked').val()) {
+                    case '不多':
+                        result.workload = 1;
+                        break;
+                    case '中等':
+                        result.workload = 2;
+                        break;
+                    case '超多':
+                        result.workload = 3;
+                        break;
+                }
             }
-            if ($('input[name=grading]:radio:checked').length == 0) {
+            if ($('input[name=grading]:radio:checked').length === 0) {
                 e.preventDefault();
                 alert('请选择给分好坏！');
                 return;
+            } else {
+                switch ($('input[name=grading]:radio:checked').val()) {
+                    case '超好':
+                        result.grading = 1;
+                        break;
+                    case '一般':
+                        result.grading = 2;
+                        break;
+                    case '杀手':
+                        result.grading = 3;
+                        break;
+                }
             }
-            if ($('input[name=gain]:radio:checked').length == 0) {
+            if ($('input[name=gain]:radio:checked').length === 0) {
                 e.preventDefault();
                 alert('请选择收获多少！');
                 return;
+            } else {
+                switch ($('input[name=gain]:radio:checked').val()) {
+                    case '很多':
+                        result.gaining = 1;
+                        break;
+                    case '一般':
+                        result.gaining = 2;
+                        break;
+                    case '没有':
+                        result.gaining = 3;
+                        break;
+                }
             }
-            if ($('input[name=rate]').val() <= 0 || $('input[name=rate]').val() > 5) {
+            if ($('select[name=score]').val() <= 0 || $('select[name=score]').val() > 10) {
                 e.preventDefault();
                 alert('请评分！');
                 return;
+            } else {
+                result.rating = $('select[name=score]').val()
             }
             if ($('textarea[name=content]').val().trim().length < 10) {
                 e.preventDefault();
                 alert('点评内容太短啦！');
                 return;
+            } else {
+                result.content = $('textarea[name=content]').val()
             }
+
             /*
             // mobile device: to HTML
             if ($('.mobile').length > 0) {
@@ -176,8 +218,21 @@ $(function(){
                 $('textarea[name=content]').val(newcontent);
             }
             */
-            $('input[name=rate]').val(Math.round($('input[name=rate]').val() * 2));
+
     });
 });
+
+function submit_data () {
+    $.post("{%  url 'mock:api_submit_review' %}", { content: result.content, course_id: result.course_id, semester_year: '{{ semester_year }}', semester_season: result.semester_season, difficulty: result.difficulty, workload: result.workload, grading: result.grading, gaining: result.gaining ,csrfmiddlewaretoken:'{{ csrf_token }}' }, 'json')
+        .then( response => {
+                    if (response.res === 'rejected') {
+                        alert('请规范评论内容!')
+                    } else if (response.res === 'processed') {
+                        alert('提交成功!')
+                    }
+                    window.location.href = '{% url 'mock:view_course' course.id %}'
+            })
+        .catch(e => console.log(e.status))
+    }
 </script>
 {% endblock %}

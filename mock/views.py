@@ -41,9 +41,6 @@ def latest_reviews(request):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
-        'unread_notification_count': 4,
-        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
         'is_student': False,
         'id': 23333
     }
@@ -56,7 +53,18 @@ def latest_reviews(request):
                     'username': 'test_username',
                     'id': 23333333
                 },
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -66,8 +74,22 @@ def latest_reviews(request):
                 'id': 23333
             },
             {
-                'author': {'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'author': {
+                    'username': 'test_username',
+                    'id': 23333333
+                },
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -77,8 +99,22 @@ def latest_reviews(request):
                 'id': 23333
             },
             {
-                'author': {'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'author': {
+                    'username': 'test_username',
+                    'id': 23333333
+                },
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -86,11 +122,10 @@ def latest_reviews(request):
                     }
                 ],
                 'id': 23333
-            }
+            },
         ],
         'navigation': [0, 1, 2, 3],
         'has_prev': True,
-        'is_hidden': False,
         'prev_num': 23123,
         'has_next': True
     }
@@ -119,9 +154,6 @@ def follow_reviews(request):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
-        'unread_notification_count': 4,
-        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
         'is_student': False,
         'id': 23333
     }
@@ -134,7 +166,18 @@ def follow_reviews(request):
                     'username': 'test_username',
                     'id': 23333333
                 },
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -144,8 +187,22 @@ def follow_reviews(request):
                 'id': 23333
             },
             {
-                'author': {'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'author': {
+                    'username': 'test_username',
+                    'id': 23333333
+                },
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -155,8 +212,22 @@ def follow_reviews(request):
                 'id': 23333
             },
             {
-                'author': {'username': 'test_username', 'id': 23333333},
-                'course': {'id': 23333, 'name': 'test_name', 'teacher_names_display': 'HammerWang', 'code': 'EE110'},
+                'author': {
+                    'username': 'test_username',
+                    'id': 23333333
+                },
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
                 'contents': [
                     {
                         'content': 'content content content content content',
@@ -164,7 +235,7 @@ def follow_reviews(request):
                     }
                 ],
                 'id': 23333
-            }
+            },
         ],
         'navigation': [0, 1, 2, 3],
         'has_prev': True,
@@ -186,9 +257,6 @@ def popular(request):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
-        'unread_notification_count': 4,
-        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
         'is_student': False,
         'id': 23333
     }
@@ -261,15 +329,9 @@ def view_course(request, course_id):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
-        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
         'is_student': True,
         'id': 23333,
-        'is_like_course': 0,  # todo: !!!新加是否推荐 1 = true 0 = false
-        'is_dislike_course': 0
-    }
-    user = {
-        'is_authenticated': True,
-        'is_admin': False
+        'is_followed': 1,  # todo: !!!新加是否推荐 1 = true 0 = false
     }
     course = {
         'id': 23333,
@@ -309,17 +371,15 @@ def view_course(request, course_id):
         'credit': 2,
         'homepage': 'https://www.baidu.com',
         'introduction': '简介之类的',
-        'reviewed': False,
         'reviews': [
             {
-                'upvote_count': 12,
+
                 'content': [
                     {
                         'content': 'content',
                         'publish_time': 'time'
                     }
                 ],
-                'rate': 8.5,
                 'author': {
                     'username': 'fivefiveopen',
                     'id': 232323,
@@ -335,10 +395,10 @@ def view_course(request, course_id):
                 },
                 'id': 111, # pk
                 'term': '2018 Fall',
-                'is_upvoted': True
+                'is_upvoted': False,
+                'upvote_count': 12,
             },
             {
-                'rate': 3.5,
                 'upvote_count': 12,
                 'content': [
                     {
@@ -350,7 +410,7 @@ def view_course(request, course_id):
                     'username': 'fivefiveopen',
                     'id': 232323,
                     'course_rate': {
-                        'average_rate': 2.5,
+                        'average_rate': 9,
                         'difficulty': 'hell',
                         'homework': 'EE187',
                         'grading': 'well',
@@ -391,7 +451,6 @@ def view_course(request, course_id):
         'course': course,
         'range_list': [0, 1, 2, 3, 4],
         'current_user': current_user,
-        'user': user
     }
     return render(request, 'course.html', data)
 
@@ -401,9 +460,6 @@ def view_profile(request, user_id):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
-        'unread_notification_count': 4,
-        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
         'is_student': False,
         'id': 23333
     }
@@ -535,6 +591,8 @@ def new_review(request, course_id):
         {'name': 'gain', 'display': '收获多少', 'options': ['很多', '一般', '没有'] },
     ]
     course = {
+            'id': course_id,
+            'semester_year': 2018,
             'name': 'course_name',
             'teachers': [
                 {
