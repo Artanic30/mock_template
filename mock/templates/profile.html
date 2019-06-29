@@ -23,7 +23,6 @@
         {% endif %}
 
         {% for review in user.reviews %}
-          {% if not review.is_hidden or current_user.is_admin or current_user == user %}
         <!-- profile页面最多显示3条点评 -->
         <div class="ud-pd-md dashed">
           <div class="ud-pd-sm">
@@ -41,7 +40,6 @@
               <!-- url_for('course.view_course', course_id=course.id) -->
           </p>
         </div>
-          {% endif %}
         {% endfor %}
       </div><!-- end bm-pd-lg -->
 

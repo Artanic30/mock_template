@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 """
 All the pages' url are registered in the /mock/url.py 
 """
@@ -20,14 +22,15 @@ def test(request):
     return render(request, template, data)
 
 
-def index(request):
+def index(request, page):
     """
     url: http://127.0.0.1:8000/
     """
-    return latest_reviews(request)
+    print('here', page)
+    return latest_reviews(request, page)
 
 
-def latest_reviews(request):
+def latest_reviews(request, page=1):
     """
 
     page = request.args.get('page', 1, type=int)
@@ -44,10 +47,7 @@ def latest_reviews(request):
         'is_student': False,
         'id': 23333
     }
-    reviews_paged = {
-        'total': 234,
-        'page': 1,
-        'items': [
+    object = [
             {
                 'author': {
                     'username': 'test_username',
@@ -123,15 +123,297 @@ def latest_reviews(request):
                 ],
                 'id': 23333
             },
+                        {
+                            'author': {
+                                'username': 'test_username',
+                                'id': 23333333
+                            },
+                            'course': {
+                                'id': 'EE110',
+                                'name': 'test_name',
+                                'teachers': [
+                                    {
+                                        'teacher_names_display': 'HammerWang'
+                                    },
+                                    {
+                                        'teacher_names_display': 'Zeratul'
+                                    },
+                                ],
+                            },
+                            'contents': [
+                                {
+                                    'content': 'content content content content content',
+                                    'publish_time': 'time'
+                                }
+                            ],
+                            'id': 23333
+                        },
+                        {
+                            'author': {
+                                'username': 'test_username',
+                                'id': 23333333
+                            },
+                            'course': {
+                                'id': 'EE110',
+                                'name': 'test_name',
+                                'teachers': [
+                                    {
+                                        'teacher_names_display': 'HammerWang'
+                                    },
+                                    {
+                                        'teacher_names_display': 'Zeratul'
+                                    },
+                                ],
+                            },
+                            'contents': [
+                                {
+                                    'content': 'content content content content content',
+                                    'publish_time': 'time'
+                                }
+                            ],
+                            'id': 23333
+                        },
+                        {
+                            'author': {
+                                'username': 'test_username',
+                                'id': 23333333
+                            },
+                            'course': {
+                                'id': 'EE110',
+                                'name': 'test_name',
+                                'teachers': [
+                                    {
+                                        'teacher_names_display': 'HammerWang'
+                                    },
+                                    {
+                                        'teacher_names_display': 'Zeratul'
+                                    },
+                                ],
+                            },
+                            'contents': [
+                                {
+                                    'content': 'content content content content content',
+                                    'publish_time': 'time'
+                                }
+                            ],
+                            'id': 23333
+                        },
+                        {
+                            'author': {
+                                'username': 'test_username',
+                                'id': 23333333
+                            },
+                            'course': {
+                                'id': 'EE110',
+                                'name': 'test_name',
+                                'teachers': [
+                                    {
+                                        'teacher_names_display': 'HammerWang'
+                                    },
+                                    {
+                                        'teacher_names_display': 'Zeratul'
+                                    },
+                                ],
+                            },
+                            'contents': [
+                                {
+                                    'content': 'content content content content content',
+                                    'publish_time': 'time'
+                                }
+                            ],
+                            'id': 23333
+                        },
         ],
-        'navigation': [0, 1, 2, 3],
-        'has_prev': True,
-        'prev_num': 23123,
-        'has_next': True
-    }
+    print(page, type(object), type([1, 2, 3, 4]))
+    threads_pages = Paginator([
+            {
+                'author': {
+                    'username': '1111',
+                    'id': 23333333
+                },
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
+                'id': 23333
+            },
+            {
+                'author': {
+                    'username': '222222',
+                    'id': 23333333
+                },
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
+                'id': 23333
+            },
+            {
+                'author': {
+                    'username': '333333',
+                    'id': 23333333
+                },
+                'course': {
+                    'id': 'EE110',
+                    'name': 'test_name',
+                    'teachers': [
+                        {
+                            'teacher_names_display': 'HammerWang'
+                        },
+                        {
+                            'teacher_names_display': 'Zeratul'
+                        },
+                    ],
+                },
+                'contents': [
+                    {
+                        'content': 'content content content content content',
+                        'publish_time': 'time'
+                    }
+                ],
+                'id': 23333
+            },
+                        {
+                            'author': {
+                                'username': '44444',
+                                'id': 23333333
+                            },
+                            'course': {
+                                'id': 'EE110',
+                                'name': 'test_name',
+                                'teachers': [
+                                    {
+                                        'teacher_names_display': 'HammerWang'
+                                    },
+                                    {
+                                        'teacher_names_display': 'Zeratul'
+                                    },
+                                ],
+                            },
+                            'contents': [
+                                {
+                                    'content': 'content content content content content',
+                                    'publish_time': 'time'
+                                }
+                            ],
+                            'id': 23333
+                        },
+                        {
+                            'author': {
+                                'username': '5555555',
+                                'id': 23333333
+                            },
+                            'course': {
+                                'id': 'EE110',
+                                'name': 'test_name',
+                                'teachers': [
+                                    {
+                                        'teacher_names_display': 'HammerWang'
+                                    },
+                                    {
+                                        'teacher_names_display': 'Zeratul'
+                                    },
+                                ],
+                            },
+                            'contents': [
+                                {
+                                    'content': 'content content content content content',
+                                    'publish_time': 'time'
+                                }
+                            ],
+                            'id': 23333
+                        },
+                        {
+                            'author': {
+                                'username': '666666666',
+                                'id': 23333333
+                            },
+                            'course': {
+                                'id': 'EE110',
+                                'name': 'test_name',
+                                'teachers': [
+                                    {
+                                        'teacher_names_display': 'HammerWang'
+                                    },
+                                    {
+                                        'teacher_names_display': 'Zeratul'
+                                    },
+                                ],
+                            },
+                            'contents': [
+                                {
+                                    'content': 'content content content content content',
+                                    'publish_time': 'time'
+                                }
+                            ],
+                            'id': 23333
+                        },
+                        {
+                            'author': {
+                                'username': '77777777',
+                                'id': 23333333
+                            },
+                            'course': {
+                                'id': 'EE110',
+                                'name': 'test_name',
+                                'teachers': [
+                                    {
+                                        'teacher_names_display': 'HammerWang'
+                                    },
+                                    {
+                                        'teacher_names_display': 'Zeratul'
+                                    },
+                                ],
+                            },
+                            'contents': [
+                                {
+                                    'content': 'content content content content content',
+                                    'publish_time': 'time'
+                                }
+                            ],
+                            'id': 23333
+                        },
+        ], per_page=3, orphans=2)
+    print(request.GET.get('page'))
+    try:
+        reviews = threads_pages.page(page)
+    except PageNotAnInteger:
+        reviews = threads_pages.page(1)
+    except EmptyPage:
+        reviews = threads_pages.page(threads_pages.num_pages)
     template = 'latest-reviews.html'
+    print(threads_pages.page(2))
     data = {
-        'reviews': reviews_paged,
+        'reviews': reviews,
+        'total': threads_pages.count,
         'title': '全站最新点评',
         'this_module': 'home.latest_reviews',
         'current_user': current_user
@@ -140,7 +422,7 @@ def latest_reviews(request):
     return render(request, template, data)
 
 
-def follow_reviews(request):
+def follow_reviews(request, page):
     """
 
     page = request.args.get('page', 1, type=int)
@@ -157,95 +439,194 @@ def follow_reviews(request):
         'is_student': False,
         'id': 23333
     }
-    reviews_paged = {
-        'total': 234,
-        'page': 2,
-        'items': [
-            {
-                'author': {
-                    'username': 'test_username',
-                    'id': 23333333
-                },
-                'course': {
-                    'id': 'EE110',
-                    'name': 'test_name',
-                    'teachers': [
-                        {
-                            'teacher_names_display': 'HammerWang'
-                        },
-                        {
-                            'teacher_names_display': 'Zeratul'
-                        },
-                    ],
-                },
-                'contents': [
-                    {
-                        'content': 'content content content content content',
-                        'publish_time': 'time'
-                    }
-                ],
-                'id': 23333
-            },
-            {
-                'author': {
-                    'username': 'test_username',
-                    'id': 23333333
-                },
-                'course': {
-                    'id': 'EE110',
-                    'name': 'test_name',
-                    'teachers': [
-                        {
-                            'teacher_names_display': 'HammerWang'
-                        },
-                        {
-                            'teacher_names_display': 'Zeratul'
-                        },
-                    ],
-                },
-                'contents': [
-                    {
-                        'content': 'content content content content content',
-                        'publish_time': 'time'
-                    }
-                ],
-                'id': 23333
-            },
-            {
-                'author': {
-                    'username': 'test_username',
-                    'id': 23333333
-                },
-                'course': {
-                    'id': 'EE110',
-                    'name': 'test_name',
-                    'teachers': [
-                        {
-                            'teacher_names_display': 'HammerWang'
-                        },
-                        {
-                            'teacher_names_display': 'Zeratul'
-                        },
-                    ],
-                },
-                'contents': [
-                    {
-                        'content': 'content content content content content',
-                        'publish_time': 'time'
-                    }
-                ],
-                'id': 23333
-            },
-        ],
-        'navigation': [0, 1, 2, 3],
-        'has_prev': True,
-        'is_hidden': False,
-        'prev_num': 23123,
-        'has_next': True
-    }
     template = 'latest-reviews.html'
+    threads_pages = Paginator([
+        {
+            'author': {
+                'username': '1111',
+                'id': 23333333
+            },
+            'course': {
+                'id': 'EE110',
+                'name': 'test_name',
+                'teachers': [
+                    {
+                        'teacher_names_display': 'HammerWang'
+                    },
+                    {
+                        'teacher_names_display': 'Zeratul'
+                    },
+                ],
+            },
+            'contents': [
+                {
+                    'content': 'content content content content content',
+                    'publish_time': 'time'
+                }
+            ],
+            'id': 23333
+        },
+        {
+            'author': {
+                'username': '222222',
+                'id': 23333333
+            },
+            'course': {
+                'id': 'EE110',
+                'name': 'test_name',
+                'teachers': [
+                    {
+                        'teacher_names_display': 'HammerWang'
+                    },
+                    {
+                        'teacher_names_display': 'Zeratul'
+                    },
+                ],
+            },
+            'contents': [
+                {
+                    'content': 'content content content content content',
+                    'publish_time': 'time'
+                }
+            ],
+            'id': 23333
+        },
+        {
+            'author': {
+                'username': '333333',
+                'id': 23333333
+            },
+            'course': {
+                'id': 'EE110',
+                'name': 'test_name',
+                'teachers': [
+                    {
+                        'teacher_names_display': 'HammerWang'
+                    },
+                    {
+                        'teacher_names_display': 'Zeratul'
+                    },
+                ],
+            },
+            'contents': [
+                {
+                    'content': 'content content content content content',
+                    'publish_time': 'time'
+                }
+            ],
+            'id': 23333
+        },
+        {
+            'author': {
+                'username': '44444',
+                'id': 23333333
+            },
+            'course': {
+                'id': 'EE110',
+                'name': 'test_name',
+                'teachers': [
+                    {
+                        'teacher_names_display': 'HammerWang'
+                    },
+                    {
+                        'teacher_names_display': 'Zeratul'
+                    },
+                ],
+            },
+            'contents': [
+                {
+                    'content': 'content content content content content',
+                    'publish_time': 'time'
+                }
+            ],
+            'id': 23333
+        },
+        {
+            'author': {
+                'username': '5555555',
+                'id': 23333333
+            },
+            'course': {
+                'id': 'EE110',
+                'name': 'test_name',
+                'teachers': [
+                    {
+                        'teacher_names_display': 'HammerWang'
+                    },
+                    {
+                        'teacher_names_display': 'Zeratul'
+                    },
+                ],
+            },
+            'contents': [
+                {
+                    'content': 'content content content content content',
+                    'publish_time': 'time'
+                }
+            ],
+            'id': 23333
+        },
+        {
+            'author': {
+                'username': '666666666',
+                'id': 23333333
+            },
+            'course': {
+                'id': 'EE110',
+                'name': 'test_name',
+                'teachers': [
+                    {
+                        'teacher_names_display': 'HammerWang'
+                    },
+                    {
+                        'teacher_names_display': 'Zeratul'
+                    },
+                ],
+            },
+            'contents': [
+                {
+                    'content': 'content content content content content',
+                    'publish_time': 'time'
+                }
+            ],
+            'id': 23333
+        },
+        {
+            'author': {
+                'username': '77777777',
+                'id': 23333333
+            },
+            'course': {
+                'id': 'EE110',
+                'name': 'test_name',
+                'teachers': [
+                    {
+                        'teacher_names_display': 'HammerWang'
+                    },
+                    {
+                        'teacher_names_display': 'Zeratul'
+                    },
+                ],
+            },
+            'contents': [
+                {
+                    'content': 'content content content content content',
+                    'publish_time': 'time'
+                }
+            ],
+            'id': 23333
+        },
+    ], per_page=3, orphans=2)
+    try:
+        reviews = threads_pages.page(page)
+    except PageNotAnInteger:
+        reviews = threads_pages.page(1)
+    except EmptyPage:
+        reviews = threads_pages.page(threads_pages.num_pages)
+    print(threads_pages.page(2))
     data = {
-        'reviews': reviews_paged,
+        'reviews': reviews,
+        'total': threads_pages.count,
         'title': '我关注的点评',
         'this_module': 'home.follow_reviews',
         'current_user': current_user
@@ -253,19 +634,15 @@ def follow_reviews(request):
     return render(request, template, data)
 
 
-def popular(request):
+def popular(request, page):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
         'is_student': False,
         'id': 23333
     }
-    courses = {
-        'total': 213,
-        'page': 23123,# delete
-        'has_next': True,# delete
-        'navigation': [0, 1, 2, 3],
-        'items': [
+
+    popular_pages = Paginator([
             {
                 'teachers': 'test_name',
                 'teacher_names_display': 'test_name',
@@ -311,11 +688,17 @@ def popular(request):
                 },
                 'id': 112233
             }
-        ]
-    }
+        ], 3)
+    try:
+        courses = popular_pages.page(page)
+    except PageNotAnInteger:
+        courses = popular_pages.page(1)
+    except EmptyPage:
+        courses = popular_pages.page(popular_pages.num_pages)
     data = {
         'title': '热门课程',
         'courses': courses,
+        'total': popular_pages.count,
         'this_module': 'course.popular',
         'deptlist': 'deptlist',
         'dept': 'department',
@@ -467,11 +850,12 @@ def view_profile(request, user_id):
         'username': 'username',
         'is_student': True,
         'info': 'some information',
-        'review_count': 12,
+        'avatar': '/static/bootstrap/image/test.jpg',
+        'reviews_count': 231,
+        'courses_following_count': 9,
         # 最多显示三条评论
         'reviews': [
             {
-                'is_hidden': False,
                 'course': {
                     'name': 'course_name',
                     'id': 565656,
@@ -493,16 +877,14 @@ def view_profile(request, user_id):
                             'homepage': 'https://www.baidu.com'
                         }
                     ],
-                    'teachers_names_display': 'Test_teacher_name',
+                    'teacher_names_display': 'Test_teacher_name',
                 },
                 'term_display': 'dispaly_terms',
                 'update_time': 19260817,
                 'content': 'review_content',
-                'id': 2333
 
             },
             {
-                'is_hidden': False,
                 'course': {
                     'name': 'course_name',
                     'id': 565656,
@@ -524,16 +906,13 @@ def view_profile(request, user_id):
                             'homepage': 'https://www.baidu.com'
                         }
                     ],
-                    'teachers_names_display': 'Test_teacher_name',
+                    'teacher_names_display': 'Test_teacher_name',
                 },
                 'term_display': 'dispaly_terms',
                 'update_time': 19260817,
                 'content': 'review_content',
-                'id': 2333
-
             },
             {
-                'is_hidden': True,
                 'course': {
                     'name': 'course_name',
                     'id': 565656,
@@ -555,18 +934,13 @@ def view_profile(request, user_id):
                             'homepage': 'https://www.baidu.com'
                         }
                     ],
-                    'teachers_names_display': 'Test_teacher_name',
+                    'teacher_names_display': 'Test_teacher_name',
                 },
                 'term_display': 'dispaly_terms',
                 'update_time': 19260817,
                 'content': 'review_content',
-                'id': 404
-
             }
         ],
-        'courses_following_count': 9,
-        'avatar': '/static/bootstrap/image/test.jpg',
-        'reviews_count': 231
     }
     data = {
         'user': user,
@@ -612,9 +986,8 @@ def new_review(request, course_id):
                     'homepage': 'https://www.baidu.com'
                 }
             ],
-            'teachers_names_display': 'Test_teacher_name',
-            'courseries': 'EVA110',
-            'joined_term': 222,
+            'teacher_names_display': 'Test_teacher_name',
+            'code': 'EVA110',
             'term_ids': [111, 222, 333, 44],
         }
     review = {
@@ -628,19 +1001,15 @@ def new_review(request, course_id):
         'review': review,
         'polls': polls,
         'message': '谨言慎行，君子之道',
-        'is_new': True,
-        'range_list': [0,1,2,3,4,5,6,7,8,9,10]
+        'range_list': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     }
     return render(request, 'new-review.html', data)
 
 
-def catalog(request):
+def catalog(request, page):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
-        'unread_notification_count': 4,
-        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
         'is_student': False,
         'id': 23333
     }
@@ -653,7 +1022,7 @@ def catalog(request):
             'teachers_names_display': 'fivefiveopen',
             'score': 8.5,
             'suggest_count': 123,
-            'time': '2019 Fall'
+            'time': '2019 Fall' # delete
         },
         {
             'course_id': 23333,
@@ -686,10 +1055,20 @@ def catalog(request):
             'time': '2019 Fall'
         }
     ]
+    courses_pages = Paginator(course, 3)
+
+    try:
+        courses_page = courses_pages.page(page)
+    except PageNotAnInteger:
+        courses_page = courses_pages.page(1)
+    except EmptyPage:
+        courses_page = courses_pages.page(courses_pages.num_pages)
+
     data = {
         'current_user': current_user,
+        'total': courses_pages.count,
         'this_module': 'home.catalog',
-        'course': course,
+        'course': courses_page,
         'title': '课程目录',
     }
     return render(request, 'catalog.html', data)
@@ -703,20 +1082,14 @@ def view_teacher_profile(request, teacher_id):
         'navigation': [0, 1, 2, 3],
         'items': [
             {
-                'teachers': 'test_name', # delete
                 'teacher_names_display': 'test_name',
-                'name': 'course_name', # delete
                 'introduction': 'introduction',
                 'term_ids': 'pingqilaidexueqi',
                 'review_count': 23,
-                'courseries': 'EE110',# change to code
-                'reviewed': False,
+                'code': 'EE110',
+                'reviewed': True,
                 'rate': {
                     'average_rate': 4.5,
-                    'difficulty': 'hell',# delete
-                    'homework': 'EE101',# delete
-                    'grading': 'well',# delete
-                    'gain': 'many',# delete
                 },
                 'id': 112233 # course pk
             },
@@ -727,14 +1100,10 @@ def view_teacher_profile(request, teacher_id):
                 'introduction': 'introduction',
                 'term_ids': 13,
                 'review_count': 233,
-                'courseries': 677,
+                'code': 677,
                 'reviewed': False,
                 'rate': {
                     'average_rate': 7.7,
-                    'difficulty': 'hell',
-                    'homework': 'EE102',
-                    'grading': 'well',
-                    'gain': 'many',
                 },
                 'id': 112233
             },
@@ -745,14 +1114,10 @@ def view_teacher_profile(request, teacher_id):
                 'introduction': 'introduction',
                 'term_ids': 16,
                 'review_count': 23333,
-                'courseries': 6777,
+                'code': 6777,
                 'reviewed': False,
                 'rate': {
                     'average_rate': 8.7,
-                    'difficulty': 'hell',
-                    'homework': 'EE187',
-                    'grading': 'well',
-                    'gain': 'many',
                 },
                 'id': 112233
             }
@@ -761,9 +1126,6 @@ def view_teacher_profile(request, teacher_id):
     current_user = {
         'is_authenticated': True,
         'username': 'TestName',
-        'unread_notification_count': 4,
-        'latest_notifications_text': ['latest_notifications_text1', 'latest_notifications', 'latest_notifications3'],
-        'courses_joined': ['EE1110', 'SI100B', 'CS120'],
         'is_student': False,
         'id': 23333
     }

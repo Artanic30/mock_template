@@ -8,11 +8,11 @@
       <h4 class="blue desktop">{{ title }}</h4>
       {% endif %}
       <ul class="nav nav-tabs mobile">
-          <li {% if this_module and this_module == 'home.latest_reviews' %} class="active" {% endif %}><a href="{% url  'mock:index' %}">点评</a></li>
+          <li {% if this_module and this_module == 'home.latest_reviews' %} class="active" {% endif %}><a href="{% url  'mock:index' 1 %}">点评</a></li>
           {% if current_user.is_authenticated %}
-          <li {% if this_module and this_module == 'home.follow_reviews' %} class="active" {% endif %}><a href="{% url 'mock:follow_reviews' %}">关注</a></li>
+          <li {% if this_module and this_module == 'home.follow_reviews' %} class="active" {% endif %}><a href="{% url 'mock:follow_reviews' 1 %}">关注</a></li>
           {% endif %}
           <li {% if this_module and this_module == 'course.index' %} class="active" {% endif %}><a href="{% url 'mock:course_index'%}">好评</a></li>
-          <li {% if this_module and this_module == 'course.popular' %} class="active"{% endif %}><a href="{% url 'mock:course_popular' %}">热门</a></li>
+          <li {% if this_module and this_module == 'course.popular' %} class="active"{% endif %}><a href="{% url 'mock:course_popular' 1 %}">热门</a></li>
           <li {% if this_module and this_module == 'course.public_courses' %} class="active" {% endif %}><a href="{% url 'mock:course_public' %}">公选</a></li>
       </ul>

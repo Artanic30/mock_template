@@ -1,28 +1,3 @@
-<!--
-{
-    'courses.total': int,
-    'items': [{
-        'name': str,
-        'id': int,
-        'introduction': str,
-        'reviewed': unknown,
-        'term_ids': int,
-        'courseries': int or str,
-        'review_count': int,
-        'rate': {'average_rate': float}
-    }]
-}
-
-'current_user.is_authenticated': bool
-'current_user.courses_joined': unknown
-
-'teacher.image': unknown
-'teacher.id': int
-'teacher.name': str
-'teacher.dept.name': str
-'teacher.homepage': str
--->
-
 {% extends "layout.html" %}
 {% block content %}
     {% load extra_filters %}
@@ -43,7 +18,7 @@
 	{% for course in courses.items %}
 	<div class="ud-pd-md dashed">
 	  <span class="blue">
-	  <a class="px16" href="https://www.baidu.com">{{ course.name }}</a>
+	  <a class="px16" href="{% url 'mock:view_course' course.id %}">{{ course.name }}</a>
       <!-- <a class="px16" href="{ url_for('course.view_course', course_id=course.id) }}">{ course.name }}</a> -->
 	  </span>
 
@@ -56,7 +31,7 @@
 	  {% if course.reviewed %}
 	  <span class="label label-success">已点评</span>
 	  {% endif %}
-	  <span class="small grey align-bottom float-right">{{ course.term_ids }} &nbsp;课程代码：{{ course.courseries }}</span>
+	  <span class="small grey align-bottom float-right">{{ course.term_ids }} &nbsp;课程代码：{{ course.code }}</span>
       <!-- <span class="small grey align-bottom float-right">{ course.term_ids|term_display }} &nbsp;课程号：{ course.courseries }}</span> -->
       <span class="clearfix"></span>
           {% if course.review_count %}

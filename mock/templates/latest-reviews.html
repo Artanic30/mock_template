@@ -8,8 +8,8 @@
     <div class="bm-pd-md">
       {% include 'mobile-navbar.html' %}
 
-      <div class="ud-pd-sm"><span class="text-muted">共 {{ reviews.total }} 个点评（当前第 {{ reviews.page }} 页）</span></div>
-      {% for review in reviews.items %}
+      <div class="ud-pd-sm"><span class="text-muted">共 {{ total }} 个点评（当前第 {{ reviews.number }} 页）</span></div>
+      {% for review in reviews %}
           <div class="ud-pd-md dashed">
             <div class="row">
               <div class="col-sm-1 col-xs-2 right-pd-no">
@@ -44,35 +44,37 @@
 
     <nav>
       <ul class="pagination">
-        {% if reviews.has_prev %}
-        <li>
-            <a href={% url 'mock:latest_reviews' %}>
-                <!-- aria-label="Next"-->
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
+        {% if reviews.has_previous %}
+            {% if this_module == 'home.follow_reviews'%}
+                <li><a href={% url 'mock:follow_reviews' reviews.previous_page_number %}><span aria-hidden="true">&laquo;</span></a></li>
+            {% else %}
+                <li><a href={% url 'mock:latest_reviews' reviews.previous_page_number %}><span aria-hidden="true">&laquo;</span></a></li>
+            {% endif %}
         {% else %}
         <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
         {% endif %}
 
-        {% for page in reviews.navigation %}
-            {% if page == reviews.page %}
+        {% for page in reviews.paginator.page_range %}
+            {% if page == reviews.number %}
             <li class="active"><a href="#">{{ page }}<span class="sr-only">(current)</span></a></li>
             {% elif page %}
-            <li><a href={% url 'mock:latest_reviews' %}>{{ page }}</a></li>
-            <!-- <li><a href="{ url_for(this_module, page=page) }}">{ page }}</a></li>  -->
+                {% if this_module == 'home.follow_reviews'%}
+                    <li><a href={% url 'mock:follow_reviews' page %}>{{ page }}</a></li>
+                {% else %}
+                    <li><a href={% url 'mock:latest_reviews' page %}>{{ page }}</a></li>
+                {% endif %}
+
             {% else %}
             <li><a>...</a></li>
             {% endif %}
         {% endfor %}
 
         {% if reviews.has_next %}
-        <li>
-          <a href={% url 'mock:latest_reviews' %}>
-              <!-- aria-label="Next"-->
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
+            {% if this_module == 'home.follow_reviews'%}
+                    <li><a href={% url 'mock:follow_reviews' reviews.next_page_number %}>{{ page }}<span aria-hidden="true">&raquo;</span></a></li>
+                {% else %}
+                <li><a href={% url 'mock:latest_reviews' reviews.next_page_number %}><span aria-hidden="true">&raquo;</span></a></li>
+                {% endif %}
         {% else %}
         <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
         {% endif %}

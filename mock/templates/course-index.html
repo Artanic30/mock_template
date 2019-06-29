@@ -1,30 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-
-<!-- Page Content -->
-    <!-- data: {
-        courses: {
-            'total': 213
-            'page':  23123
-            'has_next': True
-            'item': {
-                'teachers': test_name
-                'teacher_names_display': test_name
-                'name': course_name
-                'introduction': introduction
-                'term_ids': 14
-                'review_count': 3
-                'rate': {
-                    'average_rate': 4.5
-                    'difficulty': hell
-                    'homework': EE101
-                    'grading': well
-                    'gain': many
-                }
-            }
-         range_list = [0, 1, 2, 3, 4, 5]
-        }
-     }-->
 <div class="container">
 
   <div class="row float-element">
@@ -33,14 +8,14 @@
 
     <div class="row">
       <div class="col-lg-12">
-        <div class="ud-pd-sm"><span class="text-muted">共 {{ courses.total }} 门课（当前第 {{ courses.page }} 页）</span></div>
+        <div class="ud-pd-sm"><span class="text-muted">共 {{ total }} 门课（当前第 {{ courses.number }} 页）</span></div>
         {% include "course-list.html" %}
     <nav>
       <ul class="pagination">
-        {% if courses.has_prev %}
+        {% if courses.has_previous %}
         <li>
-            <a href="https://www.baidu.com" aria-label="Previous">
-                <!-- url_for(this_module, page=courses.prev_num, dept=dept)-->
+            <a href={% url 'mock:course_popular' courses.previous_page_number %}>
+                <!-- aria-label="Next"-->
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -48,12 +23,11 @@
         <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
         {% endif %}
 
-        {% for page in courses.navigation %}
-            {% if page == courses.page %}
+        {% for page in courses.paginator.page_range %}
+            {% if page == reviews.number %}
             <li class="active"><a href="#">{{ page }}<span class="sr-only">(current)</span></a></li>
             {% elif page %}
-            <li><a href="https://www.baidu.com">{{ page }}</a></li>
-                <!-- { url_for(this_module, page=page, dept=dept) }} -->
+            <li><a href={% url 'mock:course_popular' page %}>{{ page }}</a></li>
             {% else %}
             <li><a>...</a></li>
             {% endif %}
@@ -61,11 +35,13 @@
 
         {% if courses.has_next %}
         <li>
-          <a href="https://www.baidu.com" aria-label="Next">
-              <!-- { url_for(this_module, page=courses.next_num, dept=dept) }} -->
+          <a href={% url 'mock:course_popular' courses.next_page_number %}>
+              <!-- aria-label="Next"-->
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
+        {% else %}
+        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
         {% endif %}
       </ul>
     </nav>

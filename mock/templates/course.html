@@ -133,7 +133,7 @@
 	<div class="solid ud-pd-md inline-h3">
           <span class="blue h3">点评</span>
           {% if current_user.is_authenticated %}
-          <a type="button" class="btn btn-white float-right blue" href={% url "mock:course_new_review" course.id %} >
+          <a type="button" class="btn btn-blue float-right blue" href={% url "mock:course_new_review" course.id %} >
             <!-- url_for('course.new_review',course_id=course.id) -->
             <span class="glyphicon glyphicon-pencil glyphicon-sm right-pd-sm" aria-hidden="true" ></span>
             写点评
@@ -151,7 +151,6 @@
         <div class="ud-pd-md"></div>
         {% else %}
       {% for review in course.reviews %}
-	  {% if not review.is_hidden or current_user.is_admin or review.author == current_user %}
         <div class="ud-pd-md dashed review" id="review-{{review.id}}">
           <div class="blue ud-pd-sm">
             <span class="right-pd-sm px16">
@@ -196,7 +195,6 @@
 
           {% include 'review-comments.html' %}
         </div>
-	  {% endif %}
         {% endfor %}
         {% endif %}
       </div>
@@ -313,9 +311,9 @@
              }}},
          ).catch(e => console.log(e))
  }    */
-
+// todo: get
  function follow (level) {
-     $.post("{%  url 'mock:api_course_follow' %}", { subcription_level: level, course_id: {{ course.id }} ,csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json')
+     $.post("{%  url 'mock:api_course_follow' %}", { subcription_level: level, course_id: {{ course.id }}, csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json')
          .then( response => {
              if (response.res === 'processed') {
                  switch (level) {

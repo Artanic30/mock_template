@@ -32,6 +32,7 @@ def follow_course(request):
         return HttpResponse(json.dumps({'res': 'processed'}), content_type="application/json")
 
 
+# delete
 def vote_thread(request):
     """
     thread_id == course_id ???
