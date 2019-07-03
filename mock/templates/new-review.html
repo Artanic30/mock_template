@@ -120,69 +120,28 @@ $(function(){
                 alert('请选择课程难度！');
                 return;
             } else {
-                switch ($('input[name=difficulty]:radio:checked').val()) {
-                    case '简单':
-                        result.difficulty = 1;
-                        break;
-                    case '中等':
-                        result.difficulty = 2;
-                        break;
-                    case '困难':
-                        result.difficulty = 3;
-                        break;
-                }
-
+                result.difficulty = $('input[name=difficulty]:radio:checked').val()
             }
             if ($('input[name=homework]:radio:checked').length === 0) {
                 e.preventDefault();
                 alert('请选择作业多少！');
                 return;
             } else {
-                switch ($('input[name=homework]:radio:checked').val()) {
-                    case '不多':
-                        result.workload = 1;
-                        break;
-                    case '中等':
-                        result.workload = 2;
-                        break;
-                    case '超多':
-                        result.workload = 3;
-                        break;
-                }
+                result.workload = $('input[name=homework]:radio:checked').val()
             }
             if ($('input[name=grading]:radio:checked').length === 0) {
                 e.preventDefault();
                 alert('请选择给分好坏！');
                 return;
             } else {
-                switch ($('input[name=grading]:radio:checked').val()) {
-                    case '超好':
-                        result.grading = 1;
-                        break;
-                    case '一般':
-                        result.grading = 2;
-                        break;
-                    case '杀手':
-                        result.grading = 3;
-                        break;
-                }
+                result.grading = $('input[name=grading]:radio:checked').val()
             }
             if ($('input[name=gain]:radio:checked').length === 0) {
                 e.preventDefault();
                 alert('请选择收获多少！');
                 return;
             } else {
-                switch ($('input[name=gain]:radio:checked').val()) {
-                    case '很多':
-                        result.gaining = 1;
-                        break;
-                    case '一般':
-                        result.gaining = 2;
-                        break;
-                    case '没有':
-                        result.gaining = 3;
-                        break;
-                }
+                result.gaining = $('input[name=gain]:radio:checked').val()
             }
             if ($('select[name=score]').val() <= 0 || $('select[name=score]').val() > 10) {
                 e.preventDefault();

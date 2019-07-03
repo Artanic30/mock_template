@@ -33,36 +33,33 @@ def follow_course(request):
 
 
 # delete
-def vote_thread(request):
-    """
-    thread_id == course_id ???
-    Post: { thread_id, score,
-    :param request:
-    :return:
-    """
-    print('vote success!')
-    print(request.POST.get('thread_id'), request.POST.get('score', None))
-    return HttpResponse(json.dumps({'res': 'processed', 'count': 233}), content_type="application/json")
 
-
-def review_upvote(id):
+def review_upvote(request):
     """返回一个状态 ok = bool and message = str and count = int"""
-    print(id, 'review_upvote')
+    print(request.POST.get('thread_id'), 'review_upvote')
     result = {
-        'ok': True,
-        'message': 'success',
-        'count': 77
+        'res': 'processed',
+        'count': 11
     }
     return JsonResponse(result)
 
 
-def review_cancel_upvote(id):
+def review_downvote(request):
     """返回一个状态 ok = bool and message = str and count = int"""
-    print(id, 'cancel_review_upvote')
+    print(request.POST.get('thread_id'), 'review_downvote')
     result = {
-        'ok': True,
-        'message': 'success',
-        'count': 88
+        'res': 'processed',
+        'count': 888
+    }
+    return JsonResponse(result)
+
+
+def review_cancel_vote(request):
+    """返回一个状态 ok = bool and message = str and count = int"""
+    print(request.POST.get('thread_id'), 'cancel_review_vote')
+    result = {
+        'res': 'processed',
+        'count': 33
     }
     return JsonResponse(result)
 

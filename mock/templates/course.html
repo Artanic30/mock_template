@@ -177,22 +177,23 @@
           {% include 'review-hidden.html' %}
           <div>
             <p>{{ review.content|safe }}</p>
-              <!-- { review.content|my_urlize(nofollow=true)|safe } -->
           </div>
 
           <div class="bm-pd-md grey pull-right" id="review-{{ review.id }}">
             <span class="small">{{ review.publish_time }}</span>
-                <!-- { review.publish_time|localtime } -->
           {% check_is_upvoted review.is_upvoted 'cancel_' '' as result1 %}
             <a class="nounderline" href="javascript: {{ result1 }}upvote_review({{ review.id }})">
-                <!--  <a class="nounderline" href="javascript: { 'cancel_' if review.is_upvoted() }}upvote_review({ review.id }})"> -->
                 {% check_is_upvoted review.is_upvoted 'blue' 'grey' as result2 %}
                 <span class="glyphicon glyphicon-thumbs-up left-pd-lg {{ result2 }}" aria-hidden="true" ></span>
-                <!-- class="glyphicon glyphicon-thumbs-up { 'blue' if review.is_upvoted() else 'grey' }} left-pd-lg"-->
                 <span id="review-upvote-count-{{review.id}}">{{ review.upvote_count }}</span>
             </a>
+           {% check_is_upvoted review.is_downvoted 'cancel_' '' as result1 %}
+            <a class="nounderline" href="javascript: {{ result1 }}downvote_review({{ review.id }})">
+                {% check_is_upvoted review.is_downvoted 'blue' 'grey' as result2 %}
+                <span class="glyphicon glyphicon-thumbs-down left-pd-lg {{ result2 }}" aria-hidden="true" ></span>
+                <span id="review-downvote-count-{{review.id}}">{{ review.downvote_count }}</span>
+            </a>
           </div>
-
           {% include 'review-comments.html' %}
         </div>
         {% endfor %}
@@ -287,30 +288,6 @@
          $('#unfollowed_button').hide()
      }
  })
- /*
- function like(score) {
-     $.post("{  url 'mock:api_course_like' %}", { score: score, thread_id: { course.id }} ,csrfmiddlewaretoken:'{ csrf_token  }}' }, 'json')
-         .then((response) => {
-         if (response.res === 'processed') {
-             switch (score) {
-                 case 1:
-                   $('#like_button').hide();
-                   $('#dislike_button').hide();
-                   $('#already_like_button').show();
-                   break;
-                 case 0:
-                   $('#like_button').show();
-                   $('#dislike_button').show();
-                   $('#already_like_button').hide();
-                   $('#already_dislike_button').hide();
-                   break;
-                 case -1:
-                   $('#already_dislike_button').show();
-                   $('#like_button').hide();
-                   $('#dislike_button').hide();
-             }}},
-         ).catch(e => console.log(e))
- }    */
 // todo: get
  function follow (level) {
      $.post("{%  url 'mock:api_course_follow' %}", { subcription_level: level, course_id: {{ course.id }}, csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json')
@@ -331,23 +308,58 @@
  }
  function upvote_review(review_id)
  {
-     elem = $('#review-upvote-count-' + review_id);
-     $.post("{%  url 'mock:api_course_like' %}", { score: 1, thread_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json').then( response => {
-         if (response.res === 'processed') {
-             elem.text(response.count);
-             elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
-             elem.parent().find('span.glyphicon').removeClass('grey');
-             elem.parent().find('span.glyphicon').addClass('blue');
+     if ( $('#review-downvote-count-' + review_id).parent().attr('href').match('cancel_')) {
+         alert('你已经踩了评论！')
+     } else {
+         elem = $('#review-upvote-count-' + review_id);
+         $.post("{%  url 'mock:api_review_upvote' %}", { thread_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json').then( response => {
+             if (response.res === 'processed') {
+                 elem.text(response.count);
+                 elem.parent().attr('href', 'javascript:cancel_upvote_review("' + review_id + '")');
+                 elem.parent().find('span.glyphicon').removeClass('grey');
+                 elem.parent().find('span.glyphicon').addClass('blue');
          }
      });
+     }
+
  }
  function cancel_upvote_review(review_id)
  {
      elem = $('#review-upvote-count-' + review_id);
-     $.post("{%  url 'mock:api_course_like' %}", { score: 0, thread_id: review_id, csrfmiddlewaretoken:'{{ csrf_token }}' }, 'json').then( response => {
+     $.post("{%  url 'mock:api_review_cancel_vote' %}", { thread_id: review_id, csrfmiddlewaretoken:'{{ csrf_token }}' }, 'json').then( response => {
          if ( response.res === 'processed') {
              elem.text(response.count);
              elem.parent().attr('href', 'javascript:upvote_review("' + review_id + '")');
+             elem.parent().find('span.glyphicon').removeClass('blue');
+             elem.parent().find('span.glyphicon').addClass('grey');
+
+         }
+     });
+ }
+ function downvote_review(review_id)
+ {
+     elem = $('#review-downvote-count-' + review_id);
+     if ( $('#review-upvote-count-' + review_id).parent().attr('href').match('cancel_')) {
+         alert('你已经点赞了评论！')
+     } else {
+         $.post("{%  url 'mock:api_review_downvote' %}", { thread_id: review_id, csrfmiddlewaretoken:'{{ csrf_token  }}' }, 'json').then( response => {
+         if (response.res === 'processed') {
+             elem.text(response.count);
+             elem.parent().attr('href', 'javascript:cancel_downvote_review("' + review_id + '")');
+             elem.parent().find('span.glyphicon').removeClass('grey');
+             elem.parent().find('span.glyphicon').addClass('blue');
+         }
+     });
+     }
+ }
+
+ function cancel_downvote_review(review_id)
+ {
+     elem = $('#review-downvote-count-' + review_id);
+     $.post("{%  url 'mock:api_review_cancel_vote' %}", { thread_id: review_id, csrfmiddlewaretoken:'{{ csrf_token }}' }, 'json').then( response => {
+         if ( response.res === 'processed') {
+             elem.text(response.count);
+             elem.parent().attr('href', 'javascript:downvote_review("' + review_id + '")');
              elem.parent().find('span.glyphicon').removeClass('blue');
              elem.parent().find('span.glyphicon').addClass('grey');
 

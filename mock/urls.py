@@ -27,8 +27,8 @@ urlpatterns = [
     path('teacher/<int:teacher_id>', views.view_teacher_profile, name='view_teacher_profile'),
     path('user/account_settings', views.index, name='user_account_settings'),
     path('api/follow_course', api.follow_course, name='api_course_follow'),
-    path('api/like_course', api.vote_thread, name='api_course_like'),
     path('api/review/upvote', api.review_upvote, name='api_review_upvote'),
-    path('api/review/cancel_upvote', api.review_cancel_upvote, name='api_review_cancel_upvote'),
+    path('api/review/downvote', api.review_downvote, name='api_review_downvote'),
+    path('api/review/cancel_vote', api.review_cancel_vote, name='api_review_cancel_vote'),
     path('api/submit_review', api.submit_review, name='api_submit_review')
 ]

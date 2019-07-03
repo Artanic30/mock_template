@@ -779,10 +779,13 @@ def view_course(request, course_id):
                 'id': 111, # pk
                 'term': '2018 Fall',
                 'is_upvoted': False,
+                'is_downvoted': True,
                 'upvote_count': 12,
+                'downvote_count': 22,
             },
             {
-                'upvote_count': 12,
+                'upvote_count': 32,
+                'downvote_count': 44,
                 'content': [
                     {
                         'content': 'content',
@@ -804,7 +807,8 @@ def view_course(request, course_id):
                 },
                 'id': 22222,
                 'term': '2018 Fall',
-                'is_upvoted': True
+                'is_upvoted': True,
+                'is_downvoted': False,
             }
         ],
         # version 2
@@ -823,12 +827,6 @@ def view_course(request, course_id):
                 'name': 'DT'
             }
         ],
-        'downvoted': 'unknown',
-        'following': 'unknown',
-        'upvoted': 'unknown',
-        'joined': 'unknown',
-        'follow_count': 23,
-        'downvote_count': 21,
     }
     data = {
         'course': course,
